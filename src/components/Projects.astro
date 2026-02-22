@@ -1,0 +1,82 @@
+---
+export interface Props {
+  lang: string;
+  t: (key: string) => string;
+}
+
+const { t } = Astro.props;
+
+const projects = [
+  {
+    key: 'fraud',
+    pills: ['n8n', 'Node.js', 'TypeScript', 'AI/ML', 'Fraud Detection'],
+    gradient: 'from-violet-500/10 to-purple-500/10',
+    accent: 'text-violet-600 dark:text-violet-400',
+    border: 'hover:border-violet-400/60 dark:hover:border-violet-500/60',
+  },
+  {
+    key: 'seo',
+    pills: ['Node.js', 'AI Content Gen', 'PostgreSQL', 'REST API', 'SEO'],
+    gradient: 'from-blue-500/10 to-cyan-500/10',
+    accent: 'text-blue-600 dark:text-blue-400',
+    border: 'hover:border-blue-400/60 dark:hover:border-blue-500/60',
+  },
+  {
+    key: 'infra',
+    pills: ['HAProxy', 'MySQL', 'Linux', 'Nginx', 'CI/CD', 'DigitalOcean'],
+    gradient: 'from-emerald-500/10 to-teal-500/10',
+    accent: 'text-emerald-600 dark:text-emerald-400',
+    border: 'hover:border-emerald-400/60 dark:hover:border-emerald-500/60',
+  },
+];
+---
+
+<section id="projects" class="py-24 px-6 bg-gray-50/50 dark:bg-gray-900/50">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="reveal text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-16">
+      {t('projects.title')}
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {projects.map((proj, i) => (
+        <article
+          class={`reveal reveal-delay-${i + 1} relative flex flex-col bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden transition-all hover:-translate-y-1 hover:shadow-xl ${proj.border}`}
+        >
+          <!-- Gradient top bar -->
+          <div class={`h-1 w-full bg-gradient-to-r ${proj.gradient.replace('/10', '')}`}></div>
+
+          <div class="p-6 flex flex-col flex-1">
+            <!-- Title -->
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">
+              {t(`projects.${proj.key}.title`)}
+            </h3>
+
+            <!-- Description -->
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-5 flex-1">
+              {t(`projects.${proj.key}.desc`)}
+            </p>
+
+            <!-- Tech pills -->
+            <div class="flex flex-wrap gap-1.5 mb-5">
+              {proj.pills.map((pill) => (
+                <span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                  {pill}
+                </span>
+              ))}
+            </div>
+
+            <!-- Outcome highlight -->
+            <div class={`flex items-start gap-2 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/60 ${proj.accent}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span class="text-xs font-medium">
+                {t(`projects.${proj.key}.outcome`)}
+              </span>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

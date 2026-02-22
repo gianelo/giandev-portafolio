@@ -1,0 +1,29 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Hero from '../../components/Hero.astro';
+import Impact from '../../components/Impact.astro';
+import TechStack from '../../components/TechStack.astro';
+import Projects from '../../components/Projects.astro';
+import Leadership from '../../components/Leadership.astro';
+import Contact from '../../components/Contact.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout
+  title="Gian Barboza – Ingeniero Backend Senior"
+  lang={lang}
+>
+  <Nav lang={lang} t={t} />
+  <main>
+    <Hero lang={lang} t={t} />
+    <Impact lang={lang} t={t} />
+    <TechStack lang={lang} t={t} />
+    <Projects lang={lang} t={t} />
+    <Leadership lang={lang} t={t} />
+    <Contact lang={lang} t={t} />
+  </main>
+</Layout>

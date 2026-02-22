@@ -1,0 +1,52 @@
+---
+export interface Props {
+  lang: string;
+  t: (key: string) => string;
+}
+
+const { t } = Astro.props;
+
+const categories = [
+  {
+    key: 'backend',
+    pills: ['Node.js', 'TypeScript', 'PHP', 'Java', 'REST API', 'GraphQL', 'Gateway Pattern', 'Microservices', 'Event-Driven'],
+  },
+  {
+    key: 'infra',
+    pills: ['Linux', 'HAProxy', 'MySQL Replication', 'Nginx', 'DigitalOcean', 'CI/CD', 'Docker', 'Redis', 'Varnish'],
+  },
+  {
+    key: 'payments',
+    pills: ['Stripe', 'PayPal', 'DLocal', 'Shift4', 'Fraud Rule Engines', 'Payment Routing', 'Chargebacks', 'PCI Compliance'],
+  },
+  {
+    key: 'ai',
+    pills: ['n8n', 'AI-Assisted Fraud', 'Workflow Orchestration', 'LLM Integration', 'Programmatic SEO', 'Content Automation'],
+  },
+];
+---
+
+<section id="stack" class="py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="reveal text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-16">
+      {t('stack.title')}
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {categories.map((cat, i) => (
+        <div class={`reveal reveal-delay-${i + 1} bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 hover:border-indigo-400/50 dark:hover:border-indigo-500/50 transition-all`}>
+          <h3 class="text-sm font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-4">
+            {t(`stack.${cat.key}.title`)}
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {cat.pills.map((pill) => (
+              <span class="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-default">
+                {pill}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

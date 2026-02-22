@@ -1,0 +1,52 @@
+---
+export interface Props {
+  lang: string;
+  t: (key: string) => string;
+}
+
+const { t } = Astro.props;
+---
+
+<section class="min-h-screen flex items-center justify-center px-6 pt-16">
+  <div class="max-w-4xl mx-auto text-center">
+    <!-- Name -->
+    <h1 class="animate-hero text-5xl md:text-7xl font-bold tracking-tight text-gray-900 dark:text-white mb-6">
+      {t('hero.title')}
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="animate-hero-delay-1 text-lg md:text-xl text-indigo-600 dark:text-indigo-400 font-medium mb-4 max-w-2xl mx-auto leading-relaxed">
+      {t('hero.subtitle')}
+    </p>
+
+    <!-- Tagline -->
+    <p class="animate-hero-delay-2 text-base md:text-lg text-gray-500 dark:text-gray-400 mb-10">
+      {t('hero.tagline')}
+    </p>
+
+    <!-- CTAs -->
+    <div class="animate-hero-delay-3 flex flex-col sm:flex-row gap-4 justify-center">
+      <a
+        href="#projects"
+        class="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:-translate-y-0.5"
+      >
+        {t('hero.cta.projects')}
+      </a>
+      <a
+        href="#contact"
+        class="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-indigo-500 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold text-sm transition-all hover:-translate-y-0.5"
+      >
+        {t('hero.cta.contact')}
+      </a>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="animate-hero-delay-3 mt-20 flex justify-center">
+      <a href="#impact" aria-label="Scroll down" class="flex flex-col items-center gap-1 text-gray-400 dark:text-gray-600 hover:text-gray-600 dark:hover:text-gray-400 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-bounce">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

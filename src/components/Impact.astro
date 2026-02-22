@@ -1,0 +1,41 @@
+---
+export interface Props {
+  lang: string;
+  t: (key: string) => string;
+}
+
+const { t } = Astro.props;
+
+const cards = [
+  { key: 'years', icon: '⏱' },
+  { key: 'pages', icon: '📄' },
+  { key: 'servers', icon: '🖥' },
+  { key: 'payments', icon: '💳' },
+];
+---
+
+<section id="impact" class="py-24 px-6 bg-gray-50/50 dark:bg-gray-900/50">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="reveal text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-16">
+      {t('impact.title')}
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {cards.map((card, i) => (
+        <div
+          class={`reveal reveal-delay-${i + 1} group relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-8 text-center hover:border-indigo-400 dark:hover:border-indigo-500 transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/10`}
+        >
+          <div class="text-4xl mb-3">{card.icon}</div>
+          <div class="text-4xl md:text-5xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
+            {t(`impact.${card.key}.number`)}
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 font-medium leading-snug">
+            {t(`impact.${card.key}.label`)}
+          </p>
+          <!-- Subtle glow on hover -->
+          <div class="absolute inset-0 rounded-2xl bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

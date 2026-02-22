@@ -1,0 +1,55 @@
+---
+export interface Props {
+  lang: string;
+  t: (key: string) => string;
+}
+
+const { t } = Astro.props;
+
+const facts = ['fact1', 'fact2', 'fact3', 'fact4'];
+const seeks = ['seek1', 'seek2', 'seek3', 'seek4'];
+---
+
+<section id="leadership" class="py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="reveal text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-16">
+      {t('leadership.title')}
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Left: Leadership facts -->
+      <div class="reveal bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-8 hover:border-indigo-400/50 dark:hover:border-indigo-500/50 transition-all">
+        <h3 class="text-sm font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 mb-6">
+          {t('leadership.left.title')}
+        </h3>
+        <ul class="space-y-4">
+          {facts.map((key) => (
+            <li class="flex items-start gap-3">
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0"></span>
+              <span class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                {t(`leadership.${key}`)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Right: What I'm looking for -->
+      <div class="reveal reveal-delay-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-8 hover:border-emerald-400/50 dark:hover:border-emerald-500/50 transition-all">
+        <h3 class="text-sm font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-6">
+          {t('leadership.right.title')}
+        </h3>
+        <ul class="space-y-4">
+          {seeks.map((key) => (
+            <li class="flex items-start gap-3">
+              <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+              <span class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                {t(`leadership.${key}`)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
