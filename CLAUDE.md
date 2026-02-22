@@ -46,10 +46,13 @@ npm run preview   # Preview del build
 ### Flujo de páginas
 
 ```
-/                   → redirect según idioma del browser
-/en/                → Landing en inglés
-/es/                → Landing en español
+/        → renderiza inglés directamente (sin redirect)
+/en/     → Landing en inglés
+/es/     → Landing en español
 ```
+
+- `src/pages/index.astro` renderiza el HTML de inglés directamente — **no es un redirect**, es la página completa
+- `getLangFromUrl()` devuelve `'en'` por defecto cuando la URL es `/` (el split da `''`, que no es `'es'`)
 
 ---
 
@@ -62,6 +65,23 @@ npm run preview   # Preview del build
 - `src/i18n/utils.ts` — `getLangFromUrl()`, `useTranslations()`
 
 Los componentes reciben `t` como prop y llaman `t('key')` para obtener texto.
+
+### Nav — Language Switcher
+
+- Lógica en `Nav.astro`: `otherLang = lang === 'en' ? 'es' : 'en'` → `otherLangUrl = /${otherLang}/`
+- En `/` o `/en/` → muestra botón **ES** → lleva a `/es/`
+- En `/es/` → muestra botón **EN** → lleva a `/en/`
+- El logo `GB` siempre enlaza a `/${lang}/` (desde `/` lleva a `/en/`, inofensivo)
+
+### ⚠️ NO agregar bloque `i18n` en `astro.config.mjs`
+
+El proyecto maneja i18n manualmente. Si se agrega el bloque `i18n` con `prefixDefaultLocale: true`, Vercel intercepta `/` y fuerza un redirect a `/en/` a nivel de CDN, mostrando "Redirecting…". El `astro.config.mjs` debe tener **solo** el plugin de Tailwind:
+
+```js
+export default defineConfig({
+  vite: { plugins: [tailwindcss()] }
+});
+```
 
 ---
 
@@ -112,7 +132,7 @@ src/
 ├── layouts/
 │   └── Layout.astro   ← HTML shell, theme script, scroll observer
 ├── pages/
-│   ├── index.astro    ← Redirect por idioma del browser
+│   ├── index.astro    ← Renderiza inglés directamente (NO es redirect)
 │   ├── en/index.astro ← Página inglés
 │   └── es/index.astro ← Página español
 └── styles/
