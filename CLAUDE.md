@@ -128,3 +128,10 @@ src/
 - No crear archivos nuevos si no es estrictamente necesario
 - No agregar JS frameworks — mantener Vanilla JS
 - Mantener paridad de keys entre `en.ts` y `es.ts` siempre
+
+## Flujo de Git
+
+- El dueño siempre audita el código antes de hacer commit o push
+- **No agregar `Co-Authored-By` de ninguna IA en los commits** — los commits son autoría del desarrollador
+- `.claude/` está en `.gitignore` (configuración local de Claude Code, no se trackea)
+- `CLAUDE.md` sí se sube al repo (es documentación del proyecto)
