@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@fontsource-variable/onest";
 
 /* Dark mode via class on <html> */
 @custom-variant dark (&:is(.dark, .dark *));
@@ -9,9 +10,42 @@ html {
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100;
+  font-family: 'Onest Variable', system-ui, -apple-system, sans-serif;
+  background-color: #ffffff;
+  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(120, 119, 198, 0.15), transparent);
+  color: #111827;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-color: #030712;
+  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.22), transparent);
+  color: #f3f4f6;
+}
+
+/* ── Hero bio highlights ───────────────────────────────── */
+.hero-bio strong {
+  color: #d97706;
+  font-weight: 600;
+}
+
+.dark .hero-bio strong {
+  color: #facc15;
+}
+
+/* ── Nav scroll pill ───────────────────────────────────── */
+.nav-scrolled {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(229, 231, 235, 0.7);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dark .nav-scrolled {
+  background-color: rgba(3, 7, 18, 0.85);
+  border-color: rgba(31, 41, 55, 0.7);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* ── Scroll animations ─────────────────────────────────── */

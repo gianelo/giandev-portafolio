@@ -9,10 +9,13 @@ export const es: Record<string, string> = {
 
   // ── Hero ─────────────────────────────────────────────────
   'hero.title': 'Gian Barboza',
-  'hero.subtitle': 'Ingeniero Backend Senior · Sistemas Distribuidos · Fraude & Pagos · Automatización IA',
+  'hero.subtitle': 'Ingeniero Backend Senior',
+  'hero.badge': 'Disponible para trabajo remoto',
+  'hero.bio': 'Ingeniero Backend Senior con <strong>más de 10 años</strong> construyendo sistemas distribuidos, <strong>infraestructura de pagos</strong> (Stripe, PayPal, DLocal) y <strong>automatización con IA</strong>. Ex-CTO con enfoque en soluciones production-first.',
   'hero.tagline': 'Más de 10 años construyendo sistemas de producción a escala',
   'hero.cta.projects': 'Ver Proyectos',
   'hero.cta.contact': 'Contactarme',
+  'hero.cta.email': 'Contáctame',
 
   // ── Impact ───────────────────────────────────────────────
   'impact.title': 'Impacto Clave',

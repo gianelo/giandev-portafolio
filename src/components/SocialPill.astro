@@ -1,0 +1,20 @@
+---
+export interface Props {
+  href: string;
+  target?: string;
+  rel?: string;
+  'aria-label'?: string;
+}
+
+const { href, target, rel, 'aria-label': ariaLabel } = Astro.props;
+---
+
+<a
+  href={href}
+  target={target}
+  rel={rel}
+  aria-label={ariaLabel}
+  class="inline-flex items-center gap-2 border border-gray-300 dark:border-gray-700 bg-white/50 dark:bg-white/5 text-gray-700 dark:text-gray-300 hover:border-yellow-400 dark:hover:border-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-400/10 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200"
+>
+  <slot />
+</a>

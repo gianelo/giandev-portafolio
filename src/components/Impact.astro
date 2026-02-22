@@ -7,35 +7,40 @@ export interface Props {
 const { t } = Astro.props;
 
 const cards = [
-  { key: 'years', icon: '⏱' },
-  { key: 'pages', icon: '📄' },
-  { key: 'servers', icon: '🖥' },
-  { key: 'payments', icon: '💳' },
+  { key: 'years',    icon: '⏱', color: 'hover:border-yellow-400/60 dark:hover:border-yellow-500/60' },
+  { key: 'pages',    icon: '📄', color: 'hover:border-blue-400/60 dark:hover:border-blue-500/60' },
+  { key: 'servers',  icon: '🖥',  color: 'hover:border-emerald-400/60 dark:hover:border-emerald-500/60' },
+  { key: 'payments', icon: '💳', color: 'hover:border-violet-400/60 dark:hover:border-violet-500/60' },
 ];
 ---
 
-<section id="impact" class="py-24 px-6 bg-gray-50/50 dark:bg-gray-900/50">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="reveal text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-16">
-      {t('impact.title')}
-    </h2>
+<section id="impact" class="py-20 px-6">
+  <div class="max-w-4xl mx-auto">
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Section heading -->
+    <div class="reveal flex flex-col items-center mb-14 text-center">
+      <span class="text-4xl mb-3">📈</span>
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+        {t('impact.title')}
+      </h2>
+      <div class="mt-3 w-12 h-1 rounded-full bg-yellow-400"></div>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
       {cards.map((card, i) => (
         <div
-          class={`reveal reveal-delay-${i + 1} group relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-8 text-center hover:border-indigo-400 dark:hover:border-indigo-500 transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-indigo-500/10`}
+          class={`reveal reveal-delay-${i + 1} group relative bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 text-center ${card.color} transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20`}
         >
-          <div class="text-4xl mb-3">{card.icon}</div>
-          <div class="text-4xl md:text-5xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
+          <div class="text-3xl mb-3">{card.icon}</div>
+          <div class="text-3xl md:text-4xl font-bold text-yellow-500 dark:text-yellow-400 mb-2 tabular-nums">
             {t(`impact.${card.key}.number`)}
           </div>
-          <p class="text-sm text-gray-600 dark:text-gray-400 font-medium leading-snug">
+          <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium leading-snug">
             {t(`impact.${card.key}.label`)}
           </p>
-          <!-- Subtle glow on hover -->
-          <div class="absolute inset-0 rounded-2xl bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
         </div>
       ))}
     </div>
+
   </div>
 </section>
