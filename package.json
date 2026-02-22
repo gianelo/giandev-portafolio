@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@fontsource-variable/onest": "^5.2.11",
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.2.0",
     "astro": "^5.17.1",
+    "satori": "^0.19.2",
     "tailwindcss": "^4.2.0"
   }
 }

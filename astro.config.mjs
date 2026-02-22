@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://giandev-portafolio.vercel.app',
   vite: {
     plugins: [tailwindcss()]
   }
