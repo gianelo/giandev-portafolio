@@ -9,7 +9,6 @@ export interface Props {
 
 const { t } = Astro.props;
 
-const email = 'gianelo1992@gmail.com';
 const linkedinUrl = 'https://linkedin.com/in/gian-barboza';
 const githubUrl = 'https://github.com/gianelo';
 const whatsappUrl = 'https://wa.me/573043581365';
@@ -49,7 +48,7 @@ const whatsappUrl = 'https://wa.me/573043581365';
 
     <!-- Social Pills -->
     <div class="animate-hero-delay-3 flex flex-wrap gap-3 justify-center md:justify-start mb-14">
-      <SocialPill href={`mailto:${email}`} aria-label="Send email">
+      <SocialPill href="#contact" data-open-contact aria-label={t('hero.cta.email')}>
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect width="20" height="16" x="2" y="4" rx="2"/>
           <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
