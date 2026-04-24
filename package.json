@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "cv": "npx --yes md-to-pdf CV.md --dest-dir public && mv public/CV.pdf public/gian-barboza-cv.pdf"
   },
   "dependencies": {
     "@fontsource-variable/onest": "^5.2.11",
