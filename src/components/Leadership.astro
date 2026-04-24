@@ -1,4 +1,6 @@
 ---
+import SectionHeading from './SectionHeading.astro';
+
 export interface Props {
   lang: string;
   t: (key: string) => string;
@@ -13,14 +15,7 @@ const seeks = ['seek1', 'seek2', 'seek3', 'seek4'];
 <section id="leadership" class="py-20 px-6">
   <div class="max-w-4xl mx-auto">
 
-    <!-- Section heading -->
-    <div class="reveal flex flex-col items-center mb-14 text-center">
-      <span class="text-4xl mb-3">🎯</span>
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-        {t('leadership.title')}
-      </h2>
-      <div class="mt-3 w-12 h-1 rounded-full bg-yellow-400"></div>
-    </div>
+    <SectionHeading emoji="🎯" title={t('leadership.title')} />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 

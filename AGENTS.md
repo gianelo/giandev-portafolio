@@ -33,15 +33,18 @@ npm run preview   # Preview del build
 
 ### Secciones (en orden de render)
 
-| Componente          | Sección     | Descripción                                                  |
-|---------------------|-------------|--------------------------------------------------------------|
-| `Nav.astro`         | Nav         | Sticky, theme toggle (dark/light), language switcher (EN/ES) |
-| `Hero.astro`        | Hero        | Full-screen, nombre + subtítulo + 2 CTAs + scroll indicator  |
-| `Impact.astro`      | Impact      | 4 métricas: 10+ años, 50K+ pages, 8 servers, 4+ payments    |
-| `TechStack.astro`   | Stack       | 4 categorías con pills: Backend, Infra, Payments, AI         |
-| `Projects.astro`    | Projects    | 3 proyectos destacados con outcomes                          |
-| `Leadership.astro`  | Leadership  | 2 columnas: experiencia de liderazgo + qué busca             |
-| `Contact.astro`     | Contact     | CTA + email, WhatsApp, LinkedIn, GitHub                      |
+| Componente             | Sección     | Descripción                                                                       |
+|------------------------|-------------|-----------------------------------------------------------------------------------|
+| `Nav.astro`            | Nav         | Sticky, theme toggle (dark/light), language switcher (EN/ES)                      |
+| `Hero.astro`           | Hero        | Full-screen, nombre + subtítulo + 2 CTAs + scroll indicator                       |
+| `Impact.astro`         | Impact      | 4 métricas: 10+ años, 99.9% uptime, $200K+/mes, 5+ procesadores                   |
+| `Timeline.astro`       | Timeline    | Recorrido laboral (4 hitos, reciente primero) con dot + accent color por período  |
+| `TechStack.astro`      | Stack       | 4 categorías con pills: Backend, Infra, Payments, AI                              |
+| `Projects.astro`       | Projects    | 4 case studies con bloques Contexto / Problema / Decisión Técnica / Resultado     |
+| `Leadership.astro`     | Leadership  | 2 columnas: experiencia de liderazgo + qué busca                                  |
+| `Contact.astro`        | Contact     | CTA abre modal + pills WhatsApp, LinkedIn, GitHub                                 |
+| `ContactModal.astro`   | —           | Modal con form (nombre/email/mensaje) → Web3Forms. Honeypot + timing anti-bot     |
+| `SectionHeading.astro` | —           | Heading compartido (emoji + título + underline + subtítulo opcional)              |
 
 ### Flujo de páginas
 
@@ -95,7 +98,7 @@ export default defineConfig({
   - Pagos: Stripe, PayPal, DLocal, Shift4, PCI Compliance
   - Fraude: motores de reglas, decisión automática con IA (n8n)
   - SEO programático: 18K+ landing pages con pipelines de IA
-- **Stack principal**: Node.js, TypeScript, PHP, Java, REST, GraphQL, Microservices
+- **Stack principal**: Node.js, TypeScript, PHP, Java, REST API, Design Patterns, Clean Architecture
 - **Contacto**:
   - Email: `gianelo1992@gmail.com`
   - WhatsApp: `+57 304 358 1365` / `https://wa.me/573043581365`
@@ -108,7 +111,7 @@ export default defineConfig({
 
 - **Clases de animación**: `animate-hero`, `animate-hero-delay-1/2/3` (Hero), `reveal`, `reveal-delay-1/2/3/4` (secciones via IntersectionObserver en `Layout.astro`)
 - **Tema**: Dark/light mode con clase `dark` en `<html>`, persiste en `localStorage`
-- **IDs de sección**: `#impact`, `#stack`, `#projects`, `#contact` — usados por la nav y CTAs
+- **IDs de sección**: `#impact`, `#timeline`, `#stack`, `#projects`, `#contact` — usados por la nav y CTAs
 - **No hay JS framework** — animaciones y interactividad con Vanilla JS puro
 
 ---
@@ -121,10 +124,13 @@ src/
 │   ├── Nav.astro
 │   ├── Hero.astro
 │   ├── Impact.astro
+│   ├── Timeline.astro
 │   ├── TechStack.astro
 │   ├── Projects.astro
 │   ├── Leadership.astro
-│   └── Contact.astro
+│   ├── Contact.astro
+│   ├── ContactModal.astro
+│   └── SectionHeading.astro
 ├── i18n/
 │   ├── en.ts          ← EDITAR AQUÍ para cambiar contenido en inglés
 │   ├── es.ts          ← EDITAR AQUÍ para cambiar contenido en español
@@ -148,6 +154,18 @@ src/
 - No crear archivos nuevos si no es estrictamente necesario
 - No agregar JS frameworks — mantener Vanilla JS
 - Mantener paridad de keys entre `en.ts` y `es.ts` siempre
+
+## Env Vars
+
+| Variable                 | Uso                                                           | Dónde va                         |
+|--------------------------|---------------------------------------------------------------|----------------------------------|
+| `PUBLIC_WEB3FORMS_KEY`   | Access key del formulario de contacto (Web3Forms)             | `.env` local + Vercel (Production + Preview) |
+
+- `.env` está gitignored, `.env.example` sí se sube al repo como plantilla.
+- La key es pública por diseño (se postea desde el browser). Protección real = honeypot + timing check en `ContactModal.astro` + rate limit de Web3Forms.
+- En Vercel: Settings → Environment Variables → agregar `PUBLIC_WEB3FORMS_KEY` con el valor real, en Production y Preview.
+
+---
 
 ## Flujo de Git
 

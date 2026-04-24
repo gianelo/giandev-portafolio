@@ -1,4 +1,6 @@
 ---
+import SectionHeading from './SectionHeading.astro';
+
 export interface Props {
   lang: string;
   t: (key: string) => string;
@@ -10,22 +12,22 @@ const categories = [
   {
     key: 'backend',
     icon: '⚙️',
-    pills: ['Node.js', 'TypeScript', 'PHP', 'Java', 'REST API', 'GraphQL', 'Gateway Pattern', 'Microservices', 'Event-Driven'],
+    pills: ['Node.js', 'TypeScript', 'Next.js', 'PHP', 'Java', 'REST API', 'Gateway Pattern', 'Design Patterns', 'Clean Architecture'],
   },
   {
     key: 'infra',
     icon: '🏗️',
-    pills: ['Linux', 'HAProxy', 'MySQL Replication', 'Nginx', 'DigitalOcean', 'CI/CD', 'Docker', 'Redis', 'Varnish'],
+    pills: ['Linux', 'HAProxy', 'Nginx', 'MySQL Replication', 'DigitalOcean', 'Cronjobs', 'CI/CD'],
   },
   {
     key: 'payments',
     icon: '💳',
-    pills: ['Stripe', 'PayPal', 'DLocal', 'Shift4', 'Fraud Rule Engines', 'Payment Routing', 'Chargebacks', 'PCI Compliance'],
+    pills: ['Stripe', 'PayPal', 'DLocal', 'Shift4', 'Payeezy', 'Payment Routing', 'Fraud Rule Engines', 'Device Fingerprinting', 'PCI Compliance'],
   },
   {
     key: 'ai',
     icon: '🤖',
-    pills: ['n8n', 'AI-Assisted Fraud', 'Workflow Orchestration', 'LLM Integration', 'Programmatic SEO', 'Content Automation'],
+    pills: ['n8n', 'LLM Integration', 'AI-Assisted Fraud', 'Programmatic SEO', 'Content Automation', 'Web Scraping'],
   },
 ];
 ---
@@ -33,14 +35,7 @@ const categories = [
 <section id="stack" class="py-20 px-6">
   <div class="max-w-4xl mx-auto">
 
-    <!-- Section heading -->
-    <div class="reveal flex flex-col items-center mb-14 text-center">
-      <span class="text-4xl mb-3">🛠️</span>
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-        {t('stack.title')}
-      </h2>
-      <div class="mt-3 w-12 h-1 rounded-full bg-yellow-400"></div>
-    </div>
+    <SectionHeading emoji="🛠️" title={t('stack.title')} />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {categories.map((cat, i) => (
