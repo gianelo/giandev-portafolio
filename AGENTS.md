@@ -122,6 +122,10 @@ Los componentes no se tocan porque el `@theme` re-mapea Tailwind tokens a las CS
 - Secondary = Sable blue (`#1e3a8a` light / `#60a5fa` dark)
 - Light bg `#fafaf9` / Dark bg `#000000` (negro puro)
 
+### ⚠️ OG image — sincronización manual
+
+`src/pages/og.png.ts` usa satori, que **no lee CSS vars**. Los colores están hardcoded inline. **Cuando se cambia la paleta, hay que actualizar og.png.ts a mano** (background, badge, subtitle color, CTA gradient, tech pills border). El archivo tiene un comment block recordando esto. Si te olvidás, el OG va a quedar desincronizado de la web.
+
 ---
 
 ## Sistema de Fuentes

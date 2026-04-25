@@ -3,6 +3,22 @@ import { Resvg } from '@resvg/resvg-js';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+/**
+ * ⚠️ PALETTE SYNC REQUIRED
+ *
+ * Satori renders from inline styles — it cannot read CSS variables
+ * defined in global.css. Whenever the active palette changes in
+ * global.css (PALETTE SYSTEM block), the colors in this file MUST
+ * be updated to match.
+ *
+ * Active palette: Star Wars Crawl
+ *   - Background: dark (#000000) with subtle yellow tint at top
+ *   - Primary accent: crawl yellow #FFE81F (badge, CTA gradient)
+ *   - Secondary accent: sable blue #60a5fa (subtitle)
+ *   - Tech pills: yellow-tinted borders on dark
+ *   - Footer URL color: white at low opacity
+ */
+
 export async function GET() {
   const fontData = readFileSync(
     resolve(process.cwd(), 'src/assets/fonts/inter-400.ttf')
@@ -12,12 +28,12 @@ export async function GET() {
     type: 'span' as const,
     props: {
       style: {
-        background: 'rgba(255,255,255,0.08)',
-        border: '1px solid rgba(255,255,255,0.15)',
+        background: 'rgba(255, 232, 31, 0.06)',
+        border: '1px solid rgba(255, 232, 31, 0.25)',
         borderRadius: '100px',
         padding: '10px 22px',
         fontSize: '18px',
-        color: '#e2e8f0',
+        color: '#f5f5f5',
       },
       children: tech,
     },
@@ -32,7 +48,7 @@ export async function GET() {
         display: 'flex',
         flexDirection: 'column' as const,
         justifyContent: 'space-between',
-        background: 'linear-gradient(135deg, #0f0c29 0%, #1a1060 50%, #0f0c29 100%)',
+        background: 'linear-gradient(180deg, #1a1700 0%, #000000 55%, #000000 100%)',
         padding: '80px',
         fontFamily: 'Inter',
       },
@@ -52,8 +68,8 @@ export async function GET() {
                     alignItems: 'center',
                     alignSelf: 'flex-start',
                     gap: '10px',
-                    background: 'rgba(250, 204, 21, 0.12)',
-                    border: '1px solid rgba(250, 204, 21, 0.4)',
+                    background: 'rgba(255, 232, 31, 0.10)',
+                    border: '1px solid rgba(255, 232, 31, 0.45)',
                     borderRadius: '100px',
                     padding: '8px 20px',
                     marginBottom: '36px',
@@ -66,7 +82,7 @@ export async function GET() {
                           width: '10px',
                           height: '10px',
                           borderRadius: '50%',
-                          background: '#facc15',
+                          background: '#FFE81F',
                           marginRight: '4px',
                           flexShrink: 0,
                         },
@@ -76,7 +92,7 @@ export async function GET() {
                     {
                       type: 'span' as const,
                       props: {
-                        style: { color: '#facc15', fontSize: '18px' },
+                        style: { color: '#FFE81F', fontSize: '18px' },
                         children: 'Available for remote work',
                       },
                     },
@@ -105,10 +121,10 @@ export async function GET() {
                   style: {
                     fontSize: '34px',
                     fontWeight: 400,
-                    color: '#a5b4fc',
+                    color: '#60a5fa',
                     marginBottom: '52px',
                   },
-                  children: 'Senior Backend Engineer',
+                  children: 'Senior Backend Engineer · Payments & AI',
                 },
               },
               // Tech pills row
@@ -139,10 +155,10 @@ export async function GET() {
                   style: {
                     display: 'flex',
                     alignItems: 'center',
-                    background: 'linear-gradient(90deg, #facc15 0%, #f59e0b 100%)',
+                    background: 'linear-gradient(90deg, #FFE81F 0%, #e6cf00 100%)',
                     borderRadius: '100px',
                     padding: '16px 32px',
-                    color: '#0f0c29',
+                    color: '#000000',
                     fontSize: '22px',
                     fontWeight: 700,
                     letterSpacing: '-0.5px',
