@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import Starfield from '../components/Starfield.astro';
 
 export interface Props {
@@ -109,6 +110,7 @@ const personSchema = {
     <Starfield />
     <slot />
     <Analytics />
+    <SpeedInsights />
 
     <!-- Console easter egg: surfaces a CTA for devs who open DevTools -->
     <script is:inline>
