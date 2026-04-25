@@ -76,6 +76,11 @@ const personSchema = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
 
+    <!-- Hreflang: declares EN ↔ ES versions to Google for multi-language ranking -->
+    <link rel="alternate" hreflang="en" href={`${siteUrl}/`} />
+    <link rel="alternate" hreflang="es" href={`${siteUrl}/es/`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteUrl}/`} />
+
     <!-- Icons (SVG primary, PNG fallback, Apple Touch for home screen) -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
