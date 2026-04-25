@@ -19,6 +19,51 @@ const siteUrl = Astro.site?.href.replace(/\/$/, '') ?? 'https://gianbarboza.com'
 const ogImage = `${siteUrl}/og.png`;
 const canonicalPath = Astro.url.pathname.replace(/^\/en(\/|$)/, '/');
 const canonicalUrl = new URL(canonicalPath, siteUrl).href;
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Gian Barboza',
+  jobTitle: 'Senior Backend Engineer',
+  description,
+  url: siteUrl,
+  image: ogImage,
+  email: 'mailto:gianelo1992@gmail.com',
+  telephone: '+57-304-358-1365',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Rionegro',
+    addressRegion: 'Antioquia',
+    addressCountry: 'CO',
+  },
+  sameAs: [
+    'https://linkedin.com/in/gian-barboza',
+    'https://github.com/gianelo',
+  ],
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Universidad Dr. Rafael Belloso Chacín (URBE)',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Maracaibo',
+      addressCountry: 'VE',
+    },
+  },
+  knowsAbout: [
+    'Backend Engineering',
+    'Distributed Systems',
+    'Payments Infrastructure',
+    'Stripe', 'PayPal', 'DLocal', 'Shift4', 'Payeezy',
+    'Node.js', 'TypeScript', 'PHP', 'Java',
+    'MySQL', 'HAProxy', 'DigitalOcean',
+    'Fraud Detection', 'PCI Compliance',
+    'AI Automation', 'Programmatic SEO',
+  ],
+  knowsLanguage: [
+    { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+    { '@type': 'Language', name: 'English', alternateName: 'en' },
+  ],
+};
 ---
 
 <!doctype html>
@@ -48,6 +93,9 @@ const canonicalUrl = new URL(canonicalPath, siteUrl).href;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
+    <!-- JSON-LD: Person schema for Google Knowledge Graph / rich results -->
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+
     <!-- Theme init: runs before paint to avoid flash -->
     <script is:inline>
       (function () {
@@ -61,6 +109,19 @@ const canonicalUrl = new URL(canonicalPath, siteUrl).href;
     <Starfield />
     <slot />
     <Analytics />
+
+    <!-- Console easter egg: surfaces a CTA for devs who open DevTools -->
+    <script is:inline>
+      (function () {
+        if (typeof console === 'undefined' || !console.log) return;
+        const title = 'font-family: Georgia, serif; font-size: 18px; font-style: italic; color: #FFE81F; padding: 8px 0; text-shadow: 0 0 8px rgba(255,232,31,0.4);';
+        const heading = 'font-size: 13px; font-weight: 600; color: inherit; padding-top: 4px;';
+        const muted = 'font-size: 12px; color: #888;';
+        console.log('%cThese aren\'t the bugs you\'re looking for.', title);
+        console.log('%cLooking for a senior backend engineer?', heading);
+        console.log('%cgianelo1992@gmail.com   linkedin.com/in/gian-barboza', muted);
+      })();
+    </script>
 
     <!-- Scroll animation observer -->
     <script is:inline>
