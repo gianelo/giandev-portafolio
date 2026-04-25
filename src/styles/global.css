@@ -21,23 +21,26 @@
 
    To swap palettes: replace the values in :root and .dark blocks.
 
-   ACTIVE PALETTE: Star Wars Crawl
-     Primary = Crawl yellow #FFE81F, Secondary = Sable blue
-     Iconic Lucasfilm look. High personality.
+   ACTIVE PALETTE: Star Wars Crawl (split by mode)
+     Light = Amber/bronze gold (legible & sober on white)
+     Dark  = Crawl yellow #FFE81F (iconic Lucasfilm)
+     Secondary (both) = Sable blue
    ═══════════════════════════════════════════════════════════ */
 
 :root {
-  /* Primary (brand) scale — crawl yellow centered */
-  --pal-primary-50:  #fffce0;
-  --pal-primary-100: #fff8b8;
-  --pal-primary-200: #fff080;
-  --pal-primary-300: #ffea4d;
-  --pal-primary-400: #FFE81F;
-  --pal-primary-500: #e6cf00;
-  --pal-primary-600: #ccb800;
-  --pal-primary-700: #a39200;
-  --pal-primary-800: #806f00;
-  --pal-primary-900: #5c4f00;
+  /* Primary (brand) scale — LIGHT MODE: amber/bronze gold.
+     The Lucasfilm yellow #FFE81F is too low-contrast on white;
+     amber stock keeps the warm gold spirit while staying legible. */
+  --pal-primary-50:  #fffbeb;
+  --pal-primary-100: #fef3c7;
+  --pal-primary-200: #fde68a;
+  --pal-primary-300: #fcd34d;
+  --pal-primary-400: #fbbf24;
+  --pal-primary-500: #f59e0b;
+  --pal-primary-600: #d97706;
+  --pal-primary-700: #b45309;
+  --pal-primary-800: #92400e;
+  --pal-primary-900: #78350f;
 
   /* Secondary (supporting accent) scale — sable blue */
   --pal-secondary-300: #93c5fd;
@@ -49,13 +52,25 @@
   /* Body */
   --pal-bg:         #fafaf9;
   --pal-fg:         #0a0a0a;
-  --pal-glow:       rgba(255, 232, 31, 0.10);
+  --pal-glow:       rgba(180, 83, 9, 0.07);
 
   /* Hero bio strong (highlights — uses primary) */
-  --pal-bio-strong: #806f00;
+  --pal-bio-strong: #92400e;
 }
 
 .dark {
+  /* Primary scale — DARK MODE: Crawl yellow centered. */
+  --pal-primary-50:  #fffce0;
+  --pal-primary-100: #fff8b8;
+  --pal-primary-200: #fff080;
+  --pal-primary-300: #ffea4d;
+  --pal-primary-400: #FFE81F;
+  --pal-primary-500: #e6cf00;
+  --pal-primary-600: #ccb800;
+  --pal-primary-700: #a39200;
+  --pal-primary-800: #806f00;
+  --pal-primary-900: #5c4f00;
+
   --pal-bg:         #000000;
   --pal-fg:         #f5f5f5;
   --pal-glow:       rgba(255, 232, 31, 0.16);
