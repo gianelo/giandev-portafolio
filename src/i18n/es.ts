@@ -21,7 +21,7 @@ export const es: Record<string, string> = {
   'hero.cta.contact': 'Contactarme',
   'hero.cta.email': 'Contáctame',
   'cta.cv.download': 'Descargar CV',
-  'cta.cv.url': '/gian-barboza-cv.pdf',
+  'cta.cv.url': '/gian-barboza-cv-es.pdf',
 
   // ── Impact ───────────────────────────────────────────────
   'impact.title': 'Impacto Clave',

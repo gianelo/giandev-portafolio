@@ -1,0 +1,122 @@
+@page {
+  size: A4;
+  margin: 16mm 18mm;
+}
+
+body {
+  font-family: Garamond, "EB Garamond", Georgia, "Times New Roman", serif;
+  font-size: 10.5pt;
+  line-height: 1.4;
+  color: #1a1a1a;
+  margin: 0;
+  padding: 0;
+}
+
+.cv-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #1a1a1a;
+}
+
+.cv-header-text {
+  flex: 1;
+}
+
+.cv-header h1 {
+  font-size: 24pt;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 0 0 2px 0;
+  text-transform: uppercase;
+}
+
+.cv-header .role {
+  font-size: 12pt;
+  font-style: italic;
+  color: #444;
+  margin: 0 0 6px 0;
+}
+
+.cv-header .contact {
+  font-size: 9.5pt;
+  color: #333;
+  margin: 1px 0;
+  line-height: 1.35;
+}
+
+.cv-header .contact a {
+  color: #333;
+  text-decoration: none;
+}
+
+.cv-photo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 35%;
+  border: 1.5px solid #999;
+  flex-shrink: 0;
+}
+
+h2 {
+  font-size: 11pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  border-bottom: 1px solid #1a1a1a;
+  padding-bottom: 2px;
+  margin: 14px 0 8px 0;
+}
+
+h3 {
+  font-size: 10.5pt;
+  font-weight: 700;
+  margin: 8px 0 1px 0;
+}
+
+h3 + p {
+  margin: 0 0 4px 0;
+  font-style: italic;
+  color: #555;
+  font-size: 10pt;
+}
+
+p {
+  margin: 4px 0;
+}
+
+ul {
+  margin: 4px 0 6px 0;
+  padding-left: 18px;
+}
+
+li {
+  margin: 2px 0;
+  line-height: 1.4;
+}
+
+li strong {
+  font-weight: 700;
+}
+
+a {
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+hr {
+  display: none;
+}
+
+strong {
+  font-weight: 700;
+}
+
+em {
+  font-style: italic;
+  color: #555;
+}
