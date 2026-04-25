@@ -1,7 +1,7 @@
 # Gian Barboza
 **Senior Backend Engineer** · Rionegro, Antioquia, Colombia · Remote-first
 
-gianelo1992@gmail.com · [+57 304 358 1365](https://wa.me/573043581365) · [LinkedIn](https://linkedin.com/in/gian-barboza) · [GitHub](https://github.com/gianelo) · [Portfolio](https://giandev-portafolio.vercel.app)
+gianelo1992@gmail.com · [+57 304 358 1365](https://wa.me/573043581365) · [LinkedIn](https://linkedin.com/in/gian-barboza) · [GitHub](https://github.com/gianelo) · [Portfolio](https://gianbarboza.com)
 
 ---
 

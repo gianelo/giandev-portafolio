@@ -127,7 +127,7 @@ export async function GET() {
           type: 'div' as const,
           props: {
             style: { color: 'rgba(255,255,255,0.3)', fontSize: '16px' },
-            children: 'giandev-portafolio.vercel.app',
+            children: 'gianbarboza.com',
           },
         },
       ],

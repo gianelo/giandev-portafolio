@@ -14,9 +14,10 @@ const {
   lang = 'en',
 } = Astro.props;
 
-const siteUrl = Astro.site?.href.replace(/\/$/, '') ?? 'https://giandev-portafolio.vercel.app';
+const siteUrl = Astro.site?.href.replace(/\/$/, '') ?? 'https://gianbarboza.com';
 const ogImage = `${siteUrl}/og.png`;
-const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const canonicalPath = Astro.url.pathname.replace(/^\/en(\/|$)/, '/');
+const canonicalUrl = new URL(canonicalPath, siteUrl).href;
 ---
 
 <!doctype html>

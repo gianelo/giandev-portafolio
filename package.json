@@ -7,9 +7,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "cv": "npx --yes md-to-pdf CV.md --dest-dir public && mv public/CV.pdf public/gian-barboza-cv.pdf"
+    "cv": "npx --yes md-to-pdf CV.md && mv CV.pdf public/gian-barboza-cv.pdf"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.2",
     "@fontsource-variable/onest": "^5.2.11",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.2.0",
