@@ -122,12 +122,42 @@ export async function GET() {
             ],
           },
         },
-        // Footer URL
+        // Footer: CTA + URL
         {
           type: 'div' as const,
           props: {
-            style: { color: 'rgba(255,255,255,0.3)', fontSize: '16px' },
-            children: 'gianbarboza.com',
+            style: {
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+            },
+            children: [
+              {
+                type: 'div' as const,
+                props: {
+                  style: {
+                    display: 'flex',
+                    alignItems: 'center',
+                    background: 'linear-gradient(90deg, #facc15 0%, #f59e0b 100%)',
+                    borderRadius: '100px',
+                    padding: '16px 32px',
+                    color: '#0f0c29',
+                    fontSize: '22px',
+                    fontWeight: 700,
+                    letterSpacing: '-0.5px',
+                  },
+                  children: 'View Portfolio →',
+                },
+              },
+              {
+                type: 'div' as const,
+                props: {
+                  style: { color: 'rgba(255,255,255,0.4)', fontSize: '18px' },
+                  children: 'gianbarboza.com',
+                },
+              },
+            ],
           },
         },
       ],

@@ -1,4 +1,7 @@
 export const en: Record<string, string> = {
+  // ── Meta ─────────────────────────────────────────────────
+  'meta.title': 'Gian Barboza – Senior Backend Engineer · Payments & AI',
+
   // ── Nav ──────────────────────────────────────────────────
   'nav.impact': 'Impact',
   'nav.timeline': 'Journey',
