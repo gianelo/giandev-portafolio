@@ -54,28 +54,24 @@ const accents: Record<AccentColor, {
 
 type ProjectKey = 'infra' | 'seo' | 'fraud' | 'payments';
 
-const projects: { key: ProjectKey; emoji: string; color: AccentColor; pills: string[] }[] = [
+const projects: { key: ProjectKey; color: AccentColor; pills: string[] }[] = [
   {
     key: 'infra',
-    emoji: '⚡',
     color: 'emerald',
     pills: ['HAProxy', 'MySQL Replication', 'Linux', 'DigitalOcean', 'Nginx', 'Apache'],
   },
   {
     key: 'seo',
-    emoji: '🚀',
     color: 'blue',
     pills: ['ChatGPT-4o', 'Node.js', 'AI Content Gen', 'Programmatic SEO', 'PHP'],
   },
   {
     key: 'fraud',
-    emoji: '🛡️',
     color: 'violet',
     pills: ['Design Patterns', 'Factory', 'SRP', 'Device Fingerprinting', 'n8n', 'LLM'],
   },
   {
     key: 'payments',
-    emoji: '💳',
     color: 'amber',
     pills: ['Stripe', 'PayPal', 'DLocal', 'Shift4', 'Payeezy', '3DS', 'Apple Pay', 'Google Pay', 'Tokenization'],
   },
@@ -83,10 +79,10 @@ const projects: { key: ProjectKey; emoji: string; color: AccentColor; pills: str
 
 type BlockField = 'context' | 'problem' | 'decision';
 
-const blocks: { field: BlockField; labelKey: string; icon: string }[] = [
-  { field: 'context',  labelKey: 'projects.label.context',  icon: '📍' },
-  { field: 'problem',  labelKey: 'projects.label.problem',  icon: '⚠️' },
-  { field: 'decision', labelKey: 'projects.label.decision', icon: '🧩' },
+const blocks: { field: BlockField; labelKey: string }[] = [
+  { field: 'context',  labelKey: 'projects.label.context'  },
+  { field: 'problem',  labelKey: 'projects.label.problem'  },
+  { field: 'decision', labelKey: 'projects.label.decision' },
 ];
 ---
 
@@ -94,7 +90,6 @@ const blocks: { field: BlockField; labelKey: string; icon: string }[] = [
   <div class="max-w-4xl mx-auto">
 
     <SectionHeading
-      emoji="💼"
       title={t('projects.title')}
       subtitle={t('projects.subtitle')}
     />
@@ -104,26 +99,22 @@ const blocks: { field: BlockField; labelKey: string; icon: string }[] = [
         const a = accents[proj.color];
         return (
           <article
-            class={`reveal reveal-delay-${i + 1} relative flex flex-col bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800 rounded-2xl overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 ${a.border}`}
+            class={`reveal reveal-delay-${i + 1} relative flex flex-col bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 ${a.border}`}
           >
             <div class={`h-1 w-full ${a.bar}`}></div>
 
             <div class="p-6 md:p-8 flex flex-col">
-              <div class="flex items-start gap-3 mb-6">
-                <span class="text-3xl leading-none mt-0.5">{proj.emoji}</span>
-                <h3 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white leading-tight">
-                  {t(`projects.${proj.key}.title`)}
-                </h3>
-              </div>
+              <h3 class="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white leading-tight mb-6">
+                {t(`projects.${proj.key}.title`)}
+              </h3>
 
               <div class="space-y-5 mb-6">
                 {blocks.map((block) => (
                   <div>
-                    <div class={`flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-1.5 ${a.label}`}>
-                      <span class="text-sm">{block.icon}</span>
+                    <div class={`text-xs font-semibold uppercase tracking-widest mb-1.5 ${a.label}`}>
                       {t(block.labelKey)}
                     </div>
-                    <p class="text-sm md:text-[0.95rem] text-gray-600 dark:text-gray-300 leading-relaxed">
+                    <p class="text-sm md:text-[0.95rem] text-zinc-600 dark:text-zinc-300 leading-relaxed">
                       {t(`projects.${proj.key}.${block.field}`)}
                     </p>
                   </div>

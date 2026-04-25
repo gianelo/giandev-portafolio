@@ -41,7 +41,7 @@ export const en: Record<string, string> = {
   'timeline.now.period': 'Nov 2023 — Present',
   'timeline.now.role': 'Senior Backend Engineer',
   'timeline.now.company': 'Hablax Inc. · 100% Remote',
-  'timeline.now.desc': 'Leading AI-driven initiatives on the giftcards and top-up platform: AI-generated programmatic SEO, fraud detection engine with extensible rules, gateways to modernize legacy services, and a multi-channel notification orchestrator.',
+  'timeline.now.desc': 'Leading AI-driven initiatives on the gift cards and top-up platform: AI-generated programmatic SEO, fraud detection engine with extensible rules, gateways to modernize legacy services, and a multi-channel notification orchestrator.',
 
   'timeline.freelance.period': 'Apr 2023 — Nov 2023',
   'timeline.freelance.role': 'Full Stack Engineer · Freelance',
@@ -73,9 +73,9 @@ export const en: Record<string, string> = {
   'projects.label.decision': 'Technical Decision',
 
   'projects.infra.title': 'Monolith to Distributed Infrastructure Migration',
-  'projects.infra.context': 'Giftcards and top-up platform processing ~1,000 transactions/day and $100K–$300K in monthly volume, running on a single server.',
+  'projects.infra.context': 'Gift cards and top-up platform processing ~1,000 transactions/day and $100K–$300K in monthly volume, running on a single server.',
   'projects.infra.problem': 'Recurring ~3-hour outages during traffic spikes (Mother\'s Day, New Year\'s Eve) because the calling system consumed all resources. Direct revenue loss on the most lucrative days of the year.',
-  'projects.infra.decision': 'Migrated to DigitalOcean with 8 servers separating concerns (web, database, dev). HTTP load balancing with HAProxy, MySQL master-slave replication for high availability, node-level failover, automated backups and recovery runbooks. Executed manually over Linux due to legacy-stack constraints, leading a team of 4 developers.',
+  'projects.infra.decision': 'Migrated to DigitalOcean with 8 servers separating concerns (web, database, dev). HTTP load balancing with HAProxy, MySQL master-slave replication for high availability, node-level failover, automated backups, and recovery runbooks. Executed manually over Linux due to legacy-stack constraints, leading a team of 4 developers.',
   'projects.infra.outcome': '99.9% uptime sustained since 2019 · Zero outages during peak dates over the last ~5 years',
 
   'projects.seo.title': 'Programmatic SEO with AI at Scale',
@@ -91,23 +91,10 @@ export const en: Record<string, string> = {
   'projects.fraud.outcome': 'Significant reduction in manual review load · Technical foundation to ship new rules in hours instead of weeks',
 
   'projects.payments.title': 'Multi-Gateway Payments Integration with Failover',
-  'projects.payments.context': 'Global giftcards and top-up operation where relying on a single gateway leaves gaps in geography, conversion, and availability.',
+  'projects.payments.context': 'Global gift cards and top-up operation where relying on a single gateway leaves gaps in geography, conversion, and availability.',
   'projects.payments.problem': 'Different gateways cover different countries and fees; any one of them can go down or start rejecting more. We needed continuous coverage and commercial flexibility to optimize per country and method.',
   'projects.payments.decision': 'Abstraction where the admin configures the active gateway and priorities per product. On failure or rejection from the active provider, automatic failover to the next in the chain. 5 processors integrated (PayPal, Payeezy, DLocal, Stripe, Shift4) with full features: 3DS, refunds, voids, Apple Pay, Google Pay, and in-house card tokenization.',
   'projects.payments.outcome': 'Continuous payment availability during provider incidents · Routing optimized for cost and conversion · 5 gateways in production',
-
-  // ── Leadership ───────────────────────────────────────────
-  'leadership.title': 'Leadership & Focus',
-  'leadership.left.title': 'Leadership Experience',
-  'leadership.fact1': 'Former CTO with end-to-end product ownership',
-  'leadership.fact2': 'Led a team of 4 developers through critical infrastructure migrations',
-  'leadership.fact3': 'Production-first engineering culture focused on high availability',
-  'leadership.fact4': 'Technical strategy, system design, and architecture decisions',
-  'leadership.right.title': "What I'm Looking For",
-  'leadership.seek1': 'Senior Backend / Platform Engineering roles',
-  'leadership.seek2': 'Remote-first opportunities',
-  'leadership.seek3': 'Challenges in distributed systems, payments, or critical infrastructure',
-  'leadership.seek4': 'Teams that value ownership & craft',
 
   // ── Contact ──────────────────────────────────────────────
   'contact.title': "Let's Work Together",

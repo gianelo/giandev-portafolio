@@ -96,19 +96,6 @@ export const es: Record<string, string> = {
   'projects.payments.decision': 'Abstracción donde el admin configura gateway activo y prioridades por producto. Ante una falla o rechazo del proveedor activo, failover automático al siguiente en la cadena. 5 procesadores integrados (PayPal, Payeezy, DLocal, Stripe, Shift4) con features completos: 3DS, refunds, voids, Apple Pay, Google Pay y tokenización propia de tarjetas.',
   'projects.payments.outcome': 'Disponibilidad de cobro continua durante incidentes de proveedores · Routing optimizado por costo y conversión · 5 gateways en producción',
 
-  // ── Leadership ───────────────────────────────────────────
-  'leadership.title': 'Liderazgo & Enfoque',
-  'leadership.left.title': 'Experiencia en Liderazgo',
-  'leadership.fact1': 'Ex-CTO con ownership end-to-end del producto',
-  'leadership.fact2': 'Lideré un equipo de 4 developers durante migraciones críticas de infraestructura',
-  'leadership.fact3': 'Cultura de ingeniería orientada a producción y alta disponibilidad',
-  'leadership.fact4': 'Estrategia técnica, diseño de sistemas y decisiones de arquitectura',
-  'leadership.right.title': 'Lo Que Busco',
-  'leadership.seek1': 'Roles de Backend Senior / Platform Engineering',
-  'leadership.seek2': 'Oportunidades remote-first',
-  'leadership.seek3': 'Desafíos en sistemas distribuidos, pagos o infraestructura crítica',
-  'leadership.seek4': 'Equipos que valoren ownership y craftsmanship',
-
   // ── Contact ──────────────────────────────────────────────
   'contact.title': 'Trabajemos Juntos',
   'contact.subtitle': 'Disponible para oportunidades full-time remotas',

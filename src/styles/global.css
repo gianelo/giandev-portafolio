@@ -4,6 +4,88 @@
 /* Dark mode via class on <html> */
 @custom-variant dark (&:is(.dark, .dark *));
 
+/* ═══════════════════════════════════════════════════════════
+   PALETTE SYSTEM
+   ──────────────────────────────────────────────────────────
+   Single source of truth for the active palette.
+
+   ROLES:
+   • Primary  = brand color (CTAs, pills, badge, bio highlights)
+                Mapped from Tailwind's yellow-* tokens.
+   • Secondary = supporting accent (subtitle "Senior Backend...",
+                 secondary highlights). Mapped from indigo-*.
+   • Categorical (amber/violet/blue/emerald/red) = NOT touched
+                 — components use these to differentiate timeline
+                 eras and tech stack categories.
+   • Neutral (zinc) = grays, not part of the palette swap.
+
+   To swap palettes: replace the values in :root and .dark blocks.
+
+   ACTIVE PALETTE: Star Wars Crawl
+     Primary = Crawl yellow #FFE81F, Secondary = Sable blue
+     Iconic Lucasfilm look. High personality.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* Primary (brand) scale — crawl yellow centered */
+  --pal-primary-50:  #fffce0;
+  --pal-primary-100: #fff8b8;
+  --pal-primary-200: #fff080;
+  --pal-primary-300: #ffea4d;
+  --pal-primary-400: #FFE81F;
+  --pal-primary-500: #e6cf00;
+  --pal-primary-600: #ccb800;
+  --pal-primary-700: #a39200;
+  --pal-primary-800: #806f00;
+  --pal-primary-900: #5c4f00;
+
+  /* Secondary (supporting accent) scale — sable blue */
+  --pal-secondary-300: #93c5fd;
+  --pal-secondary-400: #60a5fa;
+  --pal-secondary-500: #3b82f6;
+  --pal-secondary-600: #2563eb;
+  --pal-secondary-700: #1e3a8a;
+
+  /* Body */
+  --pal-bg:         #fafaf9;
+  --pal-fg:         #0a0a0a;
+  --pal-glow:       rgba(255, 232, 31, 0.10);
+
+  /* Hero bio strong (highlights — uses primary) */
+  --pal-bio-strong: #806f00;
+}
+
+.dark {
+  --pal-bg:         #000000;
+  --pal-fg:         #f5f5f5;
+  --pal-glow:       rgba(255, 232, 31, 0.16);
+  --pal-bio-strong: var(--pal-primary-400);
+}
+
+/* Map Tailwind brand-accent tokens to the palette scale.
+   yellow-*  → primary  (CTAs, badge, pills, brand)
+   indigo-*  → secondary (subtitle, secondary accents)
+   amber/violet/blue/emerald/red are intentionally NOT mapped —
+   they retain their categorical role in the design system. */
+@theme {
+  --color-yellow-50:  var(--pal-primary-50);
+  --color-yellow-100: var(--pal-primary-100);
+  --color-yellow-200: var(--pal-primary-200);
+  --color-yellow-300: var(--pal-primary-300);
+  --color-yellow-400: var(--pal-primary-400);
+  --color-yellow-500: var(--pal-primary-500);
+  --color-yellow-600: var(--pal-primary-600);
+  --color-yellow-700: var(--pal-primary-700);
+  --color-yellow-800: var(--pal-primary-800);
+  --color-yellow-900: var(--pal-primary-900);
+
+  --color-indigo-300: var(--pal-secondary-300);
+  --color-indigo-400: var(--pal-secondary-400);
+  --color-indigo-500: var(--pal-secondary-500);
+  --color-indigo-600: var(--pal-secondary-600);
+  --color-indigo-700: var(--pal-secondary-700);
+}
+
 /* ── Base ──────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
@@ -11,40 +93,68 @@ html {
 
 body {
   font-family: 'Onest Variable', system-ui, -apple-system, sans-serif;
-  background-color: #ffffff;
-  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(120, 119, 198, 0.15), transparent);
-  color: #111827;
+  background-color: var(--pal-bg);
+  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, var(--pal-glow), transparent);
+  color: var(--pal-fg);
   transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
 }
 
-.dark body {
-  background-color: #030712;
-  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.22), transparent);
-  color: #f3f4f6;
+/* ── Starfield (dark mode only) ──────────────────────────
+   ~70 stars rendered as individual <span>s by Starfield.astro.
+   Each star has its own animation-delay + duration so they
+   twinkle independently. Fixed in viewport (parallax depth).
+   Respects prefers-reduced-motion. */
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 1; }
+}
+
+.starfield {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  display: none;
+}
+
+.dark .starfield {
+  display: block;
+}
+
+.star {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  animation-name: starTwinkle;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star {
+    animation: none;
+    opacity: 0.7;
+  }
 }
 
 /* ── Hero bio highlights ───────────────────────────────── */
 .hero-bio strong {
-  color: #d97706;
+  color: var(--pal-bio-strong);
   font-weight: 600;
-}
-
-.dark .hero-bio strong {
-  color: #facc15;
 }
 
 /* ── Nav scroll pill ───────────────────────────────────── */
 .nav-scrolled {
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: color-mix(in srgb, var(--pal-bg) 85%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(229, 231, 235, 0.7);
+  border: 1px solid color-mix(in srgb, var(--pal-fg) 12%, transparent);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .dark .nav-scrolled {
-  background-color: rgba(3, 7, 18, 0.85);
-  border-color: rgba(31, 41, 55, 0.7);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -98,7 +208,7 @@ body {
 
 /* ── Focus visible ─────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid var(--pal-primary-400);
   outline-offset: 3px;
   border-radius: 4px;
 }

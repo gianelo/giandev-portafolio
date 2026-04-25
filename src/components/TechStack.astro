@@ -11,22 +11,18 @@ const { t } = Astro.props;
 const categories = [
   {
     key: 'backend',
-    icon: '⚙️',
     pills: ['Node.js', 'TypeScript', 'Next.js', 'PHP', 'Java', 'REST API', 'Gateway Pattern', 'Design Patterns', 'Clean Architecture'],
   },
   {
     key: 'infra',
-    icon: '🏗️',
     pills: ['Linux', 'HAProxy', 'Nginx', 'MySQL Replication', 'DigitalOcean', 'Cronjobs', 'CI/CD'],
   },
   {
     key: 'payments',
-    icon: '💳',
     pills: ['Stripe', 'PayPal', 'DLocal', 'Shift4', 'Payeezy', 'Payment Routing', 'Fraud Rule Engines', 'Device Fingerprinting', 'PCI Compliance'],
   },
   {
     key: 'ai',
-    icon: '🤖',
     pills: ['n8n', 'LLM Integration', 'AI-Assisted Fraud', 'Programmatic SEO', 'Content Automation', 'Web Scraping'],
   },
 ];
@@ -35,18 +31,17 @@ const categories = [
 <section id="stack" class="py-20 px-6">
   <div class="max-w-4xl mx-auto">
 
-    <SectionHeading emoji="🛠️" title={t('stack.title')} />
+    <SectionHeading title={t('stack.title')} />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {categories.map((cat, i) => (
-        <div class={`reveal reveal-delay-${i + 1} bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 hover:border-yellow-400/50 dark:hover:border-yellow-500/40 transition-all`}>
-          <h3 class="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-gray-700 dark:text-gray-300 mb-4">
-            <span>{cat.icon}</span>
+        <div class={`reveal reveal-delay-${i + 1} bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 hover:border-yellow-400/50 dark:hover:border-yellow-500/40 transition-all`}>
+          <h3 class="text-sm font-semibold uppercase tracking-widest text-zinc-700 dark:text-zinc-300 mb-4">
             {t(`stack.${cat.key}.title`)}
           </h3>
           <div class="flex flex-wrap gap-2">
             {cat.pills.map((pill) => (
-              <span class="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-yellow-400 dark:hover:border-yellow-500 hover:text-yellow-700 dark:hover:text-yellow-400 transition-colors cursor-default">
+              <span class="px-3 py-1 text-xs font-medium rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 hover:border-yellow-400 dark:hover:border-yellow-500 hover:text-yellow-700 dark:hover:text-yellow-400 transition-colors cursor-default">
                 {pill}
               </span>
             ))}

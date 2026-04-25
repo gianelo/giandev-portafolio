@@ -31,29 +31,28 @@ const milestones: { key: MilestoneKey; color: MilestoneColor }[] = [
   <div class="max-w-4xl mx-auto">
 
     <SectionHeading
-      emoji="🧭"
       title={t('timeline.title')}
       subtitle={t('timeline.subtitle')}
     />
 
-    <ol class="relative border-l border-gray-200 dark:border-gray-800 ml-3 md:ml-4 space-y-6">
+    <ol class="relative border-l border-zinc-200 dark:border-zinc-800 ml-3 md:ml-4 space-y-6">
       {milestones.map((m, i) => {
         const a = accents[m.color];
         return (
           <li
-            class={`reveal reveal-delay-${i + 1} relative ml-6 md:ml-8 bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 ${a.border}`}
+            class={`reveal reveal-delay-${i + 1} relative ml-6 md:ml-8 bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 ${a.border}`}
           >
-            <span class={`absolute top-6 -left-[30px] md:-left-[38px] w-3.5 h-3.5 rounded-full border-2 border-white dark:border-gray-950 ${a.dot}`}></span>
+            <span class={`absolute top-6 -left-[30px] md:-left-[38px] w-3.5 h-3.5 rounded-full border-2 border-white dark:border-zinc-950 ${a.dot}`}></span>
             <div class={`text-xs font-semibold uppercase tracking-widest mb-2 ${a.period}`}>
               {t(`timeline.${m.key}.period`)}
             </div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white leading-snug">
+            <h3 class="text-lg font-bold text-zinc-900 dark:text-white leading-snug">
               {t(`timeline.${m.key}.role`)}
             </h3>
-            <div class="text-sm text-gray-500 dark:text-gray-400 mb-3">
+            <div class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">
               {t(`timeline.${m.key}.company`)}
             </div>
-            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+            <p class="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               {t(`timeline.${m.key}.desc`)}
             </p>
           </li>
