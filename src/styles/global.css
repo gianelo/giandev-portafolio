@@ -104,13 +104,11 @@ a { color: inherit; text-decoration: none; }
 }
 
 .section {
-  padding: 128px 0;
+  padding: 104px 0;
   border-top: 1px solid var(--border);
 }
 
 .section:first-of-type { border-top: none; }
-
-.section-sub { margin-bottom: 64px; }
 
 .section-label {
   display: flex;
@@ -142,7 +140,7 @@ a { color: inherit; text-decoration: none; }
 
 .section-sub {
   color: var(--fg-muted);
-  margin: 0 0 56px;
+  margin: 0 0 48px;
   font-size: 15px;
   max-width: 56ch;
 }
@@ -253,7 +251,7 @@ a { color: inherit; text-decoration: none; }
 /* ── Hero ──────────────────────────────────────────────── */
 
 .hero {
-  padding: 128px 0 128px;
+  padding: 112px 0 96px;
   border-top: none;
 }
 
@@ -740,7 +738,7 @@ html.light .tag { background: rgba(0,0,0,0.02); }
 
 .cta {
   text-align: center;
-  padding: 128px 32px 80px;
+  padding: 104px 32px 72px;
   border-top: 1px solid var(--border);
   background:
     radial-gradient(ellipse 800px 300px at 50% 100%, var(--accent-soft), transparent 60%);
@@ -893,7 +891,7 @@ html.light .tag { background: rgba(0,0,0,0.02); }
 @media (max-width: 720px) {
   .wrap { padding: 0 20px; }
 
-  .section { padding: 88px 0; }
+  .section { padding: 96px 0; }
   .section-title { font-size: 26px; }
   .section-sub { font-size: 14px; margin-bottom: 40px; }
 
@@ -912,7 +910,7 @@ html.light .tag { background: rgba(0,0,0,0.02); }
   }
 
   /* Hero compact */
-  .hero { padding: 88px 0 88px; }
+  .hero { padding: 88px 0 80px; }
   .hero-meta {
     font-size: 10px;
     gap: 10px;
@@ -966,7 +964,7 @@ html.light .tag { background: rgba(0,0,0,0.02); }
   .exp-card { padding: 20px; }
 
   /* CTA */
-  .cta { padding: 88px 20px 64px; }
+  .cta { padding: 96px 20px 64px; }
   .cta-title { font-size: clamp(30px, 8vw, 44px); }
   .cta-sub { font-size: 14px; margin-bottom: 28px; }
   .cta-actions { width: 100%; }
