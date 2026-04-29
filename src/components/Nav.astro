@@ -66,12 +66,15 @@ const otherLangUrl = `/${otherLang}/`;
       setInterval(() => { clock.textContent = fmt(); }, 30000);
     }
 
-    // Theme toggle
+    // Theme toggle — label shows the TARGET mode (mirrors the lang switcher behavior)
     const btn = document.getElementById('theme-toggle');
     const label = document.getElementById('theme-label');
     function syncLabel() {
-      if (!label) return;
-      label.textContent = document.documentElement.classList.contains('light') ? 'LIGHT' : 'DARK';
+      if (!btn || !label) return;
+      const isLight = document.documentElement.classList.contains('light');
+      // If currently light → button offers DARK; if currently dark → button offers LIGHT
+      label.textContent = isLight ? 'DARK' : 'LIGHT';
+      btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
     }
     syncLabel();
     if (btn) {
