@@ -20,6 +20,12 @@ const ogImage = `${siteUrl}/og.png`;
 const canonicalPath = Astro.url.pathname.replace(/^\/en(\/|$)/, '/');
 const canonicalUrl = new URL(canonicalPath, siteUrl).href;
 
+// Solo el deploy de producción (gianbarboza.com) se indexa.
+// Vercel inyecta VERCEL_ENV = 'production' | 'preview' | 'development'.
+// Cualquier subdominio de preview (terminal.gianbarboza.com,
+// editorial-crawl.gianbarboza.com, *.vercel.app) cae en 'preview' → noindex.
+const isProduction = import.meta.env.VERCEL_ENV === 'production';
+
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -73,6 +79,7 @@ const personSchema = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content={isProduction ? 'index,follow' : 'noindex,nofollow'} />
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Hreflang: declares EN ↔ ES versions to Google for multi-language ranking -->

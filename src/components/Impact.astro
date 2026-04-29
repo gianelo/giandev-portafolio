@@ -57,11 +57,20 @@ const stats: Stat[] = [
       return (prefix || '') + n;
     }
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     function animate(el) {
       const target = parseFloat(el.dataset.counter);
       const decimals = parseInt(el.dataset.decimals || '0', 10);
       const prefix = el.dataset.prefix || '';
       if (Number.isNaN(target)) return;
+
+      // Respeta prefers-reduced-motion: muestra valor final sin animación
+      if (reduceMotion) {
+        el.textContent = format(target, decimals, prefix);
+        return;
+      }
+
       const duration = 1400;
       const start = performance.now();
       function tick(now) {
