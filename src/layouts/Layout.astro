@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
-import Starfield from '../components/Starfield.astro';
 
 export interface Props {
   title?: string;
@@ -117,7 +116,6 @@ const personSchema = {
     </script>
   </head>
   <body class="min-h-screen antialiased">
-    <Starfield />
     <slot />
     <Analytics />
     <SpeedInsights />
