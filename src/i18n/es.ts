@@ -119,4 +119,60 @@ export const es: Record<string, string> = {
   'contact.phone.url': 'https://wa.me/573043581365',
   'contact.linkedin.url': 'https://linkedin.com/in/gian-barboza',
   'contact.github.url': 'https://github.com/gianelo',
+
+  // ── Terminal style (design-specific copy) ────────────────
+  'term.nav.cta': 'Hablemos ↗',
+  'term.hero.location': 'Rionegro, CO · GMT-5',
+  'term.hero.years': '10+ años',
+  'term.hero.available': 'Disponible',
+  'term.hero.tagline.html': 'Ingeniero backend senior construyendo <strong>infraestructura de pagos distribuida</strong> y <strong>automatización con IA</strong>. Ex-CTO. Production-first.',
+
+  'term.cta.resume': 'Descargar CV',
+  'term.cta.contact': 'Hablemos',
+
+  'term.section.01.label': '01 — Recorrido',
+  'term.section.01.title': 'Desarrollador junior → CTO → backend senior en plataformas de pagos.',
+  'term.section.01.sub': 'Una década de decisiones compuestas entre monolitos, sistemas distribuidos e IA.',
+
+  'term.section.02.label': '02 — Impacto Clave',
+  'term.section.02.title': 'Números que llegaron a producción.',
+  'term.section.02.sub': 'Algunas métricas que resumen una década de decisiones.',
+
+  'term.section.03.label': '03 — Case Studies',
+  'term.section.03.title': 'Cuatro problemas, cuatro sistemas en producción.',
+  'term.section.03.sub': 'Haz click en cualquier card para expandir contexto, problema, decisión y resultado.',
+
+  'term.section.04.label': '04 — Stack',
+  'term.section.04.title': 'Expertise técnico.',
+  'term.section.04.sub': 'Herramientas y patrones a los que recurro, agrupados por dominio.',
+
+  'term.journey.current': 'Actual',
+
+  'term.case.label.context': 'Contexto',
+  'term.case.label.problem': 'Problema',
+  'term.case.label.decision': 'Decisión',
+  'term.case.label.result': 'Resultado',
+
+  'term.case.infra.metric': '99.9% uptime',
+  'term.case.infra.result.num': '99.9%',
+  'term.case.infra.result.text': 'uptime sostenido desde 2019. Cero caídas en fechas críticas durante los últimos 5 años.',
+
+  'term.case.seo.metric': 'Tráfico orgánico ↑',
+  'term.case.seo.result.num': '↓ ads',
+  'term.case.seo.result.text': 'reemplazo significativo del presupuesto de ads con tráfico orgánico. Mejor ratio de clientes que el canal pagado.',
+
+  'term.case.fraud.metric': 'Horas, no semanas',
+  'term.case.fraud.result.num': 'Horas',
+  'term.case.fraud.result.text': 'para lanzar reglas nuevas en lugar de semanas. Reducción significativa de la carga de revisión manual.',
+
+  'term.case.payments.metric': '5 gateways',
+  'term.case.payments.result.num': '5',
+  'term.case.payments.result.text': 'gateways consolidados. Disponibilidad continua durante incidentes de proveedores. Routing optimizado por costo y conversión.',
+
+  'term.cta.eyebrow': '— Trabajemos juntos',
+  'term.cta.title.html': 'Disponible para roles senior backend<br/>en <span class="accent">pagos</span> e <span class="accent">IA</span>.',
+  'term.cta.sub': 'Disponible para oportunidades full-time remotas. Respuesta más rápida por email o LinkedIn.',
+
+  'term.footer.copy': '© {year} Gian Barboza · gianbarboza.com',
+  'term.footer.deploy': 'Construido con dedicación · Astro · Vercel',
 };
