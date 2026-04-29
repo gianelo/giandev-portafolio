@@ -878,3 +878,159 @@ html.light .tag { background: rgba(0,0,0,0.02); }
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE — mobile-first overrides
+   Breakpoints:
+   ≤ 860px (tablet)
+   ≤ 720px (small tablet)
+   ≤ 540px (mobile)
+   ≤ 380px (narrow mobile)
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 720px) {
+  .wrap { padding: 0 20px; }
+
+  .section { padding: 64px 0; }
+  .section-title { font-size: 26px; }
+  .section-sub { font-size: 14px; margin-bottom: 32px; }
+
+  /* Nav collapses: hide clock meta + reduce CTA to short label */
+  .nav-inner { padding: 12px 20px; gap: 12px; }
+  .nav-mark { font-size: 12px; gap: 8px; }
+  .nav-mark .meta { display: none; }
+  .nav-tools { gap: 6px; }
+  .nav-tool {
+    padding: 6px;
+    font-size: 10px;
+  }
+  .nav-cta {
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+
+  /* Hero compact */
+  .hero { padding: 64px 0 48px; }
+  .hero-meta {
+    font-size: 10px;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .hero-name {
+    font-size: clamp(44px, 12vw, 72px);
+    margin-bottom: 12px;
+  }
+  .hero-tagline {
+    font-size: 17px;
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+  .hero-actions {
+    margin-top: 32px;
+    gap: 8px;
+    width: 100%;
+  }
+  .btn {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+  .hero-actions .btn.primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Terminal smaller */
+  .terminal { font-size: 11px; }
+  .terminal-body { padding: 14px; min-height: 180px; line-height: 1.6; }
+
+  /* Stats compact */
+  .stat { padding: 20px 16px; }
+  .stat-value { font-size: 30px; }
+  .stat-label { font-size: 10px; letter-spacing: 0.06em; }
+
+  /* Cases: compact head, allow title to wrap below meta if very narrow */
+  .case-head {
+    padding: 16px 16px;
+    grid-template-columns: 28px 1fr auto;
+    gap: 12px;
+  }
+  .case-title { font-size: 15px; line-height: 1.3; }
+  .case-meta { font-size: 10px; gap: 8px; }
+  .case-meta .metric { display: none; }
+  .case-body-inner { padding: 0 16px; }
+  .case.open .case-body-inner { padding: 0 16px 20px; }
+
+  /* Expertise compact */
+  .exp-card { padding: 20px; }
+
+  /* CTA */
+  .cta { padding: 64px 20px 48px; }
+  .cta-title { font-size: clamp(30px, 8vw, 44px); }
+  .cta-sub { font-size: 14px; margin-bottom: 28px; }
+  .cta-actions { width: 100%; }
+  .cta-actions .btn {
+    flex: 1;
+    justify-content: center;
+    min-width: 140px;
+  }
+  .cta-contacts {
+    gap: 14px;
+    margin-top: 32px;
+    font-size: 11px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Footer stacks vertically + centered */
+  .footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 540px) {
+  .wrap { padding: 0 16px; }
+
+  /* Drop the nav CTA — the hero already has a primary "Get in touch" */
+  .nav-cta { display: none; }
+
+  /* Hero meta wraps properly + smaller separators */
+  .hero-meta {
+    gap: 8px;
+    font-size: 9.5px;
+  }
+
+  /* On true mobile, drop one of the meta separators if too cramped */
+  .hero-name { font-size: clamp(40px, 13vw, 60px); }
+  .hero-tagline { font-size: 16px; line-height: 1.4; }
+
+  /* Stats: keep 2 cols but tighter */
+  .stat { padding: 18px 14px; }
+  .stat-value { font-size: 26px; }
+
+  /* Section title narrower */
+  .section-title { font-size: 22px; }
+  .section-sub { font-size: 13px; }
+
+  /* Cases: collapse meta into title row on tiny screens */
+  .case-head { grid-template-columns: 24px 1fr 28px; gap: 10px; }
+  .case-num { font-size: 10px; }
+
+  /* Expertise card */
+  .exp-card { padding: 18px; }
+  .exp-name { font-size: 13px; }
+
+  /* Modal narrower */
+  .modal-dialog { max-width: calc(100vw - 24px); }
+}
+
+@media (max-width: 380px) {
+  /* Drop the location from hero-meta to avoid overflow */
+  .hero-meta > span:nth-of-type(3),
+  .hero-meta > span:nth-of-type(4) { display: none; }
+
+  /* Footer copy smaller */
+  .footer { font-size: 10px; }
+}
