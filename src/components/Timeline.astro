@@ -31,6 +31,7 @@ const milestones: { key: MilestoneKey; color: MilestoneColor }[] = [
   <div class="max-w-4xl mx-auto">
 
     <SectionHeading
+      eyebrow="§ 01"
       title={t('timeline.title')}
       subtitle={t('timeline.subtitle')}
     />
@@ -46,7 +47,7 @@ const milestones: { key: MilestoneKey; color: MilestoneColor }[] = [
             <div class={`text-xs font-semibold uppercase tracking-widest mb-2 ${a.period}`}>
               {t(`timeline.${m.key}.period`)}
             </div>
-            <h3 class="text-lg font-bold text-zinc-900 dark:text-white leading-snug">
+            <h3 class="font-display text-xl md:text-2xl font-medium text-zinc-900 dark:text-white leading-snug">
               {t(`timeline.${m.key}.role`)}
             </h3>
             <div class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">

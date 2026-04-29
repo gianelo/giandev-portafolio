@@ -9,7 +9,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 
 const inputClass = 'w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition';
 
-const labelClass = 'block text-xs font-semibold uppercase tracking-widest text-zinc-700 dark:text-zinc-300 mb-1.5';
+const labelClass = 'block font-mono text-[0.65rem] uppercase tracking-[0.25em] text-zinc-600 dark:text-zinc-400 mb-2 flex items-center gap-2';
 ---
 
 <div
@@ -44,10 +44,16 @@ const labelClass = 'block text-xs font-semibold uppercase tracking-widest text-z
     </button>
 
     <div class="px-6 pt-8 pb-6 md:px-8 md:pt-10 md:pb-8">
-      <h3 id="contact-modal-title" class="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white mb-2">
-        {t('contact.modal.title')}
+      <div class="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-zinc-500 dark:text-zinc-500 mb-3 flex items-center gap-2">
+        <span class="inline-block w-4 h-px bg-zinc-400 dark:bg-zinc-700"></span>
+        <span>§ Contact</span>
+      </div>
+      <h3 id="contact-modal-title" class="font-display text-2xl md:text-3xl font-medium text-zinc-900 dark:text-white leading-tight mb-3 tracking-tight">
+        <em class="font-display-italic font-light text-yellow-600 dark:text-yellow-400">{t('contact.modal.title').split(' ')[0]}</em>{t('contact.modal.title').includes(' ') && (
+          <span> {t('contact.modal.title').split(' ').slice(1).join(' ')}</span>
+        )}
       </h3>
-      <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+      <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed mb-7">
         {t('contact.modal.intro')}
       </p>
 
@@ -68,7 +74,8 @@ const labelClass = 'block text-xs font-semibold uppercase tracking-widest text-z
 
         <div>
           <label for="cm-name" class={labelClass}>
-            {t('contact.form.name')}
+            <span class="inline-block w-3 h-px bg-zinc-400 dark:bg-zinc-600"></span>
+            <span>01 / {t('contact.form.name')}</span>
           </label>
           <input
             id="cm-name"
@@ -84,7 +91,8 @@ const labelClass = 'block text-xs font-semibold uppercase tracking-widest text-z
 
         <div>
           <label for="cm-email" class={labelClass}>
-            {t('contact.form.email')}
+            <span class="inline-block w-3 h-px bg-zinc-400 dark:bg-zinc-600"></span>
+            <span>02 / {t('contact.form.email')}</span>
           </label>
           <input
             id="cm-email"
@@ -100,7 +108,8 @@ const labelClass = 'block text-xs font-semibold uppercase tracking-widest text-z
 
         <div>
           <label for="cm-message" class={labelClass}>
-            {t('contact.form.message')}
+            <span class="inline-block w-3 h-px bg-zinc-400 dark:bg-zinc-600"></span>
+            <span>03 / {t('contact.form.message')}</span>
           </label>
           <textarea
             id="cm-message"
@@ -120,7 +129,7 @@ const labelClass = 'block text-xs font-semibold uppercase tracking-widest text-z
         <button
           type="submit"
           id="cm-submit"
-          class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-yellow-400 hover:bg-yellow-300 dark:bg-yellow-500 dark:hover:bg-yellow-400 text-zinc-900 font-semibold text-sm md:text-base transition-all shadow-lg shadow-yellow-400/25 hover:shadow-yellow-400/40 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:-translate-y-0"
+          class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-yellow-400 hover:bg-yellow-300 dark:bg-yellow-500 dark:hover:bg-yellow-400 text-zinc-900 font-mono uppercase tracking-[0.18em] text-xs md:text-sm font-semibold transition-all shadow-lg shadow-yellow-400/25 hover:shadow-yellow-400/40 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:-translate-y-0"
         >
           <span id="cm-submit-label">{t('contact.form.submit')}</span>
           <svg id="cm-submit-spinner" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="hidden animate-spin">

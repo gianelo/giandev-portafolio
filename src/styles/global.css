@@ -1,5 +1,6 @@
 @import "tailwindcss";
-@import "@fontsource-variable/onest";
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/jetbrains-mono";
 
 /* Dark mode via class on <html> */
 @custom-variant dark (&:is(.dark, .dark *));
@@ -56,6 +57,14 @@
 
   /* Hero bio strong (highlights — uses primary) */
   --pal-bio-strong: #92400e;
+
+  /* Typography stack — unified Fraunces system.
+     Body uses Fraunces with text-optimized optical size + soft axis;
+     display uses Fraunces with display-optimized opsz + tighter tracking;
+     mono is reserved for labels, data, eyebrows, and code-like accents. */
+  --font-body:    'Fraunces Variable', 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-display: 'Fraunces Variable', 'Fraunces', Georgia, serif;
+  --font-mono:    'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
 }
 
 .dark {
@@ -99,6 +108,10 @@
   --color-indigo-500: var(--pal-secondary-500);
   --color-indigo-600: var(--pal-secondary-600);
   --color-indigo-700: var(--pal-secondary-700);
+
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
 /* ── Base ──────────────────────────────────────────────── */
@@ -107,12 +120,90 @@ html {
 }
 
 body {
-  font-family: 'Onest Variable', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
+  /* Fraunces text-grade tuning: smaller opsz for readability at body sizes,
+     higher SOFT axis for friendlier curves, slightly relaxed tracking. */
+  font-variation-settings: 'opsz' 14, 'SOFT' 100;
+  font-weight: 400;
+  letter-spacing: -0.005em;
   background-color: var(--pal-bg);
   background-image: radial-gradient(ellipse 80% 50% at 50% -10%, var(--pal-glow), transparent);
   color: var(--pal-fg);
   transition: background-color 0.3s ease, color 0.3s ease;
   position: relative;
+}
+
+/* Strong/bold text: keep serif but bump weight + tighten optical sizing */
+strong, b {
+  font-variation-settings: 'opsz' 14, 'SOFT' 50;
+  font-weight: 600;
+}
+
+/* ── Grain overlay (subtle texture, full page) ──────────
+   SVG noise rendered once and tiled. ~1.5% opacity in light,
+   ~3% in dark. Pointer-events none, fixed so it doesn't scroll. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.018;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.dark body::before {
+  opacity: 0.05;
+  mix-blend-mode: screen;
+}
+
+/* Ensure content sits above grain */
+header, main, footer { position: relative; z-index: 2; }
+
+/* ── Selection ─────────────────────────────────────────── */
+::selection {
+  background-color: var(--pal-primary-400);
+  color: #0a0a0a;
+}
+
+/* ── Display / mono utilities ──────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144, 'SOFT' 50;
+  letter-spacing: -0.02em;
+}
+
+.font-display-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  letter-spacing: -0.015em;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+  font-feature-settings: 'ss02', 'cv11';
+  letter-spacing: -0.01em;
+}
+
+/* Editorial display H1: tight tracking, optical sizing for big sizes */
+.display-xl {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144, 'SOFT' 30;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+/* ── Section heading rule (replaces the old gold dash) ── */
+.heading-rule {
+  display: inline-block;
+  width: 2.5rem;
+  height: 1px;
+  background: var(--pal-fg);
+  opacity: 0.3;
+  vertical-align: middle;
 }
 
 /* ── Hero bio highlights ───────────────────────────────── */
@@ -132,6 +223,39 @@ body {
 
 .dark .nav-scrolled {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Scroll progress bar ───────────────────────────────── */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg,
+    var(--pal-primary-400) 0%,
+    var(--pal-primary-300) 100%);
+  z-index: 100;
+  transition: width 0.08s linear;
+  box-shadow: 0 0 12px var(--pal-primary-400);
+}
+
+/* ── Section glow accents (subtle, per-section atmosphere) */
+.section-glow {
+  position: relative;
+  isolation: isolate;
+}
+
+.section-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse 60% 40% at var(--glow-x, 50%) var(--glow-y, 50%),
+    var(--glow-color, var(--pal-glow)),
+    transparent 70%);
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 /* ── Scroll animations ─────────────────────────────────── */
@@ -180,6 +304,21 @@ body {
 .animate-hero-delay-3 {
   animation: fadeSlideUp 0.8s ease 0.6s forwards;
   opacity: 0;
+}
+
+/* ── Counter slide-in (used in Impact KPI numbers) ─────── */
+@keyframes counterIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.counter-num {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144, 'SOFT' 30;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Focus visible ─────────────────────────────────────── */

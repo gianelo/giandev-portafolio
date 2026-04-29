@@ -9,98 +9,154 @@ export interface Props {
   t: (key: string) => string;
 }
 
-const { t } = Astro.props;
+const { lang, t } = Astro.props;
 
 const linkedinUrl = 'https://linkedin.com/in/gian-barboza';
 const githubUrl = 'https://github.com/gianelo';
 const whatsappUrl = 'https://wa.me/573043581365';
+
+const kicker = lang === 'es'
+  ? ['Backend', 'Pagos', 'IA', 'Rionegro · CO']
+  : ['Backend', 'Payments', 'AI', 'Rionegro · CO'];
 ---
 
-<section class="min-h-screen flex items-center justify-center px-6 pt-20 pb-16">
-  <div class="max-w-3xl mx-auto w-full">
+<section class="relative min-h-screen flex items-center px-6 pt-24 pb-20 overflow-hidden">
 
-    <!-- Badge -->
-    <div class="animate-hero flex justify-center md:justify-start mb-8">
-      <Badge text={t('hero.badge')} />
-    </div>
+  <!-- Section atmosphere: warm glow upper-right -->
+  <div
+    class="pointer-events-none absolute inset-0 -z-10"
+    style="background: radial-gradient(ellipse 50% 35% at 75% 25%, var(--pal-glow), transparent 70%);"
+  ></div>
 
-    <!-- Photo + Name row -->
-    <div class="animate-hero-delay-1 flex flex-col md:flex-row items-center md:items-center gap-6 mb-8">
-      <Image
-        src={profileImg}
-        alt={t('hero.title')}
-        width={300}
-        loading="eager"
-        class="shrink-0 w-28 h-28 rounded-full object-cover object-[center_35%] shadow-xl ring-4 ring-white/20 dark:ring-white/10"
-      />
+  <div class="max-w-6xl mx-auto w-full grid grid-cols-12 gap-x-8 gap-y-12 items-center">
 
-      <div class="text-center md:text-left">
-        <h1 class="text-5xl md:text-6xl font-bold tracking-tight text-zinc-900 dark:text-white leading-tight">
-          {t('hero.title')}
-        </h1>
-        <p class="mt-2 text-xl text-indigo-600 dark:text-indigo-400 font-medium">
+    <!-- Left column: name + content -->
+    <div class="col-span-12 md:col-span-8 order-2 md:order-1">
+
+      <!-- Mono kicker: editorial signature line -->
+      <div class="animate-hero font-mono text-[0.65rem] md:text-xs uppercase tracking-[0.28em] text-zinc-500 dark:text-zinc-500 mb-8 flex flex-wrap items-center gap-x-3 gap-y-1">
+        {kicker.map((piece, i) => (
+          <>
+            {i > 0 && <span class="opacity-30">/</span>}
+            <span>{piece}</span>
+          </>
+        ))}
+      </div>
+
+      <!-- Name: upright + italic, single family (Fraunces) -->
+      <h1 class="animate-hero-delay-1 mb-6 leading-[0.9]">
+        <span class="block display-xl text-6xl md:text-7xl lg:text-8xl text-zinc-900 dark:text-white">
+          Gian
+        </span>
+        <span class="block font-display-italic text-6xl md:text-7xl lg:text-8xl font-light text-yellow-600 dark:text-yellow-400 -mt-1 md:-mt-2">
+          Barboza<span class="text-zinc-300 dark:text-zinc-700 not-italic font-light">.</span>
+        </span>
+      </h1>
+
+      <!-- Subtitle row: rule + role -->
+      <div class="animate-hero-delay-2 flex items-center gap-3 mb-7">
+        <span class="heading-rule"></span>
+        <p class="font-mono text-[0.7rem] md:text-xs text-zinc-700 dark:text-zinc-300 uppercase tracking-[0.22em]">
           {t('hero.subtitle')}
         </p>
       </div>
+
+      <!-- Available badge -->
+      <div class="animate-hero-delay-2 mb-7">
+        <Badge text={t('hero.badge')} />
+      </div>
+
+      <!-- Bio -->
+      <p
+        class="animate-hero-delay-2 hero-bio text-base md:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mb-10 max-w-2xl"
+        set:html={t('hero.bio')}
+      />
+
+      <!-- Social Pills -->
+      <div class="animate-hero-delay-3 flex flex-wrap gap-3 mb-4">
+        <SocialPill href="#contact" data-open-contact aria-label={t('hero.cta.email')}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="16" x="2" y="4" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+          {t('hero.cta.email')}
+        </SocialPill>
+
+        <SocialPill href={t('cta.cv.url')} download aria-label={t('cta.cv.download')}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          {t('cta.cv.download')}
+        </SocialPill>
+
+        <SocialPill href={linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+          LinkedIn
+        </SocialPill>
+
+        <SocialPill href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+          GitHub
+        </SocialPill>
+
+        <SocialPill href={whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+          </svg>
+          WhatsApp
+        </SocialPill>
+      </div>
     </div>
 
-    <!-- Bio with highlights -->
-    <p
-      class="animate-hero-delay-2 hero-bio text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mb-10 text-center md:text-left max-w-2xl mx-auto md:mx-0"
-      set:html={t('hero.bio')}
-    />
+    <!-- Right column: photo with editorial framing -->
+    <div class="col-span-12 md:col-span-4 order-1 md:order-2 flex md:justify-end animate-hero-delay-1">
+      <div class="relative">
+        <!-- Outer ring (slow rotation, very subtle) -->
+        <div
+          class="absolute -inset-3 md:-inset-4 rounded-full border border-dashed border-yellow-500/30 dark:border-yellow-400/30"
+          aria-hidden="true"
+        ></div>
 
-    <!-- Social Pills -->
-    <div class="animate-hero-delay-3 flex flex-wrap gap-3 justify-center md:justify-start mb-14">
-      <SocialPill href="#contact" data-open-contact aria-label={t('hero.cta.email')}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect width="20" height="16" x="2" y="4" rx="2"/>
-          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-        </svg>
-        {t('hero.cta.email')}
-      </SocialPill>
+        <!-- Mono coordinate label, top -->
+        <div class="absolute -top-5 left-1/2 -translate-x-1/2 font-mono text-[0.6rem] uppercase tracking-[0.25em] text-zinc-500 dark:text-zinc-500 whitespace-nowrap">
+          06.18°N · 75.37°W
+        </div>
 
-      <SocialPill href={t('cta.cv.url')} download aria-label={t('cta.cv.download')}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        {t('cta.cv.download')}
-      </SocialPill>
+        <Image
+          src={profileImg}
+          alt={t('hero.title')}
+          width={400}
+          loading="eager"
+          class="relative w-32 h-32 md:w-44 md:h-44 lg:w-52 lg:h-52 rounded-full object-cover object-[center_35%] shadow-2xl ring-1 ring-yellow-400/30 dark:ring-yellow-400/40"
+        />
 
-      <SocialPill href={linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-          <rect x="2" y="9" width="4" height="12"/>
-          <circle cx="4" cy="4" r="2"/>
-        </svg>
-        LinkedIn
-      </SocialPill>
-
-      <SocialPill href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
-        </svg>
-        GitHub
-      </SocialPill>
-
-      <SocialPill href={whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
-        </svg>
-        WhatsApp
-      </SocialPill>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="animate-hero-delay-3 flex justify-center md:justify-start">
-      <a href="#impact" aria-label="Scroll down" class="flex items-center gap-2 text-sm text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-bounce">
-          <path d="M12 5v14M5 12l7 7 7-7"/>
-        </svg>
-      </a>
+        <!-- Status dot (online indicator) -->
+        <span class="absolute bottom-2 right-2 md:bottom-3 md:right-3 flex h-3.5 w-3.5 md:h-4 md:w-4">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3.5 w-3.5 md:h-4 md:w-4 bg-emerald-500 ring-2 ring-[var(--pal-bg)]"></span>
+        </span>
+      </div>
     </div>
 
   </div>
+
+  <!-- Scroll indicator (absolute, bottom-centered) -->
+  <a
+    href="#impact"
+    aria-label="Scroll down"
+    class="animate-hero-delay-3 absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-zinc-400 dark:text-zinc-600 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors"
+  >
+    <span class="font-mono text-[0.6rem] uppercase tracking-[0.3em]">Scroll</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-bounce">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+  </a>
 </section>

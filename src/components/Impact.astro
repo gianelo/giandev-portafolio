@@ -8,33 +8,164 @@ export interface Props {
 
 const { t } = Astro.props;
 
-const cards = [
-  { key: 'years',    color: 'hover:border-yellow-400/60 dark:hover:border-yellow-500/60' },
-  { key: 'uptime',   color: 'hover:border-emerald-400/60 dark:hover:border-emerald-500/60' },
-  { key: 'volume',   color: 'hover:border-blue-400/60 dark:hover:border-blue-500/60' },
-  { key: 'payments', color: 'hover:border-violet-400/60 dark:hover:border-violet-500/60' },
+type AccentColor = 'yellow' | 'emerald' | 'blue' | 'violet';
+
+interface Card {
+  key: 'years' | 'uptime' | 'volume' | 'payments';
+  color: AccentColor;
+  count: number;
+  decimals: number;
+  prefix: string;
+  suffix: string;
+}
+
+const featured: Card = {
+  key: 'volume', color: 'blue', count: 200, decimals: 0, prefix: '$', suffix: 'K+',
+};
+
+const small: Card[] = [
+  { key: 'years',    color: 'yellow',  count: 10,   decimals: 0, prefix: '', suffix: '+' },
+  { key: 'uptime',   color: 'emerald', count: 99.9, decimals: 1, prefix: '', suffix: '%' },
+  { key: 'payments', color: 'violet',  count: 5,    decimals: 0, prefix: '', suffix: '+' },
 ];
+
+const accents: Record<AccentColor, { ring: string; text: string; rule: string; glow: string }> = {
+  yellow:  { ring: 'hover:border-yellow-400/60 dark:hover:border-yellow-500/60',  text: 'text-yellow-600 dark:text-yellow-400',   rule: 'bg-yellow-500',  glow: 'rgba(234,179,8,0.10)' },
+  emerald: { ring: 'hover:border-emerald-400/60 dark:hover:border-emerald-500/60', text: 'text-emerald-600 dark:text-emerald-400', rule: 'bg-emerald-500', glow: 'rgba(16,185,129,0.10)' },
+  blue:    { ring: 'hover:border-blue-400/60 dark:hover:border-blue-500/60',       text: 'text-blue-600 dark:text-blue-400',       rule: 'bg-blue-500',    glow: 'rgba(59,130,246,0.10)' },
+  violet:  { ring: 'hover:border-violet-400/60 dark:hover:border-violet-500/60',   text: 'text-violet-600 dark:text-violet-400',   rule: 'bg-violet-500',  glow: 'rgba(139,92,246,0.10)' },
+};
+
+const fa = accents[featured.color];
 ---
 
-<section id="impact" class="py-20 px-6">
-  <div class="max-w-4xl mx-auto">
+<section id="impact" class="py-24 px-6">
+  <div class="max-w-5xl mx-auto">
 
-    <SectionHeading title={t('impact.title')} />
+    <SectionHeading eyebrow="§ 02" title={t('impact.title')} />
 
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
-      {cards.map((card, i) => (
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-3 gap-4">
+
+      <!-- Featured card: volume -->
+      <article
+        class={`reveal sm:col-span-2 lg:col-span-2 lg:row-span-3 group relative overflow-hidden bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 md:p-10 transition-all hover:-translate-y-0.5 ${fa.ring} hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20`}
+        style={`--glow-color: ${fa.glow};`}
+      >
+        <!-- Internal glow -->
         <div
-          class={`reveal reveal-delay-${i + 1} group relative bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 text-center ${card.color} transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20`}
-        >
-          <div class="text-3xl md:text-4xl font-bold text-yellow-500 dark:text-yellow-400 mb-2 tabular-nums">
-            {t(`impact.${card.key}.number`)}
-          </div>
-          <p class="text-xs md:text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-snug">
-            {t(`impact.${card.key}.label`)}
-          </p>
-        </div>
-      ))}
-    </div>
+          class="pointer-events-none absolute inset-0"
+          style={`background: radial-gradient(ellipse 70% 50% at 100% 100%, var(--glow-color), transparent 60%);`}
+          aria-hidden="true"
+        ></div>
 
+        <!-- Mono label -->
+        <div class={`relative font-mono text-[0.65rem] uppercase tracking-[0.28em] mb-4 flex items-center gap-2 ${fa.text}`}>
+          <span class={`inline-block w-6 h-px ${fa.rule}`}></span>
+          <span>01 / Featured</span>
+        </div>
+
+        <!-- Number -->
+        <div
+          class={`relative counter-num text-[5.5rem] md:text-[7rem] lg:text-[8.5rem] mb-2 ${fa.text}`}
+          data-counter={featured.count}
+          data-decimals={featured.decimals}
+          data-prefix={featured.prefix}
+          data-suffix={featured.suffix}
+        >
+          {t(`impact.${featured.key}.number`)}
+        </div>
+
+        <!-- Label -->
+        <p class="relative text-base md:text-lg text-zinc-700 dark:text-zinc-300 font-medium leading-snug max-w-md">
+          {t(`impact.${featured.key}.label`)}
+        </p>
+      </article>
+
+      <!-- Small cards -->
+      {small.map((card, i) => {
+        const a = accents[card.color];
+        const isFullWidth = i === small.length - 1;
+        return (
+          <article
+            class={`reveal reveal-delay-${i + 1} ${isFullWidth ? 'sm:col-span-2 lg:col-span-1' : ''} group relative overflow-hidden bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 transition-all hover:-translate-y-0.5 ${a.ring} hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 flex flex-col justify-between min-h-[140px]`}
+          >
+            <div class={`font-mono text-[0.6rem] uppercase tracking-[0.25em] flex items-center gap-2 ${a.text}`}>
+              <span class={`inline-block w-4 h-px ${a.rule}`}></span>
+              <span>0{i + 2}</span>
+            </div>
+
+            <div
+              class={`counter-num text-4xl md:text-5xl mt-3 ${a.text}`}
+              data-counter={card.count}
+              data-decimals={card.decimals}
+              data-prefix={card.prefix}
+              data-suffix={card.suffix}
+            >
+              {t(`impact.${card.key}.number`)}
+            </div>
+
+            <p class="text-xs md:text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-snug mt-2">
+              {t(`impact.${card.key}.label`)}
+            </p>
+          </article>
+        );
+      })}
+
+    </div>
   </div>
 </section>
+
+<script is:inline>
+  (function () {
+    function format(value, decimals, prefix, suffix) {
+      const n = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString();
+      return `${prefix || ''}${n}${suffix || ''}`;
+    }
+
+    function animateCounter(el) {
+      const target = parseFloat(el.dataset.counter);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+
+      if (Number.isNaN(target)) return;
+
+      const duration = 1400;
+      const start = performance.now();
+
+      function tick(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        // easeOutCubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = target * eased;
+        el.textContent = format(current, decimals, prefix, suffix);
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = format(target, decimals, prefix, suffix);
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    function init() {
+      document.querySelectorAll('.counter-num[data-counter]').forEach((el) => {
+        observer.observe(el);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>

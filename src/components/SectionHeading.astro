@@ -2,18 +2,31 @@
 export interface Props {
   title: string;
   subtitle?: string;
+  eyebrow?: string;
+  align?: 'center' | 'left';
 }
 
-const { title, subtitle } = Astro.props;
+const { title, subtitle, eyebrow, align = 'center' } = Astro.props;
+const isLeft = align === 'left';
 ---
 
-<div class="reveal flex flex-col items-center mb-14 text-center">
-  <h2 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white">
-    {title}
+<div class={`reveal flex flex-col mb-14 ${isLeft ? 'items-start text-left' : 'items-center text-center'}`}>
+  {eyebrow && (
+    <div class={`font-mono text-[0.65rem] uppercase tracking-[0.32em] text-zinc-500 dark:text-zinc-500 mb-4 flex items-center gap-3 ${isLeft ? '' : ''}`}>
+      <span class="inline-block w-6 h-px bg-zinc-400 dark:bg-zinc-700"></span>
+      <span>{eyebrow}</span>
+      <span class="inline-block w-6 h-px bg-zinc-400 dark:bg-zinc-700"></span>
+    </div>
+  )}
+
+  <h2 class="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-medium text-zinc-900 dark:text-white leading-[1.05]">
+    <em class="font-display-italic font-light text-yellow-600 dark:text-yellow-400">{title.split(' ')[0]}</em>{title.includes(' ') && (
+      <span> {title.split(' ').slice(1).join(' ')}</span>
+    )}
   </h2>
-  <div class="mt-3 w-12 h-1 rounded-full bg-yellow-400"></div>
+
   {subtitle && (
-    <p class="mt-4 text-sm md:text-base text-zinc-500 dark:text-zinc-400 max-w-xl">
+    <p class={`mt-5 text-sm md:text-base text-zinc-500 dark:text-zinc-400 max-w-xl ${isLeft ? '' : 'mx-auto'}`}>
       {subtitle}
     </p>
   )}

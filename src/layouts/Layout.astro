@@ -116,6 +116,7 @@ const personSchema = {
     </script>
   </head>
   <body class="min-h-screen antialiased">
+    <div id="scroll-progress" aria-hidden="true"></div>
     <slot />
     <Analytics />
     <SpeedInsights />
@@ -157,6 +158,29 @@ const personSchema = {
         } else {
           initObserver();
         }
+      })();
+    </script>
+
+    <!-- Scroll progress bar -->
+    <script is:inline>
+      (function () {
+        const bar = document.getElementById('scroll-progress');
+        if (!bar) return;
+        let ticking = false;
+        function update() {
+          const scroll = window.scrollY;
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = max > 0 ? (scroll / max) * 100 : 0;
+          bar.style.width = pct + '%';
+          ticking = false;
+        }
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            requestAnimationFrame(update);
+            ticking = true;
+          }
+        }, { passive: true });
+        update();
       })();
     </script>
   </body>
