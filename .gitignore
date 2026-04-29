@@ -29,3 +29,7 @@ pnpm-debug.log*
 # Claude Code skills (managed locally, not part of the portfolio)
 .agents/
 skills-lock.json
+
+# Local design references / screenshots — never deploy to /public
+public/example-responsive/
+public/screenshots/
