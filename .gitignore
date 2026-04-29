@@ -30,6 +30,7 @@ pnpm-debug.log*
 .agents/
 skills-lock.json
 
-# Local design references / screenshots — never deploy to /public
+# Local design references / screenshots — never tracked in git
 public/example-responsive/
 public/screenshots/
+screenshots/
