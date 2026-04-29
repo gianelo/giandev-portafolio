@@ -106,16 +106,16 @@ const personSchema = {
     <!-- JSON-LD: Person schema for Google Knowledge Graph / rich results -->
     <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
 
-    <!-- Theme init: runs before paint to avoid flash -->
+    <!-- Theme init: dark is default. Toggle .light class on <html>. -->
     <script is:inline>
       (function () {
         const stored = localStorage.getItem('theme');
         const theme = stored ?? 'dark';
-        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.classList.toggle('light', theme === 'light');
       })();
     </script>
   </head>
-  <body class="min-h-screen antialiased">
+  <body>
     <slot />
     <Analytics />
     <SpeedInsights />

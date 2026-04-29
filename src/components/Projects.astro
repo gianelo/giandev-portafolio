@@ -8,140 +8,95 @@ export interface Props {
 
 const { t } = Astro.props;
 
-type AccentColor = 'emerald' | 'blue' | 'violet' | 'amber';
+type CaseKey = 'infra' | 'seo' | 'fraud' | 'payments';
 
-const accents: Record<AccentColor, {
-  border: string;
-  bar: string;
-  label: string;
-  outcomeBg: string;
-  outcomeText: string;
-  pill: string;
-}> = {
-  emerald: {
-    border: 'hover:border-emerald-400/60 dark:hover:border-emerald-500/60',
-    bar: 'bg-gradient-to-r from-emerald-500 to-teal-500',
-    label: 'text-emerald-600 dark:text-emerald-400',
-    outcomeBg: 'bg-emerald-50 dark:bg-emerald-950/30',
-    outcomeText: 'text-emerald-700 dark:text-emerald-300',
-    pill: 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
-  },
-  blue: {
-    border: 'hover:border-blue-400/60 dark:hover:border-blue-500/60',
-    bar: 'bg-gradient-to-r from-blue-500 to-cyan-500',
-    label: 'text-blue-600 dark:text-blue-400',
-    outcomeBg: 'bg-blue-50 dark:bg-blue-950/30',
-    outcomeText: 'text-blue-700 dark:text-blue-300',
-    pill: 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800',
-  },
-  violet: {
-    border: 'hover:border-violet-400/60 dark:hover:border-violet-500/60',
-    bar: 'bg-gradient-to-r from-violet-500 to-purple-500',
-    label: 'text-violet-600 dark:text-violet-400',
-    outcomeBg: 'bg-violet-50 dark:bg-violet-950/30',
-    outcomeText: 'text-violet-700 dark:text-violet-300',
-    pill: 'bg-violet-50 dark:bg-violet-950/30 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-800',
-  },
-  amber: {
-    border: 'hover:border-amber-400/60 dark:hover:border-amber-500/60',
-    bar: 'bg-gradient-to-r from-amber-500 to-orange-500',
-    label: 'text-amber-600 dark:text-amber-400',
-    outcomeBg: 'bg-amber-50 dark:bg-amber-950/30',
-    outcomeText: 'text-amber-700 dark:text-amber-300',
-    pill: 'bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800',
-  },
-};
-
-type ProjectKey = 'infra' | 'seo' | 'fraud' | 'payments';
-
-const projects: { key: ProjectKey; color: AccentColor; pills: string[] }[] = [
+const cases: { key: CaseKey; tags: string[] }[] = [
   {
     key: 'infra',
-    color: 'emerald',
-    pills: ['HAProxy', 'MySQL Replication', 'Linux', 'DigitalOcean', 'Nginx', 'Apache'],
+    tags: ['MySQL Replication', 'HAProxy', 'DigitalOcean', 'Nginx', 'Linux'],
   },
   {
     key: 'seo',
-    color: 'blue',
-    pills: ['ChatGPT-4o', 'Node.js', 'AI Content Gen', 'Programmatic SEO', 'PHP'],
+    tags: ['ChatGPT-4o', 'Node.js', 'Programmatic SEO', 'AI', 'PHP'],
   },
   {
     key: 'fraud',
-    color: 'violet',
-    pills: ['Design Patterns', 'Factory', 'SRP', 'Device Fingerprinting', 'n8n', 'LLM'],
+    tags: ['Factory Pattern', 'SRP', 'Device Fingerprinting', 'Rules Engine', 'n8n'],
   },
   {
     key: 'payments',
-    color: 'amber',
-    pills: ['Stripe', 'PayPal', 'DLocal', 'Shift4', 'Payeezy', '3DS', 'Apple Pay', 'Google Pay', 'Tokenization'],
+    tags: ['Stripe', 'PayPal', 'DLocal', 'Shift4', 'Payeezy', '3DS', 'Apple Pay', 'Google Pay'],
   },
-];
-
-type BlockField = 'context' | 'problem' | 'decision';
-
-const blocks: { field: BlockField; labelKey: string }[] = [
-  { field: 'context',  labelKey: 'projects.label.context'  },
-  { field: 'problem',  labelKey: 'projects.label.problem'  },
-  { field: 'decision', labelKey: 'projects.label.decision' },
 ];
 ---
 
-<section id="projects" class="py-20 px-6">
-  <div class="max-w-4xl mx-auto">
+<section class="section wrap" id="cases">
+  <SectionHeading
+    label={t('term.section.03.label')}
+    title={t('term.section.03.title')}
+    sub={t('term.section.03.sub')}
+  />
 
-    <SectionHeading
-      title={t('projects.title')}
-      subtitle={t('projects.subtitle')}
-    />
+  <div class="case-list reveal">
+    {cases.map((c, i) => (
+      <article class={`case ${i === 0 ? 'open' : ''}`} data-case={c.key}>
+        <button type="button" class="case-head" aria-expanded={i === 0 ? 'true' : 'false'}>
+          <span class="case-num">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="case-title">{t(`projects.${c.key}.title`)}</h3>
+          <div class="case-meta">
+            <span class="metric">{t(`term.case.${c.key}.metric`)}</span>
+            <span class="case-toggle" aria-hidden="true">+</span>
+          </div>
+        </button>
+        <div class="case-body">
+          <div class="case-body-inner">
+            <div class="case-grid">
+              <div class="label">{t('term.case.label.context')}</div>
+              <div class="text">{t(`projects.${c.key}.context`)}</div>
 
-    <div class="flex flex-col gap-8">
-      {projects.map((proj, i) => {
-        const a = accents[proj.color];
-        return (
-          <article
-            class={`reveal reveal-delay-${i + 1} relative flex flex-col bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/20 ${a.border}`}
-          >
-            <div class={`h-1 w-full ${a.bar}`}></div>
+              <div class="label">{t('term.case.label.problem')}</div>
+              <div class="text">{t(`projects.${c.key}.problem`)}</div>
 
-            <div class="p-6 md:p-8 flex flex-col">
-              <h3 class="text-xl md:text-2xl font-bold text-zinc-900 dark:text-white leading-tight mb-6">
-                {t(`projects.${proj.key}.title`)}
-              </h3>
+              <div class="label">{t('term.case.label.decision')}</div>
+              <div class="text">{t(`projects.${c.key}.decision`)}</div>
 
-              <div class="space-y-5 mb-6">
-                {blocks.map((block) => (
-                  <div>
-                    <div class={`text-xs font-semibold uppercase tracking-widest mb-1.5 ${a.label}`}>
-                      {t(block.labelKey)}
-                    </div>
-                    <p class="text-sm md:text-[0.95rem] text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                      {t(`projects.${proj.key}.${block.field}`)}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div class="flex flex-wrap gap-1.5 mb-5">
-                {proj.pills.map((pill) => (
-                  <span class={`px-2.5 py-0.5 text-xs font-medium rounded-full border ${a.pill}`}>
-                    {pill}
-                  </span>
-                ))}
-              </div>
-
-              <div class={`flex items-start gap-2.5 p-4 rounded-xl ${a.outcomeBg} ${a.outcomeText}`}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 shrink-0">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                <span class="text-sm font-semibold leading-snug">
-                  {t(`projects.${proj.key}.outcome`)}
-                </span>
+              <div class="label">{t('term.case.label.result')}</div>
+              <div class="text">
+                <div class="case-result">
+                  <span class="num">{t(`term.case.${c.key}.result.num`)}</span>
+                  <span>{t(`term.case.${c.key}.result.text`)}</span>
+                </div>
+                <div class="tag-row">
+                  {c.tags.map((tag) => <span class="tag">{tag}</span>)}
+                </div>
               </div>
             </div>
-          </article>
-        );
-      })}
-    </div>
-
+          </div>
+        </div>
+      </article>
+    ))}
   </div>
 </section>
+
+<script is:inline>
+  (function () {
+    document.querySelectorAll('.case').forEach((card) => {
+      const head = card.querySelector('.case-head');
+      if (!head) return;
+      head.addEventListener('click', () => {
+        const isOpen = card.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.case.open').forEach((other) => {
+          other.classList.remove('open');
+          const btn = other.querySelector('.case-head');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
+        });
+        // Open this one if it wasn't already
+        if (!isOpen) {
+          card.classList.add('open');
+          head.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  })();
+</script>
