@@ -9,79 +9,79 @@ const otherLang = lang === 'en' ? 'es' : 'en';
 const otherLangUrl = `/${otherLang}/`;
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 flex items-start justify-center pt-4 pointer-events-none">
-  <nav
-    id="nav-pill"
-    class="pointer-events-auto flex items-center gap-0.5 px-3 py-1.5 rounded-full transition-all duration-300 md:gap-1"
-  >
-    <!-- Anchor links -->
-    <a href="#impact" class="hidden sm:inline-flex px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-full hover:bg-zinc-100 dark:hover:bg-white/10 transition-all">
-      {t('nav.impact')}
-    </a>
-    <a href="#timeline" class="px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-full hover:bg-zinc-100 dark:hover:bg-white/10 transition-all">
-      {t('nav.timeline')}
-    </a>
-    <a href="#stack" class="hidden sm:inline-flex px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-full hover:bg-zinc-100 dark:hover:bg-white/10 transition-all">
-      {t('nav.stack')}
-    </a>
-    <a href="#projects" class="px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-full hover:bg-zinc-100 dark:hover:bg-white/10 transition-all">
-      {t('nav.projects')}
-    </a>
-    <a href="#contact" class="px-3 py-1.5 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-full hover:bg-zinc-100 dark:hover:bg-white/10 transition-all">
-      {t('nav.contact')}
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-mark" href="#">
+      <span class="dot"></span>
+      <span>gian.barboza</span>
+      <span class="meta">· <span id="nav-clock">--:--</span> GMT-5</span>
     </a>
 
-    <!-- Divider -->
-    <div class="w-px h-4 bg-zinc-300 dark:bg-zinc-700 mx-1 shrink-0"></div>
+    <div class="nav-links">
+      <a href="#journey">{t('nav.timeline')}</a>
+      <a href="#impact">{t('nav.impact')}</a>
+      <a href="#cases">{t('nav.projects')}</a>
+      <a href="#stack">{t('nav.stack')}</a>
+    </div>
 
-    <!-- Language switcher -->
-    <a
-      href={otherLangUrl}
-      class="px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 hover:text-yellow-700 dark:hover:text-yellow-400 rounded-full hover:bg-yellow-50 dark:hover:bg-yellow-400/10 transition-all"
-      aria-label={`Switch to ${otherLang === 'en' ? 'English' : 'Español'}`}
-    >
-      {otherLang === 'en' ? 'EN' : 'ES'}
-    </a>
+    <div class="nav-tools">
+      <a
+        href={otherLangUrl}
+        class="nav-tool"
+        aria-label={`Switch to ${otherLang === 'en' ? 'English' : 'Español'}`}
+      >
+        {otherLang === 'en' ? 'EN' : 'ES'}
+      </a>
 
-    <!-- Theme toggle -->
-    <button
-      id="theme-toggle"
-      aria-label={t('nav.toggle.dark')}
-      class="p-1.5 rounded-full text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/10 transition-all"
-    >
-      <!-- Sun icon (shown in dark mode) -->
-      <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden dark:block">
-        <circle cx="12" cy="12" r="4"/>
-        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-      </svg>
-      <!-- Moon icon (shown in light mode) -->
-      <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="block dark:hidden">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-      </svg>
-    </button>
-  </nav>
-</header>
+      <button
+        id="theme-toggle"
+        class="nav-tool"
+        aria-label={t('nav.toggle.dark')}
+        type="button"
+      >
+        <span id="theme-label">DARK</span>
+      </button>
+
+      <button type="button" class="nav-cta" data-open-contact>
+        {t('term.nav.cta')}
+      </button>
+    </div>
+  </div>
+</nav>
 
 <script is:inline>
   (function () {
-    const nav = document.getElementById('nav-pill');
-
-    function updateNav() {
-      if (window.scrollY > 60) {
-        nav.classList.add('nav-scrolled');
-      } else {
-        nav.classList.remove('nav-scrolled');
+    // Live clock — Bogotá / GMT-5 (covers Rionegro)
+    const clock = document.getElementById('nav-clock');
+    if (clock) {
+      function fmt() {
+        return new Intl.DateTimeFormat('en-US', {
+          timeZone: 'America/Bogota',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        }).format(new Date());
       }
+      clock.textContent = fmt();
+      setInterval(() => { clock.textContent = fmt(); }, 30000);
     }
 
-    window.addEventListener('scroll', updateNav, { passive: true });
-    updateNav();
-
+    // Theme toggle — label shows the TARGET mode (mirrors the lang switcher behavior)
     const btn = document.getElementById('theme-toggle');
+    const label = document.getElementById('theme-label');
+    function syncLabel() {
+      if (!btn || !label) return;
+      const isLight = document.documentElement.classList.contains('light');
+      // If currently light → button offers DARK; if currently dark → button offers LIGHT
+      label.textContent = isLight ? 'DARK' : 'LIGHT';
+      btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+    }
+    syncLabel();
     if (btn) {
       btn.addEventListener('click', () => {
-        const isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        const isLight = document.documentElement.classList.toggle('light');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        syncLabel();
       });
     }
   })();

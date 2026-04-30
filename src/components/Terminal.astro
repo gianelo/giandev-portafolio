@@ -1,0 +1,37 @@
+---
+const lines = [
+  { t: '$ whoami', cls: 'prompt' },
+  { t: 'gian.barboza · senior backend engineer', cls: 'val' },
+  { t: '' },
+  { t: '$ cat ~/focus.txt', cls: 'prompt' },
+  { t: 'payments/', cls: 'key', suf: ' gateway routing · failover · fraud' },
+  { t: 'ai/',       cls: 'key', suf: ' llm pipelines · programmatic seo' },
+  { t: 'infra/',    cls: 'key', suf: ' distributed systems · 99.9% uptime' },
+  { t: '' },
+  { t: '$ availability --check', cls: 'prompt' },
+  { t: '✓ open to full-time remote', cls: 'ok' },
+];
+---
+
+<div class="terminal" aria-hidden="true">
+  <div class="terminal-bar">
+    <div class="lights"><span></span><span></span><span></span></div>
+    <span style="margin-left: 8px">~/portfolio — zsh</span>
+  </div>
+  <div class="terminal-body">
+    {lines.map((l) => (
+      <div>
+        {l.t === '' ? <>&nbsp;</> : (
+          <>
+            <span class={l.cls}>{l.t}</span>
+            {l.suf && <span class="val">{l.suf}</span>}
+          </>
+        )}
+      </div>
+    ))}
+    <div>
+      <span class="prompt">$ </span>
+      <span class="cursor"></span>
+    </div>
+  </div>
+</div>

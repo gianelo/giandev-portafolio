@@ -8,57 +8,36 @@ export interface Props {
 
 const { t } = Astro.props;
 
-type MilestoneColor = 'yellow' | 'violet' | 'emerald' | 'blue';
-
-const accents: Record<MilestoneColor, { dot: string; period: string; border: string }> = {
-  yellow:  { dot: 'bg-yellow-400',  period: 'text-yellow-600 dark:text-yellow-400',   border: 'hover:border-yellow-400/60 dark:hover:border-yellow-500/60' },
-  violet:  { dot: 'bg-violet-500',  period: 'text-violet-600 dark:text-violet-400',   border: 'hover:border-violet-400/60 dark:hover:border-violet-500/60' },
-  emerald: { dot: 'bg-emerald-500', period: 'text-emerald-600 dark:text-emerald-400', border: 'hover:border-emerald-400/60 dark:hover:border-emerald-500/60' },
-  blue:    { dot: 'bg-blue-500',    period: 'text-blue-600 dark:text-blue-400',       border: 'hover:border-blue-400/60 dark:hover:border-blue-500/60' },
-};
-
 type MilestoneKey = 'now' | 'freelance' | 'cto' | 'fermat';
 
-const milestones: { key: MilestoneKey; color: MilestoneColor }[] = [
-  { key: 'now',       color: 'yellow'  },
-  { key: 'freelance', color: 'violet'  },
-  { key: 'cto',       color: 'emerald' },
-  { key: 'fermat',    color: 'blue'    },
+const milestones: { key: MilestoneKey; current?: boolean }[] = [
+  { key: 'now',       current: true },
+  { key: 'freelance' },
+  { key: 'cto'       },
+  { key: 'fermat'    },
 ];
 ---
 
-<section id="timeline" class="py-20 px-6">
-  <div class="max-w-4xl mx-auto">
+<section class="section wrap" id="journey">
+  <SectionHeading
+    label={t('term.section.01.label')}
+    title={t('term.section.01.title')}
+    sub={t('term.section.01.sub')}
+  />
 
-    <SectionHeading
-      title={t('timeline.title')}
-      subtitle={t('timeline.subtitle')}
-    />
-
-    <ol class="relative border-l border-zinc-200 dark:border-zinc-800 ml-3 md:ml-4 space-y-6">
-      {milestones.map((m, i) => {
-        const a = accents[m.color];
-        return (
-          <li
-            class={`reveal reveal-delay-${i + 1} relative ml-6 md:ml-8 bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 ${a.border}`}
-          >
-            <span class={`absolute top-6 -left-[30px] md:-left-[38px] w-3.5 h-3.5 rounded-full border-2 border-white dark:border-zinc-950 ${a.dot}`}></span>
-            <div class={`text-xs font-semibold uppercase tracking-widest mb-2 ${a.period}`}>
-              {t(`timeline.${m.key}.period`)}
-            </div>
-            <h3 class="text-lg font-bold text-zinc-900 dark:text-white leading-snug">
-              {t(`timeline.${m.key}.role`)}
-            </h3>
-            <div class="text-sm text-zinc-500 dark:text-zinc-400 mb-3">
-              {t(`timeline.${m.key}.company`)}
-            </div>
-            <p class="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-              {t(`timeline.${m.key}.desc`)}
-            </p>
-          </li>
-        );
-      })}
-    </ol>
-
+  <div class="journey-list">
+    {milestones.map((m, i) => (
+      <div class={`journey-item reveal reveal-delay-${Math.min(i + 1, 4)}`}>
+        <div class="journey-date">{t(`timeline.${m.key}.period`)}</div>
+        <div>
+          <h3 class="journey-role">
+            {t(`timeline.${m.key}.role`)}
+            {m.current && <span class="pill">{t('term.journey.current')}</span>}
+          </h3>
+          <p class="journey-company">{t(`timeline.${m.key}.company`)}</p>
+          <p class="journey-desc">{t(`timeline.${m.key}.desc`)}</p>
+        </div>
+      </div>
+    ))}
   </div>
 </section>

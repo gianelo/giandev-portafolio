@@ -25,3 +25,12 @@ pnpm-debug.log*
 
 # Claude Code local settings
 .claude/
+
+# Claude Code skills (managed locally, not part of the portfolio)
+.agents/
+skills-lock.json
+
+# Local design references / screenshots — never tracked in git
+public/example-responsive/
+public/screenshots/
+screenshots/
