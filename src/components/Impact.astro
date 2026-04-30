@@ -1,5 +1,6 @@
 ---
 import SectionHeading from './SectionHeading.astro';
+import Sparkline from './Sparkline.astro';
 
 export interface Props {
   lang: string;
@@ -8,33 +9,97 @@ export interface Props {
 
 const { t } = Astro.props;
 
-const cards = [
-  { key: 'years',    color: 'hover:border-yellow-400/60 dark:hover:border-yellow-500/60' },
-  { key: 'uptime',   color: 'hover:border-emerald-400/60 dark:hover:border-emerald-500/60' },
-  { key: 'volume',   color: 'hover:border-blue-400/60 dark:hover:border-blue-500/60' },
-  { key: 'payments', color: 'hover:border-violet-400/60 dark:hover:border-violet-500/60' },
+interface Stat {
+  key: 'years' | 'uptime' | 'volume' | 'payments';
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+}
+
+const stats: Stat[] = [
+  { key: 'years',    value: 10,   suffix: '+' },
+  { key: 'uptime',   value: 99.9, decimals: 1, suffix: '%' },
+  { key: 'volume',   value: 200,  prefix: '$', suffix: 'K+' },
+  { key: 'payments', value: 5,    suffix: '+' },
 ];
 ---
 
-<section id="impact" class="py-20 px-6">
-  <div class="max-w-4xl mx-auto">
+<section class="section wrap" id="impact">
+  <SectionHeading
+    label={t('term.section.02.label')}
+    title={t('term.section.02.title')}
+    sub={t('term.section.02.sub')}
+  />
 
-    <SectionHeading title={t('impact.title')} />
-
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
-      {cards.map((card, i) => (
-        <div
-          class={`reveal reveal-delay-${i + 1} group relative bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 text-center ${card.color} transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20`}
-        >
-          <div class="text-3xl md:text-4xl font-bold text-yellow-500 dark:text-yellow-400 mb-2 tabular-nums">
-            {t(`impact.${card.key}.number`)}
-          </div>
-          <p class="text-xs md:text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-snug">
-            {t(`impact.${card.key}.label`)}
-          </p>
+  <div class="stats-grid reveal">
+    {stats.map((s, i) => (
+      <div class="stat">
+        <div class="stat-value">
+          <span
+            class="stat-num"
+            data-counter={s.value}
+            data-decimals={s.decimals ?? 0}
+            data-prefix={s.prefix ?? ''}
+          >{(s.prefix ?? '') + (s.decimals ? s.value.toFixed(s.decimals) : s.value)}</span><span class="unit">{s.suffix ?? ''}</span>
         </div>
-      ))}
-    </div>
-
+        <div class="stat-label">{t(`impact.${s.key}.label`)}</div>
+        <Sparkline seed={i + 1} color="var(--accent)" />
+      </div>
+    ))}
   </div>
 </section>
+
+<script is:inline>
+  (function () {
+    function format(value, decimals, prefix) {
+      const n = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString();
+      return (prefix || '') + n;
+    }
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function animate(el) {
+      const target = parseFloat(el.dataset.counter);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const prefix = el.dataset.prefix || '';
+      if (Number.isNaN(target)) return;
+
+      // Respeta prefers-reduced-motion: muestra valor final sin animación
+      if (reduceMotion) {
+        el.textContent = format(target, decimals, prefix);
+        return;
+      }
+
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now) {
+        const p = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = format(target * eased, decimals, prefix);
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = format(target, decimals, prefix);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          animate(e.target);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    function init() {
+      document.querySelectorAll('.stat-num[data-counter]').forEach((el) => io.observe(el));
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
