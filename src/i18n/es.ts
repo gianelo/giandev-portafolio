@@ -2,6 +2,7 @@ export const es: Record<string, string> = {
   // ── Meta ─────────────────────────────────────────────────
   'meta.title': 'Gian Barboza – Ingeniero Backend Senior · Pagos & IA',
   'meta.description': 'Ingeniero Backend Senior con 10+ años construyendo infraestructura distribuida de pagos (Stripe, PayPal, DLocal, Shift4) y automatización con IA. Ex-CTO. Disponible para trabajo remoto.',
+  'meta.h1.role': 'Ingeniero Backend Senior especializado en infraestructura de pagos y automatización con IA',
 
   // ── Nav ──────────────────────────────────────────────────
   'nav.impact': 'Impacto',

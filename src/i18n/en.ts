@@ -2,6 +2,7 @@ export const en: Record<string, string> = {
   // ── Meta ─────────────────────────────────────────────────
   'meta.title': 'Gian Barboza – Senior Backend Engineer · Payments & AI',
   'meta.description': 'Senior Backend Engineer with 10+ years building distributed payments infrastructure (Stripe, PayPal, DLocal, Shift4) and AI-powered automation. Ex-CTO. Available for remote work.',
+  'meta.h1.role': 'Senior Backend Engineer specialized in payments infrastructure and AI automation',
 
   // ── Nav ──────────────────────────────────────────────────
   'nav.impact': 'Impact',

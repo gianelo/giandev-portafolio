@@ -23,7 +23,10 @@ const githubUrl = 'https://github.com/gianelo';
 
   <div class="hero-grid">
     <div>
-      <h1 class="hero-name reveal">Gian<br />Barboza<span class="accent">.</span></h1>
+      <h1 class="hero-name reveal">
+        <span aria-hidden="true">Gian<br />Barboza<span class="accent">.</span></span>
+        <span class="sr-only">Gian Barboza — {t('meta.h1.role')}</span>
+      </h1>
 
       <p class="hero-tagline reveal" set:html={t('term.hero.tagline.html')}></p>
 
