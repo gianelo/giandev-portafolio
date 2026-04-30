@@ -7,33 +7,186 @@ import Layout from '../layouts/Layout.astro';
   description="The page you're looking for doesn't exist or has been moved."
   lang="en"
 >
-  <main class="min-h-screen flex items-center justify-center px-6 py-20">
-    <div class="max-w-2xl mx-auto text-center">
-      <p class="text-8xl md:text-9xl font-bold text-yellow-500 dark:text-yellow-400 mb-6 tabular-nums">
-        404
+  <main id="main" class="notfound wrap">
+    <div class="notfound-inner">
+      <div class="notfound-meta" data-i18n-en="ERROR · ROUTE NOT FOUND" data-i18n-es="ERROR · RUTA NO ENCONTRADA">
+        <span class="dot"></span>
+        <span data-text>ERROR · ROUTE NOT FOUND</span>
+      </div>
+
+      <p class="notfound-code">
+        <span class="prompt">$</span> cat <span class="path" data-text-path>/lost-page</span>
       </p>
 
-      <h1
-        class="text-2xl md:text-3xl font-semibold italic text-zinc-800 dark:text-zinc-100 mb-4"
-        style="font-family: Georgia, 'Times New Roman', serif;"
+      <h1 class="notfound-num">404<span class="cursor"></span></h1>
+
+      <p
+        class="notfound-quote"
+        data-i18n-en={`"These aren't the routes you're looking for."`}
+        data-i18n-es={`"Estas no son las rutas que buscas."`}
+        data-text
       >
         "These aren't the routes you're looking for."
-      </h1>
+      </p>
 
-      <p class="text-base md:text-lg text-zinc-600 dark:text-zinc-400 mb-10 max-w-md mx-auto">
+      <p
+        class="notfound-desc"
+        data-i18n-en="The page you're looking for doesn't exist or has been moved."
+        data-i18n-es="La página que buscas no existe o ha sido movida."
+        data-text
+      >
         The page you're looking for doesn't exist or has been moved.
       </p>
 
       <a
         href="/"
-        class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-yellow-400 hover:bg-yellow-300 dark:bg-yellow-500 dark:hover:bg-yellow-400 text-zinc-900 font-semibold text-base transition-all shadow-lg shadow-yellow-400/25 hover:shadow-yellow-400/40 hover:-translate-y-0.5"
+        class="btn primary notfound-cta"
+        data-i18n-en="Back to home"
+        data-i18n-es="Volver al inicio"
+        data-text-cta
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m12 19-7-7 7-7"/>
-          <path d="M19 12H5"/>
+        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
         </svg>
-        Back to home
+        <span data-cta-text>Back to home</span>
       </a>
     </div>
   </main>
 </Layout>
+
+<style>
+  .notfound {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  .notfound-inner {
+    max-width: 560px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .notfound-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    margin-bottom: 28px;
+  }
+  .notfound-meta .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--red);
+    flex-shrink: 0;
+  }
+
+  .notfound-code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--fg-muted);
+    margin: 0 0 24px;
+    word-break: break-all;
+  }
+  .notfound-code .prompt { color: var(--accent); margin-right: 8px; }
+  .notfound-code .path { color: var(--fg); }
+
+  .notfound-num {
+    font-family: var(--font-mono);
+    font-size: clamp(96px, 22vw, 160px);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 0 0 24px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .notfound-num .cursor {
+    display: inline-block;
+    width: 14px;
+    height: clamp(64px, 14vw, 100px);
+    background: var(--accent);
+    animation: blink 1.05s step-end infinite;
+  }
+
+  .notfound-quote {
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+    font-size: clamp(20px, 4vw, 26px);
+    line-height: 1.35;
+    color: var(--fg);
+    margin: 0 0 16px;
+    max-width: 32ch;
+  }
+
+  .notfound-desc {
+    font-size: 15px;
+    color: var(--fg-muted);
+    margin: 0 0 36px;
+    max-width: 44ch;
+    line-height: 1.55;
+  }
+
+  .notfound-cta {
+    font-size: 13px;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .notfound-num .cursor { animation: none; opacity: 1; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const path = window.location.pathname;
+    const isES = path.startsWith('/es/') || path.startsWith('/es');
+    const lang = isES ? 'es' : 'en';
+
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-text]').forEach((el) => {
+      const value = el.getAttribute(`data-i18n-${lang}`);
+      if (value) {
+        el.textContent = value;
+        if (el.dataset.text === '') el.removeAttribute('data-text');
+      }
+    });
+
+    const cta = document.querySelector('[data-text-cta]');
+    if (cta) {
+      const value = cta.getAttribute(`data-i18n-${lang}`);
+      const span = cta.querySelector('[data-cta-text]');
+      if (value && span) span.textContent = value;
+    }
+
+    const pathEl = document.querySelector('[data-text-path]');
+    if (pathEl) pathEl.textContent = path || '/lost-page';
+
+    if (lang === 'es') {
+      const titles = {
+        title: '404 — Página no encontrada · Gian Barboza',
+        desc: 'La página que buscas no existe o ha sido movida.',
+      };
+      document.title = titles.title;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute('content', titles.desc);
+    }
+  })();
+</script>

@@ -1,6 +1,7 @@
 export const en: Record<string, string> = {
   // ── Meta ─────────────────────────────────────────────────
   'meta.title': 'Gian Barboza – Senior Backend Engineer · Payments & AI',
+  'meta.description': 'Senior Backend Engineer with 10+ years building distributed payments infrastructure (Stripe, PayPal, DLocal, Shift4) and AI-powered automation. Ex-CTO. Available for remote work.',
 
   // ── Nav ──────────────────────────────────────────────────
   'nav.impact': 'Impact',
@@ -10,6 +11,8 @@ export const en: Record<string, string> = {
   'nav.contact': 'Contact',
   'nav.toggle.dark': 'Switch to dark mode',
   'nav.toggle.light': 'Switch to light mode',
+  'nav.skip': 'Skip to main content',
+  'nav.lang.switch': 'Switch language to Spanish',
 
   // ── Hero ─────────────────────────────────────────────────
   'hero.title': 'Gian Barboza',
@@ -114,6 +117,7 @@ export const en: Record<string, string> = {
   'contact.form.sending': 'Sending…',
   'contact.form.success': "Message sent! I'll get back to you soon.",
   'contact.form.error': 'Something went wrong. Please try again in a moment.',
+  'contact.form.validation': 'Please check the highlighted fields.',
   'contact.email': 'gianelo1992@gmail.com',
   'contact.phone': '+57 304 358 1365',
   'contact.phone.url': 'https://wa.me/573043581365',

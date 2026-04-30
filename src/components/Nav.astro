@@ -9,13 +9,13 @@ const otherLang = lang === 'en' ? 'es' : 'en';
 const otherLangUrl = `/${otherLang}/`;
 ---
 
-<nav class="nav">
+<nav class="nav" aria-label={lang === 'es' ? 'Navegación principal' : 'Primary'}>
   <div class="nav-inner">
-    <a class="nav-mark" href="#">
+    <div class="nav-mark" aria-hidden="true">
       <span class="dot"></span>
       <span>gian.barboza</span>
       <span class="meta">· <span id="nav-clock">--:--</span> GMT-5</span>
-    </a>
+    </div>
 
     <div class="nav-links">
       <a href="#journey">{t('nav.timeline')}</a>
@@ -28,7 +28,9 @@ const otherLangUrl = `/${otherLang}/`;
       <a
         href={otherLangUrl}
         class="nav-tool"
-        aria-label={`Switch to ${otherLang === 'en' ? 'English' : 'Español'}`}
+        aria-label={t('nav.lang.switch')}
+        lang={otherLang}
+        hreflang={otherLang}
       >
         {otherLang === 'en' ? 'EN' : 'ES'}
       </a>
@@ -37,6 +39,7 @@ const otherLangUrl = `/${otherLang}/`;
         id="theme-toggle"
         class="nav-tool"
         aria-label={t('nav.toggle.dark')}
+        aria-pressed="false"
         type="button"
       >
         <span id="theme-label">DARK</span>
@@ -75,6 +78,7 @@ const otherLangUrl = `/${otherLang}/`;
       // If currently light → button offers DARK; if currently dark → button offers LIGHT
       label.textContent = isLight ? 'DARK' : 'LIGHT';
       btn.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+      btn.setAttribute('aria-pressed', isLight ? 'true' : 'false');
     }
     syncLabel();
     if (btn) {

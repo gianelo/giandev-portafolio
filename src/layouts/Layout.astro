@@ -15,6 +15,8 @@ const {
   lang = 'en',
 } = Astro.props;
 
+const skipLabel = lang === 'es' ? 'Saltar al contenido principal' : 'Skip to main content';
+
 const siteUrl = Astro.site?.href.replace(/\/$/, '') ?? 'https://gianbarboza.com';
 const ogImage = `${siteUrl}/og.png`;
 const canonicalPath = Astro.url.pathname.replace(/^\/en(\/|$)/, '/');
@@ -123,6 +125,7 @@ const personSchema = {
     </script>
   </head>
   <body>
+    <a href="#main" class="skip-link">{skipLabel}</a>
     <slot />
     <Analytics />
     <SpeedInsights />
