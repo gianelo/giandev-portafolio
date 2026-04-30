@@ -28,48 +28,66 @@ const canonicalUrl = new URL(canonicalPath, siteUrl).href;
 // editorial-crawl.gianbarboza.com, *.vercel.app) cae en 'preview' → noindex.
 const isProduction = import.meta.env.VERCEL_ENV === 'production';
 
-const personSchema = {
+const personId = `${siteUrl}/#person`;
+const websiteId = `${siteUrl}/#website`;
+
+const jsonLdGraph = {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Gian Barboza',
-  jobTitle: 'Senior Backend Engineer',
-  description,
-  url: siteUrl,
-  image: ogImage,
-  email: 'mailto:gianelo1992@gmail.com',
-  telephone: '+57-304-358-1365',
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Rionegro',
-    addressRegion: 'Antioquia',
-    addressCountry: 'CO',
-  },
-  sameAs: [
-    'https://linkedin.com/in/gian-barboza',
-    'https://github.com/gianelo',
-  ],
-  alumniOf: {
-    '@type': 'CollegeOrUniversity',
-    name: 'Universidad Dr. Rafael Belloso Chacín (URBE)',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Maracaibo',
-      addressCountry: 'VE',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': personId,
+      name: 'Gian Barboza',
+      jobTitle: 'Senior Backend Engineer',
+      description,
+      url: siteUrl,
+      image: ogImage,
+      email: 'mailto:gianelo1992@gmail.com',
+      telephone: '+57-304-358-1365',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Rionegro',
+        addressRegion: 'Antioquia',
+        addressCountry: 'CO',
+      },
+      sameAs: [
+        'https://linkedin.com/in/gian-barboza',
+        'https://github.com/gianelo',
+      ],
+      alumniOf: {
+        '@type': 'CollegeOrUniversity',
+        name: 'Universidad Dr. Rafael Belloso Chacín (URBE)',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Maracaibo',
+          addressCountry: 'VE',
+        },
+      },
+      knowsAbout: [
+        'Backend Engineering',
+        'Distributed Systems',
+        'Payments Infrastructure',
+        'Stripe', 'PayPal', 'DLocal', 'Shift4', 'Payeezy',
+        'Node.js', 'TypeScript', 'PHP', 'Java',
+        'MySQL', 'HAProxy', 'DigitalOcean',
+        'Fraud Detection', 'PCI Compliance',
+        'AI Automation', 'Programmatic SEO',
+      ],
+      knowsLanguage: [
+        { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+        { '@type': 'Language', name: 'English', alternateName: 'en' },
+      ],
     },
-  },
-  knowsAbout: [
-    'Backend Engineering',
-    'Distributed Systems',
-    'Payments Infrastructure',
-    'Stripe', 'PayPal', 'DLocal', 'Shift4', 'Payeezy',
-    'Node.js', 'TypeScript', 'PHP', 'Java',
-    'MySQL', 'HAProxy', 'DigitalOcean',
-    'Fraud Detection', 'PCI Compliance',
-    'AI Automation', 'Programmatic SEO',
-  ],
-  knowsLanguage: [
-    { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
-    { '@type': 'Language', name: 'English', alternateName: 'en' },
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      url: siteUrl,
+      name: 'Gian Barboza',
+      description,
+      inLanguage: ['en-US', 'es-ES'],
+      author: { '@id': personId },
+      publisher: { '@id': personId },
+    },
   ],
 };
 ---
@@ -112,8 +130,8 @@ const personSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- JSON-LD: Person schema for Google Knowledge Graph / rich results -->
-    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    <!-- JSON-LD: Person + WebSite (linked via @graph) for Knowledge Graph + i18n signal -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLdGraph)} />
 
     <!-- Theme init: dark is default. Toggle .light class on <html>. -->
     <script is:inline>
