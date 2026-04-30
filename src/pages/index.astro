@@ -15,10 +15,11 @@ const t = useTranslations(lang);
 
 <Layout
   title={t('meta.title')}
+  description={t('meta.description')}
   lang={lang}
 >
   <Nav lang={lang} t={t} />
-  <main>
+  <main id="main">
     <Hero lang={lang} t={t} />
     <Timeline lang={lang} t={t} />
     <Impact lang={lang} t={t} />

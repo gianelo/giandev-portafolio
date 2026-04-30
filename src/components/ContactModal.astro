@@ -17,7 +17,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
   role="dialog"
   aria-modal="true"
 >
-  <div data-overlay class="modal-overlay absolute inset-0"></div>
+  <div data-overlay class="modal-overlay absolute inset-0" aria-hidden="true"></div>
 
   <div
     id="contact-dialog"
@@ -31,7 +31,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
       class="absolute top-3 right-3 nav-tool"
       style="font-family: var(--font-mono); font-size: 11px;"
     >
-      ESC
+      <span aria-hidden="true">ESC</span>
     </button>
 
     <div style="padding: 28px 28px 24px;">
@@ -120,7 +120,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
           style="width: 100%; justify-content: center;"
         >
           <span id="cm-submit-label">{t('contact.form.submit')}</span>
-          <svg id="cm-submit-spinner" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="hidden animate-spin">
+          <svg id="cm-submit-spinner" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="hidden animate-spin">
             <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
           </svg>
         </button>
@@ -139,6 +139,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
       sending: t('contact.form.sending'),
       success: t('contact.form.success'),
       error: t('contact.form.error'),
+      validation: t('contact.form.validation'),
     },
   }}
 >
@@ -146,6 +147,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
     const BOT_MIN_OPEN_MS = 2000;
     const CLOSE_ANIM_MS = 200;
     const SUCCESS_CLOSE_DELAY_MS = 2200;
+    const FOCUSABLE = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
     const modal = document.getElementById('contact-modal');
     const dialog = document.getElementById('contact-dialog');
@@ -157,12 +159,44 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 
     if (!modal || !form) return;
 
+    // Portal: lift modal to body so inert on body children doesn't trap it.
+    if (modal.parentElement !== document.body) {
+      document.body.appendChild(modal);
+    }
+
     let openedAt = 0;
+    let lastTrigger = null;
+    let inertedSiblings = [];
+
+    function getFocusable() {
+      return Array.from(dialog.querySelectorAll(FOCUSABLE)).filter(
+        (el) => !el.hasAttribute('disabled') && el.offsetParent !== null
+      );
+    }
+
+    function setBackgroundInert(on) {
+      if (on) {
+        inertedSiblings = [];
+        Array.from(document.body.children).forEach((el) => {
+          if (el === modal) return;
+          if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;
+          if (!el.hasAttribute('inert')) {
+            el.setAttribute('inert', '');
+            inertedSiblings.push(el);
+          }
+        });
+      } else {
+        inertedSiblings.forEach((el) => el.removeAttribute('inert'));
+        inertedSiblings = [];
+      }
+    }
 
     function open() {
+      lastTrigger = document.activeElement;
       hideStatus();
       modal.classList.remove('hidden');
       modal.setAttribute('aria-hidden', 'false');
+      setBackgroundInert(true);
       requestAnimationFrame(() => {
         modal.classList.remove('opacity-0');
         dialog.classList.remove('scale-95');
@@ -180,13 +214,21 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
       setTimeout(() => {
         modal.classList.add('hidden');
         modal.setAttribute('aria-hidden', 'true');
+        setBackgroundInert(false);
         document.body.style.overflow = '';
         form.reset();
+        clearInvalidState();
+        if (lastTrigger && typeof lastTrigger.focus === 'function') {
+          lastTrigger.focus();
+        }
+        lastTrigger = null;
       }, CLOSE_ANIM_MS);
     }
 
     function hideStatus() {
       status.className = 'hidden';
+      status.removeAttribute('style');
+      status.textContent = '';
     }
 
     function showStatus(msg, type) {
@@ -205,6 +247,20 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
       `;
     }
 
+    function clearInvalidState() {
+      form.querySelectorAll('[aria-invalid="true"]').forEach((el) => {
+        el.setAttribute('aria-invalid', 'false');
+      });
+    }
+
+    form.querySelectorAll('input, textarea').forEach((field) => {
+      if (field.type === 'hidden' || field.name === 'botcheck') return;
+      field.addEventListener('invalid', () => field.setAttribute('aria-invalid', 'true'));
+      field.addEventListener('input', () => {
+        if (field.checkValidity()) field.setAttribute('aria-invalid', 'false');
+      });
+    });
+
     document.querySelectorAll('[data-open-contact]').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
@@ -217,13 +273,40 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+      if (modal.classList.contains('hidden')) return;
+      if (e.key === 'Escape') {
+        close();
+        return;
+      }
+      if (e.key === 'Tab') {
+        const focusable = getFocusable();
+        if (focusable.length === 0) {
+          e.preventDefault();
+          return;
+        }
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const active = document.activeElement;
+        if (e.shiftKey && (active === first || !dialog.contains(active))) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && (active === last || !dialog.contains(active))) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     });
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (Date.now() - openedAt < BOT_MIN_OPEN_MS) return;
-      if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        showStatus(labels.validation, 'error');
+        const firstInvalid = form.querySelector(':invalid:not([type="hidden"])');
+        if (firstInvalid) firstInvalid.focus();
+        return;
+      }
 
       submitBtn.disabled = true;
       submitLabel.textContent = labels.sending;
