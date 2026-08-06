@@ -30,36 +30,35 @@ Senior Backend Engineer with 10+ years turning complex business problems into re
 ### Senior Backend Engineer — Hablax Inc.
 *Nov 2023 — Present · Remote (100%)*
 
-- Led AI-driven programmatic SEO across a hierarchical pipeline (country → service → product), populating thousands of landings via ChatGPT-4o with per-vertical curated prompts; replaced a significant portion of paid-ad spend with organic traffic at a better new-client conversion rate.
-- Designed and shipped a fraud detection engine using Factory and Single Responsibility patterns, enabling new rules to self-register into the evaluator and ship in hours instead of weeks.
-- Built a device-fingerprinting layer for access-fraud detection (multi-account abuse, account-takeover attempts).
-- Designed API gateways to decouple modern tooling from a legacy stack that could not be upgraded in place.
-- Integrated Shift4 end-to-end, including 3DS, tokenization, refunds, and voids.
-- Built a multi-channel notification orchestrator routing emails and push notifications by country, payment method, and product.
+- Cut dependency on paid advertising by making organic acquisition scale unattended: a 3-tier pipeline (country → service → product) generating thousands of landings via ChatGPT-4o, auto-regenerating as the catalog grows. Organic now converts new clients better than the paid channel.
+- Took fraud response from weeks to hours with a rule engine on Factory and Single Responsibility patterns: rules self-register and receive normalized context, so new patterns ship without touching the evaluator. Significantly cut manual review load.
+- Closed the account-fraud vector (multi-account abuse, account takeover) with a device-fingerprinting layer that flags suspicious sessions without adding friction for legitimate users.
+- Unblocked modernization of a legacy stack that could not be upgraded in place, designing API gateways so new services integrate without a rewrite.
+- Opened a new payment corridor with an end-to-end Shift4 integration: 3DS, tokenization, refunds, and voids.
+- Replaced ad-hoc customer messaging with a multi-channel notification orchestrator routing email and push by country, payment method, and product.
 
 ### Full Stack Engineer · Freelance — Independent Clients
 *Apr 2023 — Nov 2023 · Remote*
 
-- Built an end-to-end digital-goods e-commerce platform with Next.js, TypeScript, Clean Architecture, Vitest, and GitHub Actions CI/CD.
-- Integrated Stripe and PayPal end-to-end, including auth, refunds, and automated delivery of digital products.
-- Designed a custom admin system for catalog, orders, and fulfillment automation.
+- Took a digital-goods business from zero to selling end-to-end — storefront, checkout, automated delivery — on Next.js, TypeScript, Clean Architecture, Vitest, and GitHub Actions CI/CD.
+- Made payments and fulfillment hands-off: full Stripe and PayPal integration (authorization, refunds) wired to automatic delivery of digital products.
+- Gave the client operational autonomy with a custom admin for catalog, orders, and fulfillment.
 
 ### Full Stack Developer → CTO — Hablax Inc.
 *Dec 2017 — Apr 2023 · Remote (100%)*
 
-- Promoted from developer to CTO. Led a team of 4 engineers through critical infrastructure migrations and feature builds.
-- Migrated from a single-server monolith to an 8-server distributed architecture on DigitalOcean: HAProxy load balancing, MySQL master-slave replication for HA, node-level failover, automated backups, and recovery runbooks. Executed manually over Linux due to legacy-stack constraints.
-- Eliminated recurring ~3-hour outages on peak-traffic dates (Mother's Day, New Year's Eve) that caused direct revenue loss; sustained 99.9% uptime since.
-- Architected a multi-provider payments engine with admin-configurable routing by product and automatic failover across PayPal, Payeezy, and DLocal.
-- Built a multi-provider product/catalog engine with priority-based failover, allowing operators to swap the active provider live with no service downtime.
-- Implemented Apple Pay, Google Pay, and in-house card tokenization.
-- Automated asynchronous catalog and pricing updates across providers; daily syncs with zero downtime.
-- Delivered travel booking module (hotels and car rentals), money-transfer integration, and a referral system.
+- Promoted from developer to CTO, leading 4 engineers through critical infrastructure migrations and feature delivery.
+- Ended recurring ~3-hour outages on the year's most lucrative dates (Mother's Day, New Year's Eve): migrated a single-server monolith to an 8-server distributed architecture on DigitalOcean — HAProxy load balancing, MySQL master-slave replication, node-level failover, automated backups, recovery runbooks — executed manually over Linux due to legacy-stack constraints. 99.9% uptime since.
+- Removed single-gateway risk from a global payments operation: multi-provider engine with admin-configurable routing per product and automatic failover across PayPal, Payeezy, and DLocal.
+- Let operators swap the active supplier live with no downtime, via a multi-provider catalog engine with priority-based failover.
+- Widened checkout conversion with Apple Pay, Google Pay, and in-house card tokenization.
+- Kept catalog and pricing accurate across suppliers with automated daily async syncs at zero downtime.
+- Expanded revenue lines with travel booking (hotels, car rentals), money-transfer integration, and a referral system.
 
 ### Java Software Developer — Fermat.org
 *Jan 2016 — Mar 2017 · Remote (100%)*
 
-- Built P2P Android apps on top of cryptocurrency infrastructure (ride-hailing, e-commerce) where payments settled directly between wallets with no intermediaries.
+- Removed intermediaries from consumer payments, building P2P Android apps on cryptocurrency infrastructure (ride-hailing, e-commerce) where funds settled wallet to wallet.
 - First exposure to decentralized systems and 100% remote work.
 
 ## Selected Projects

@@ -10,43 +10,37 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 
 <div
   id="contact-modal"
-  class="fixed inset-0 z-[100] hidden opacity-0 flex items-center justify-center p-4 overflow-y-auto"
-  style="transition: opacity 200ms ease;"
+  class="modal-root is-hidden"
   aria-hidden="true"
   aria-labelledby="contact-modal-title"
   role="dialog"
   aria-modal="true"
 >
-  <div data-overlay class="modal-overlay absolute inset-0" aria-hidden="true"></div>
+  <div data-overlay class="modal-overlay" aria-hidden="true"></div>
 
-  <div
-    id="contact-dialog"
-    class="modal-dialog relative w-full max-w-md transform scale-95"
-    style="transition: transform 200ms ease;"
-  >
+  <div id="contact-dialog" class="modal-dialog">
     <button
       type="button"
       data-close-contact
       aria-label={t('contact.modal.close')}
-      class="absolute top-3 right-3 nav-tool"
-      style="font-family: var(--font-mono); font-size: 11px;"
+      class="nav-tool modal-close"
     >
       <span aria-hidden="true">ESC</span>
     </button>
 
-    <div style="padding: 28px 28px 24px;">
-      <div class="section-label" style="margin-bottom: 12px;">
+    <div class="modal-body">
+      <div class="section-label">
         <span>~/contact.form</span>
       </div>
 
-      <h3 id="contact-modal-title" class="section-title" style="font-size: 22px; margin-bottom: 6px;">
+      <h3 id="contact-modal-title" class="section-title modal-title">
         {t('contact.modal.title')}
       </h3>
-      <p style="color: var(--fg-muted); font-size: 14px; margin: 0 0 24px; line-height: 1.5;">
+      <p class="modal-intro">
         {t('contact.modal.intro')}
       </p>
 
-      <form id="contact-form" class="space-y-4" novalidate style="display: flex; flex-direction: column; gap: 16px;">
+      <form id="contact-form" class="modal-form" novalidate>
         <input type="hidden" name="access_key" value={accessKey} />
         <input type="hidden" name="subject" value="Nuevo contacto desde giandev portafolio" />
         <input type="hidden" name="from_name" value="giandev portafolio" />
@@ -54,7 +48,6 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
         <input
           type="checkbox"
           name="botcheck"
-          class="hidden"
           style="display:none"
           tabindex="-1"
           autocomplete="off"
@@ -104,28 +97,22 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
             maxlength="2000"
             rows="4"
             placeholder={t('contact.form.message.placeholder')}
-            class="modal-input"
-            style="resize: none; font-family: var(--font-sans);"
+            class="modal-input modal-textarea"
           ></textarea>
         </div>
 
-        <p style="font-size: 11px; color: var(--fg-faint); line-height: 1.5; margin: 0;">
+        <p class="modal-privacy">
           {t('contact.form.privacy')}
         </p>
 
-        <button
-          type="submit"
-          id="cm-submit"
-          class="btn primary"
-          style="width: 100%; justify-content: center;"
-        >
+        <button type="submit" id="cm-submit" class="btn primary modal-submit">
           <span id="cm-submit-label">{t('contact.form.submit')}</span>
-          <svg id="cm-submit-spinner" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="hidden animate-spin">
+          <svg id="cm-submit-spinner" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="modal-spinner is-hidden">
             <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
           </svg>
         </button>
 
-        <div id="cm-status" role="status" aria-live="polite" class="hidden"></div>
+        <div id="cm-status" role="status" aria-live="polite" class="modal-status is-hidden"></div>
       </form>
     </div>
   </div>
@@ -194,25 +181,20 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
     function open() {
       lastTrigger = document.activeElement;
       hideStatus();
-      modal.classList.remove('hidden');
+      modal.classList.remove('is-hidden');
       modal.setAttribute('aria-hidden', 'false');
       setBackgroundInert(true);
-      requestAnimationFrame(() => {
-        modal.classList.remove('opacity-0');
-        dialog.classList.remove('scale-95');
-        dialog.classList.add('scale-100');
-      });
+      // Un frame de margen para que la transición arranque desde el estado cerrado
+      requestAnimationFrame(() => modal.classList.add('is-open'));
       document.body.style.overflow = 'hidden';
       openedAt = Date.now();
       setTimeout(() => document.getElementById('cm-name')?.focus(), 150);
     }
 
     function close() {
-      modal.classList.add('opacity-0');
-      dialog.classList.add('scale-95');
-      dialog.classList.remove('scale-100');
+      modal.classList.remove('is-open');
       setTimeout(() => {
-        modal.classList.add('hidden');
+        modal.classList.add('is-hidden');
         modal.setAttribute('aria-hidden', 'true');
         setBackgroundInert(false);
         document.body.style.overflow = '';
@@ -226,25 +208,17 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
     }
 
     function hideStatus() {
-      status.className = 'hidden';
-      status.removeAttribute('style');
+      status.classList.add('is-hidden');
+      status.classList.remove('is-ok', 'is-error');
       status.textContent = '';
     }
 
     function showStatus(msg, type) {
       const isOk = type === 'success';
       status.textContent = msg;
-      status.className = '';
-      status.style.cssText = `
-        font-family: var(--font-mono);
-        font-size: 12px;
-        text-align: center;
-        padding: 10px 12px;
-        border-radius: 8px;
-        border: 1px solid ${isOk ? 'oklch(0.78 0.16 150 / 0.4)' : 'oklch(0.68 0.18 25 / 0.4)'};
-        background: ${isOk ? 'oklch(0.78 0.16 150 / 0.08)' : 'oklch(0.68 0.18 25 / 0.08)'};
-        color: ${isOk ? 'var(--green)' : 'var(--red)'};
-      `;
+      status.classList.remove('is-hidden');
+      status.classList.toggle('is-ok', isOk);
+      status.classList.toggle('is-error', !isOk);
     }
 
     function clearInvalidState() {
@@ -273,7 +247,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
     });
 
     document.addEventListener('keydown', (e) => {
-      if (modal.classList.contains('hidden')) return;
+      if (modal.classList.contains('is-hidden')) return;
       if (e.key === 'Escape') {
         close();
         return;
@@ -310,7 +284,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 
       submitBtn.disabled = true;
       submitLabel.textContent = labels.sending;
-      spinner.classList.remove('hidden');
+      spinner.classList.remove('is-hidden');
       hideStatus();
 
       const data = new FormData(form);
@@ -334,7 +308,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
       } finally {
         submitBtn.disabled = false;
         submitLabel.textContent = labels.submit;
-        spinner.classList.add('hidden');
+        spinner.classList.add('is-hidden');
       }
     });
   })();
