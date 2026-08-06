@@ -24,7 +24,6 @@ Full breakdown of which string belongs to which layer: [`AGENTS.md` → Posicion
 | Tool | Version | Purpose |
 |---|---|---|
 | [Astro](https://astro.build) | 6.x | Static site framework |
-| [Tailwind CSS](https://tailwindcss.com) | 4.x | Installed via `@tailwindcss/vite`; residual use only (see note) |
 | Inter Tight + JetBrains Mono | 5.x | Variable fonts, self-hosted via Fontsource |
 | [satori](https://github.com/vercel/satori) + resvg | — | Generates `og.png` (1200×630) at build time |
 | `@astrojs/sitemap` | 3.x | Sitemap generation |
@@ -32,7 +31,7 @@ Full breakdown of which string belongs to which layer: [`AGENTS.md` → Posicion
 | [Web3Forms](https://web3forms.com) | — | Contact form endpoint (no backend) |
 | Vanilla JS | — | Theme toggle, live clock, observers, counters, modal |
 
-> **Note on Tailwind:** the terminal redesign moved styling to plain CSS with custom properties in `src/styles/global.css`. Tailwind is still installed and a few utilities remain in `ContactModal.astro`, but there is no `@theme` block. Prefer plain CSS with the design tokens for new styles.
+> **No CSS framework.** Styling is plain CSS with custom properties in `src/styles/global.css`. Tailwind was removed entirely — it only survived in the contact modal, so its utilities were rewritten as real classes. `global.css` carries a small `Base reset` block replacing what Tailwind's preflight provided, including the `.sr-only` utility the hero `<h1>` depends on.
 
 ---
 

@@ -65,7 +65,6 @@ Persona → Software Engineer. Máquina (o invisible, como `sr-only`) → Senior
 | Herramienta                          | Versión  | Uso                                                                 |
 |--------------------------------------|----------|---------------------------------------------------------------------|
 | Astro                                | 6.x      | Framework de sitio estático                                         |
-| Tailwind CSS                         | 4.x      | Instalado vía `@tailwindcss/vite`. **Uso residual** — ver nota abajo |
 | `@astrojs/sitemap`                   | 3.x      | Genera `sitemap-index.xml` automáticamente al build                 |
 | `@fontsource-variable/inter-tight`   | 5.x      | Inter Tight Variable — fuente sans                                  |
 | `@fontsource-variable/jetbrains-mono`| 5.x      | JetBrains Mono Variable — fuente mono (nav, labels, botones, tags)   |
@@ -77,7 +76,9 @@ Persona → Software Engineer. Máquina (o invisible, como `sr-only`) → Senior
 | Vanilla JS                           | —        | Theme toggle, reloj, observers, contadores, modal — sin frameworks  |
 | Node.js                              | 22 (nvm) | Entorno de desarrollo                                               |
 
-> **Nota sobre Tailwind**: el rediseño terminal movió prácticamente todo el estilado a CSS plano con custom properties en `src/styles/global.css`. Tailwind sigue instalado y quedan utilidades sueltas en `ContactModal.astro` (`hidden`, `fixed`, `inset-0`, `opacity-0`, `scale-95`, `animate-spin`, etc.). **No hay bloque `@theme`** ni mapeo de tokens. Para estilos nuevos, preferí CSS plano con las vars del sistema.
+> **Sin framework de CSS**: el proyecto **no usa Tailwind**. Se removió por completo (dependencias, plugin de Vite y utilidades del modal) porque su único consumidor real era `ContactModal.astro`. Todo el estilado es CSS plano con custom properties en `src/styles/global.css`.
+>
+> Como Tailwind aportaba su *preflight*, `global.css` incluye ahora un bloque **`Base reset`** que replica lo que hacía falta: `border: 0 solid` en `*`, `font/font-feature-settings/letter-spacing: inherit` en los controles de formulario (sin esto los botones pierden line-height y las ligaduras `ss01/cv11`, y cambian de tamaño), márgenes de headings y `p` en cero, y la utilidad **`.sr-only`** — que la usa el `<h1>` del hero para las keywords de rol. **Si tocás ese bloque, verificá el hero: sin `.sr-only` las keywords se vuelven visibles.**
 
 Build output: carpeta `dist/` (100% estático, sin servidor).
 
@@ -113,7 +114,7 @@ El recorrido laboral va antes que las métricas para que el lector vea el contex
 | `Projects.astro`       | `#cases`   | 4 case studies en **acordeón** (solo uno abierto a la vez; el primero abre por default). Bloques Context / Problem / Decision / Result + tags |
 | `TechStack.astro`      | `#stack`   | 4 categorías con glyph mono (`/srv`, `/infra`, `/pay`, `/ai`) y pills de tags |
 | `Contact.astro`        | `#contact` | CTA grande + 2 botones + fila de contactos en mono. Renderiza también `<ContactModal />` y el `<footer>` |
-| `ContactModal.astro`   | —        | Modal con form (name/email/message) → Web3Forms. Focus trap, `inert` en el fondo, honeypot + timing guard |
+| `ContactModal.astro`   | —        | Modal con form (name/email/message) → Web3Forms. Focus trap, `inert` en el fondo, honeypot + timing guard. El JS solo alterna `.is-hidden` y `.is-open` en la raíz; el diálogo escala desde el estado del padre |
 | `SectionHeading.astro` | —        | Heading compartido: `label` (con dot accent) + `title` + `sub` opcional          |
 
 ### Flujo de páginas
@@ -131,13 +132,13 @@ El recorrido laboral va antes que las métricas para que el lector vea el contex
 
 ### ⚠️ NO agregar bloque `i18n` en `astro.config.mjs`
 
-El proyecto maneja i18n manualmente. Si se agrega el bloque `i18n` con `prefixDefaultLocale: true`, Vercel intercepta `/` y fuerza un redirect a `/en/`. El `astro.config.mjs` debe tener **solo** Tailwind + sitemap.
+El proyecto maneja i18n manualmente. Si se agrega el bloque `i18n` con `prefixDefaultLocale: true`, Vercel intercepta `/` y fuerza un redirect a `/en/`. El `astro.config.mjs` debe tener **solo** `site` + el integration de sitemap.
 
 ---
 
 ## Sistema de Diseño — "Linear-meets-terminal"
 
-Estética actual: **dark terminal refinado**, mono para metadata y sans para contenido. Todo vive en `src/styles/global.css` (~950 líneas), organizado mobile-first.
+Estética actual: **dark terminal refinado**, mono para metadata y sans para contenido. Todo vive en `src/styles/global.css` (~1.070 líneas), organizado mobile-first.
 
 ### Tokens (custom properties en `:root`)
 
@@ -156,10 +157,6 @@ Estética actual: **dark terminal refinado**, mono para metadata y sans para con
 ### Light mode
 
 **Dark es el default.** El light se activa con la clase `.light` en `<html>`, que redefine solo los tokens neutros (`--bg`, `--fg`, `--border`…). El accent/green/red **no cambian** entre modos.
-
-```css
-@custom-variant light (&:is(.light, .light *));
-```
 
 Para cambiar la paleta: editar `:root` y `html.light` en `global.css`. Los componentes no se tocan.
 
@@ -404,7 +401,7 @@ El `<h1>` visual es solo "Gian Barboza." (marcado `aria-hidden`). Al lado hay un
 - Cambios de **texto de rol** → respetar las dos capas. Persona lee → "Software Engineer". Máquina lee (o es `sr-only`) → "Senior Backend Engineer". **Nunca unificar las dos** — ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida)
 - Cambios de **layout/diseño** → editar el componente `.astro` + su bloque en `global.css`
 - Cambios de **paleta** → editar `:root` y `html.light` en `global.css`, **y sincronizar `og.png.ts`**
-- **CSS plano con las custom properties**, no clases de Tailwind nuevas
+- **CSS plano con las custom properties** — no hay framework de CSS y no se reintroduce Tailwind
 - **No crear archivos nuevos** si no es estrictamente necesario
 - **No agregar JS frameworks** — mantener Vanilla JS
 - **Mantener paridad de keys** entre `en.ts` y `es.ts` siempre
@@ -415,7 +412,11 @@ El `<h1>` visual es solo "Gian Barboza." (marcado `aria-hidden`). Al lado hay un
 
 ## Pendientes
 
-Estado al 2026-08-06, después del reposicionamiento de marca.
+Estado al 2026-08-06, después del reposicionamiento de marca y de sacar Tailwind.
+
+> **Validado el 2026-08-06** (Edge headless + CDP, 375/768/1024/1440): cero desborde horizontal en los cuatro anchos; `.hero-pitch` a 2 líneas y `.cta-title` a 3–4 líneas sin romperse; el `.terminal-body` **no scrollea horizontal en mobile** — la única línea larga envuelve en dos, que es lo que hace una terminal real. Los dos ítems de "verificación pendiente" quedaron cerrados.
+>
+> Un hallazgo del pase: el CSS que generaba el pipeline de Tailwind (Lightning CSS) **descartaba la propiedad estándar `backdrop-filter` y dejaba solo `-webkit-`**, así que el blur del nav computaba `none`. Al sacar Tailwind la propiedad sobrevive y el nav ahora sí compone su capa; el efecto colateral visible es que su texto pasó de antialiasing subpíxel a escala de grises. Es el **único** cambio de render de todo el sitio: de la barra hacia abajo el diff contra el build anterior es de 0 px.
 
 ### Requieren acción manual (fuera del código)
 
@@ -423,20 +424,14 @@ Estado al 2026-08-06, después del reposicionamiento de marca.
 - [ ] **Invalidar la caché del OG image** — el texto de `og.png` cambió con el reposicionamiento, pero LinkedIn/X/WhatsApp cachean la preview por semanas. Forzar refresh en el [Post Inspector de LinkedIn](https://www.linkedin.com/post-inspector/) y en el Card Validator de X
 - [ ] **Alinear LinkedIn con la web** — el headline debería seguir la misma estrategia de dos capas (ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida)): "Senior Backend Engineer" para el buscador interno de recruiters, la especialización en el about
 
-### Verificación pendiente
-
-- [ ] **Pase visual en los 4 breakpoints** — 375 / 768 / 1024 / 1440. El `.hero-pitch` (línea nueva del hero) y el `.cta-title` (título más largo, con `max-width: 24ch`) se dimensionaron **por cálculo, nunca se vieron en un navegador**. Es lo único del reposicionamiento que quedó sin validar visualmente
-- [ ] **Terminal en mobile** — la línea más larga es de 62 chars y el ancho útil a <600px ronda los 46, así que scrollea horizontal dentro de `.terminal-body`. Es el comportamiento heredado del diseño, pero nunca se validó si molesta
-
 ### Deuda técnica conocida
 
-- [ ] **Tailwind quedó residual** — tras borrar `SocialPill`/`Badge`/`SectionContainer`, el único consumidor real es `ContactModal.astro` (`hidden`, `fixed`, `inset-0`, `opacity-0`, `scale-95`, `animate-spin`). Se podrían reescribir en CSS plano y sacar `tailwindcss` + `@tailwindcss/vite` del `package.json`
-- [ ] **`404.astro` resuelve i18n en cliente**, no en build — el copy en español aparece recién después de que corre el script. Es la única página con ese patrón
+- [ ] **`404.astro` resuelve i18n en cliente**, no en build — el copy en español aparece recién después de que corre el script. Es la única página con ese patrón. ⚠️ Con output estático Vercel sirve `404.html` desde la raíz para cualquier ruta, así que un `/es/404.astro` no se dispararía solo; hay que evaluar si el patrón actual no es directamente la solución correcta
 - [ ] **`hero.*` y `term.hero.*` conviven** — quedaron dos familias de keys del hero tras el rediseño terminal. Las muertas ya se borraron, pero el naming sigue partido
 
 ### Contenido
 
-- [ ] **`CV.md` / `CV-es.md` más allá del resumen** — solo se reencuadró el párrafo de Summary. Los bullets de experiencia siguen redactados con el enfoque anterior (tecnologías) en vez del nuevo (problemas de negocio). Si se editan, correr `npm run cv` y commitear los dos PDFs
+- [x] **`CV.md` / `CV-es.md` reencuadrados completos** — ya no es solo el Summary: los bullets de experiencia pasaron de enfoque tecnologías a problemas de negocio (resultado primero, stack como medio). Ambos PDFs regenerados. **Recordatorio permanente**: después de editar los `.md`, correr `npm run cv` y commitear los dos PDFs
 
 ---
 
