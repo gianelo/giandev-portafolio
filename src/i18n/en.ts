@@ -13,38 +13,20 @@ export const en: Record<string, string> = {
   'nav.timeline': 'Journey',
   'nav.stack': 'Stack',
   'nav.projects': 'Projects',
-  'nav.contact': 'Contact',
   'nav.toggle.dark': 'Switch to dark mode',
   'nav.toggle.light': 'Switch to light mode',
-  'nav.skip': 'Skip to main content',
   'nav.lang.switch': 'Switch language to Spanish',
 
-  // ── Hero ─────────────────────────────────────────────────
-  'hero.title': 'Gian Barboza',
-  'hero.subtitle': 'Senior Backend Engineer',
-  'hero.badge': 'Available for remote work',
-  'hero.bio': 'Senior Backend Engineer with <strong>10+ years</strong> building distributed systems, <strong>payments infrastructure</strong> (Stripe, PayPal, DLocal, Shift4), and <strong>AI-powered automation</strong>. Ex-CTO who ships production-first solutions.',
-  'hero.tagline': '10+ years building production systems at scale',
-  'hero.cta.projects': 'View Projects',
-  'hero.cta.contact': 'Contact Me',
-  'hero.cta.email': 'Contact Me',
-  'cta.cv.download': 'Download Resume',
+  // ── CV (compartido Hero + CTA) ───────────────────────────
   'cta.cv.url': '/gian-barboza-cv.pdf',
 
   // ── Impact ───────────────────────────────────────────────
-  'impact.title': 'Key Impact',
-  'impact.years.number': '10+',
   'impact.years.label': 'Years of Experience',
-  'impact.uptime.number': '99.9%',
   'impact.uptime.label': 'Uptime on Critical Infrastructure',
-  'impact.volume.number': '$200K+',
   'impact.volume.label': 'Transactions Processed / Month',
-  'impact.payments.number': '5+',
   'impact.payments.label': 'Payment Providers Integrated',
 
   // ── Timeline ─────────────────────────────────────────────
-  'timeline.title': 'Journey',
-  'timeline.subtitle': 'From junior developer to CTO and senior backend on payments platforms',
 
   'timeline.now.period': 'Nov 2023 — Present',
   'timeline.now.role': 'Senior Backend Engineer',
@@ -67,18 +49,12 @@ export const en: Record<string, string> = {
   'timeline.fermat.desc': 'Built P2P Android apps on top of cryptocurrencies (taxi, e-commerce) where payments landed directly in the provider\'s wallet with no intermediaries. First exposure to decentralized systems and 100% remote work.',
 
   // ── Tech Stack ───────────────────────────────────────────
-  'stack.title': 'Technical Expertise',
   'stack.backend.title': 'Backend & Architecture',
   'stack.infra.title': 'Infrastructure',
   'stack.payments.title': 'Payments & Risk',
   'stack.ai.title': 'Automation & AI',
 
   // ── Projects ─────────────────────────────────────────────
-  'projects.title': 'Case Studies',
-  'projects.subtitle': 'Real problems, technical decisions, and measurable outcomes',
-  'projects.label.context': 'Context',
-  'projects.label.problem': 'Problem',
-  'projects.label.decision': 'Technical Decision',
 
   'projects.infra.title': 'Monolith to Distributed Infrastructure Migration',
   'projects.infra.context': 'Gift cards and top-up platform processing ~1,000 transactions/day and $100K–$300K in monthly volume, running on a single server.',
@@ -105,9 +81,6 @@ export const en: Record<string, string> = {
   'projects.payments.outcome': 'Continuous payment availability during provider incidents · Routing optimized for cost and conversion · 5 gateways in production',
 
   // ── Contact ──────────────────────────────────────────────
-  'contact.title': "Let's Work Together",
-  'contact.subtitle': 'Available for full-time remote opportunities',
-  'contact.cta': 'Get in Touch',
   'contact.modal.title': "Let's Talk",
   'contact.modal.intro': "Tell me about the opportunity or project. I'll get back by email within 24h.",
   'contact.modal.close': 'Close',
@@ -136,6 +109,16 @@ export const en: Record<string, string> = {
   'term.hero.available': 'Available',
   'term.hero.tagline.html': 'Senior Software Engineer specialized in <strong>payment platforms</strong>, <strong>distributed systems</strong> and <strong>AI-assisted development</strong>.',
   'term.hero.pitch': 'Turning complex business problems into reliable production systems.',
+
+  // ── Terminal (Hero) ──────────────────────────────────────
+  // Capa marketing. Ancho útil ~66 chars a ≥1100px — no pasarse.
+  'term.terminal.role': 'gian.barboza · Senior Software Engineer',
+  'term.terminal.building': 'Building payments, distributed systems & AI-assisted software.',
+  'term.terminal.p1': 'Production first',
+  'term.terminal.p2': 'Measure before optimizing',
+  'term.terminal.p3': 'Evolution over rewrites',
+  'term.terminal.p4': 'Architecture over frameworks',
+  'term.terminal.status': 'Available for full-time remote',
 
   'term.cta.resume': 'Download résumé',
   'term.cta.contact': 'Get in touch',

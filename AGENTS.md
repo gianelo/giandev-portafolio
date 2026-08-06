@@ -46,7 +46,7 @@ Pero **"Senior Backend Engineer" es el término que los recruiters buscan**. Sac
 |-----------|------|
 | `term.hero.tagline.html` (en/es) | Título del hero: rol + tres dominios de especialización |
 | `term.hero.pitch` (en/es) | Subtítulo: la propuesta de valor (problemas de negocio → sistemas confiables) |
-| `Terminal.astro` → `whoami` + `engineering_principles` | Hardcoded, `aria-hidden`. Los principios comunican el posicionamiento: cómo trabaja, no qué frameworks usa |
+| `Terminal.astro` → `term.terminal.*` | Los principios comunican el posicionamiento: **cómo trabaja**, no qué frameworks usa |
 | `term.cta.title.html` (en/es) | "Open to Senior Backend & Software Engineering Roles" — híbrido explícito |
 | `og.png.ts` → tagline | Texto **dentro de un PNG** → cero valor SEO, los buscadores no lo leen. Es puro lo-que-ve-quien-comparte-el-link |
 | `Layout.astro` → easter egg de consola | Mantiene "senior backend engineer" **a propósito**: solo lo ven devs y refuerza el término del recruiter |
@@ -104,7 +104,7 @@ El recorrido laboral va antes que las métricas para que el lector vea el contex
 |------------------------|----------|-----------------------------------------------------------------------------------|
 | `Nav.astro`            | Nav      | Sticky con backdrop blur. Wordmark + dot verde pulsante + **reloj en vivo GMT-5**, links de sección, switcher EN/ES, theme toggle, CTA de contacto |
 | `Hero.astro`           | Hero     | Meta line (Available · ubicación · años), nombre grande, **tagline** (rol + especialización) + **pitch** (propuesta de valor), 4 botones (Contact, Résumé, LinkedIn, GitHub) + `<Terminal />` al lado |
-| `Terminal.astro`       | —        | Bloque ASCII decorativo (`$ whoami`, `$ engineering_principles`, `$ status`) con cursor parpadeante. `aria-hidden` — texto hardcoded, **no i18n** (pendiente: se ve en inglés también en `/es/`). Ancho útil ~66 chars a ≥1100px |
+| `Terminal.astro`       | —        | Bloque ASCII decorativo (`$ whoami`, `$ engineering_principles`, `$ status`) con cursor parpadeante. `aria-hidden`. Recibe `t` — el copy vive en `term.terminal.*`; solo los `$ comandos` quedan hardcoded. **Ancho útil ~66 chars a ≥1100px** |
 | `Timeline.astro`       | `#journey` | 4 hitos laborales (reciente primero), pill "Current" en el actual              |
 | `Impact.astro`         | `#impact`  | 4 métricas con **contador animado** (IntersectionObserver + easing cúbico) y sparkline SVG de fondo |
 | `Sparkline.astro`      | —        | SVG determinista generado con `sin/cos` desde un `seed` — mismo output en cada build |
@@ -113,10 +113,6 @@ El recorrido laboral va antes que las métricas para que el lector vea el contex
 | `Contact.astro`        | `#contact` | CTA grande + 2 botones + fila de contactos en mono. Renderiza también `<ContactModal />` y el `<footer>` |
 | `ContactModal.astro`   | —        | Modal con form (name/email/message) → Web3Forms. Focus trap, `inert` en el fondo, honeypot + timing guard |
 | `SectionHeading.astro` | —        | Heading compartido: `label` (con dot accent) + `title` + `sub` opcional          |
-
-### Componentes huérfanos
-
-`SocialPill.astro`, `Badge.astro` y `SectionContainer.astro` **no los importa nadie** — quedaron del diseño anterior. Los dos primeros usan variantes `dark:` de Tailwind que ya no funcionan (el proyecto invirtió la lógica a `.light`). Si tocás esa zona, borralos en vez de arreglarlos.
 
 ### Flujo de páginas
 
@@ -210,7 +206,7 @@ Vanilla JS puro vía `<script is:inline>`. Cuando hace falta pasar strings tradu
 
 ## Sistema de i18n
 
-**Regla clave**: todo el contenido textual vive en los archivos de traducción, **nunca hardcodeado en componentes**. (Excepción consciente: `Terminal.astro`, que es decorativo y `aria-hidden`.)
+**Regla clave**: todo el contenido textual vive en los archivos de traducción, **nunca hardcodeado en componentes**. Las únicas excepciones son los `$ comandos` del `Terminal.astro` (son shell, no copy) y los glyphs de `TechStack.astro` (`/srv`, `/infra`…).
 
 - `src/i18n/en.ts` — Strings en inglés
 - `src/i18n/es.ts` — Strings en español (mismas keys)
@@ -229,7 +225,7 @@ Los componentes reciben `t` como prop y llaman `t('key')`.
 | `projects.*` | 4 case studies × (title / context / problem / decision / outcome)  |
 | `stack.*`    | Títulos de las 4 categorías (los tags viven en `TechStack.astro`)  |
 | `contact.*`  | Copy del CTA, del modal, del form, y URLs de contacto              |
-| **`term.*`** | Copy específico del rediseño terminal: labels de sección numerados (`01 — Journey`), métricas de los case cards, eyebrow/título del CTA, footer |
+| **`term.*`** | Copy específico del rediseño terminal: hero (`term.hero.*`), bloque ASCII (`term.terminal.*`), labels de sección numerados (`01 — Journey`), métricas de los case cards, eyebrow/título del CTA, footer |
 
 Keys con HTML se renderizan con `set:html`: `hero.bio`, `term.hero.tagline.html`, `term.cta.title.html`.
 `term.footer.copy` usa el placeholder `{year}`, que `Contact.astro` reemplaza en build.
@@ -277,7 +273,7 @@ En `/` o `/en/` muestra **ES** → lleva a `/es/`. En `/es/` muestra **EN** → 
 ├── src/
 │   ├── assets/
 │   │   ├── fonts/inter-400.ttf    ← Usado por og.png.ts (satori)
-│   │   └── profile.jpg            ← Legacy: el diseño terminal no muestra foto
+│   │   └── profile.jpg            ← Foto del CV (la web no muestra foto)
 │   ├── components/
 │   │   ├── Nav.astro              ← Sticky, reloj GMT-5, theme toggle, lang switcher
 │   │   ├── Hero.astro
@@ -289,10 +285,7 @@ En `/` o `/en/` muestra **ES** → lleva a `/es/`. En `/es/` muestra **EN** → 
 │   │   ├── TechStack.astro        ← #stack
 │   │   ├── Contact.astro          ← #contact + footer
 │   │   ├── ContactModal.astro     ← Form + focus trap + anti-bot
-│   │   ├── SectionHeading.astro
-│   │   ├── SocialPill.astro       ← HUÉRFANO (diseño anterior)
-│   │   ├── Badge.astro            ← HUÉRFANO (diseño anterior)
-│   │   └── SectionContainer.astro ← HUÉRFANO (diseño anterior)
+│   │   └── SectionHeading.astro
 │   ├── i18n/
 │   │   ├── en.ts                  ← EDITAR AQUÍ contenido en inglés
 │   │   ├── es.ts                  ← EDITAR AQUÍ contenido en español
@@ -338,7 +331,7 @@ El `<h1>` visual es solo "Gian Barboza." (marcado `aria-hidden`). Al lado hay un
 ⚠️ **`meta.h1.role` es capa SEO**: lleva "Senior Backend Engineer" aunque el hero visible diga "Software Engineer". No lo "corrijas" para que coincida — ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida).
 
 ### Pendiente
-- Submit del sitemap a [Google Search Console](https://search.google.com/search-console)
+- Submit del sitemap a [Google Search Console](https://search.google.com/search-console) — ver [Pendientes](#pendientes)
 
 ---
 
@@ -415,6 +408,28 @@ El `<h1>` visual es solo "Gian Barboza." (marcado `aria-hidden`). Al lado hay un
 - **Mantener paridad de keys** entre `en.ts` y `es.ts` siempre
 - **No agregar emojis** — usar SVG inline si hace falta iconografía
 - Todo cambio de layout se valida en los 4 breakpoints (mobile-first)
+
+---
+
+## Pendientes
+
+Estado al 2026-08-06, después del reposicionamiento de marca.
+
+### Requieren acción manual (fuera del código)
+
+- **Submit del sitemap a Google Search Console** — property `gianbarboza.com`, sitemap en `https://gianbarboza.com/sitemap-index.xml`. Nunca se hizo
+- **Invalidar la caché del OG image** — el texto de `og.png` cambió con el reposicionamiento, pero LinkedIn/X/WhatsApp cachean la preview por semanas. Forzar refresh en el [Post Inspector de LinkedIn](https://www.linkedin.com/post-inspector/) y en el Card Validator de X
+- **Alinear LinkedIn con la web** — el headline de LinkedIn debería seguir la misma estrategia de dos capas (ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida)): "Senior Backend Engineer" para el buscador interno de recruiters, la especialización en el about
+
+### Verificación pendiente
+
+- **Pase visual en los 4 breakpoints.** El `.hero-pitch` (línea nueva del hero) y el `.cta-title` (título más largo, con `max-width: 24ch`) se dimensionaron **por cálculo, no en navegador**. Conviene mirarlos en 375 / 768 / 1024 / 1440 antes de darlos por buenos
+- **Terminal en mobile.** La línea más larga es de 62 chars y el ancho útil a <600px ronda los 46 → scrollea horizontal dentro de `.terminal-body`. Es el comportamiento heredado, pero nunca se validó si molesta
+
+### Deuda técnica conocida
+
+- **Tailwind quedó residual.** Tras borrar `SocialPill`/`Badge`/`SectionContainer`, el único consumidor real es `ContactModal.astro` (`hidden`, `fixed`, `inset-0`, `opacity-0`, `scale-95`, `animate-spin`). Se podrían reescribir en CSS plano y sacar la dependencia entera
+- **`404.astro` resuelve i18n en cliente**, no en build — el copy en español aparece después de que corre el script. Es la única página con ese patrón
 
 ---
 
