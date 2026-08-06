@@ -6,6 +6,8 @@ Landing page personal de **Gian Barboza**, ingeniero de software con 10+ años d
 
 **Producción**: [https://gianbarboza.com](https://gianbarboza.com) (custom domain en Vercel, apex como canonical, `www` redirige con 308).
 
+📋 Trabajo abierto y deuda conocida: **[Pendientes](#pendientes)** (al final del archivo).
+
 ---
 
 ## ⚠️ Posicionamiento de Marca — estrategia híbrida
@@ -417,19 +419,24 @@ Estado al 2026-08-06, después del reposicionamiento de marca.
 
 ### Requieren acción manual (fuera del código)
 
-- **Submit del sitemap a Google Search Console** — property `gianbarboza.com`, sitemap en `https://gianbarboza.com/sitemap-index.xml`. Nunca se hizo
-- **Invalidar la caché del OG image** — el texto de `og.png` cambió con el reposicionamiento, pero LinkedIn/X/WhatsApp cachean la preview por semanas. Forzar refresh en el [Post Inspector de LinkedIn](https://www.linkedin.com/post-inspector/) y en el Card Validator de X
-- **Alinear LinkedIn con la web** — el headline de LinkedIn debería seguir la misma estrategia de dos capas (ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida)): "Senior Backend Engineer" para el buscador interno de recruiters, la especialización en el about
+- [ ] **Submit del sitemap a Google Search Console** — property `gianbarboza.com`, sitemap en `https://gianbarboza.com/sitemap-index.xml`. Nunca se hizo
+- [ ] **Invalidar la caché del OG image** — el texto de `og.png` cambió con el reposicionamiento, pero LinkedIn/X/WhatsApp cachean la preview por semanas. Forzar refresh en el [Post Inspector de LinkedIn](https://www.linkedin.com/post-inspector/) y en el Card Validator de X
+- [ ] **Alinear LinkedIn con la web** — el headline debería seguir la misma estrategia de dos capas (ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida)): "Senior Backend Engineer" para el buscador interno de recruiters, la especialización en el about
 
 ### Verificación pendiente
 
-- **Pase visual en los 4 breakpoints.** El `.hero-pitch` (línea nueva del hero) y el `.cta-title` (título más largo, con `max-width: 24ch`) se dimensionaron **por cálculo, no en navegador**. Conviene mirarlos en 375 / 768 / 1024 / 1440 antes de darlos por buenos
-- **Terminal en mobile.** La línea más larga es de 62 chars y el ancho útil a <600px ronda los 46 → scrollea horizontal dentro de `.terminal-body`. Es el comportamiento heredado, pero nunca se validó si molesta
+- [ ] **Pase visual en los 4 breakpoints** — 375 / 768 / 1024 / 1440. El `.hero-pitch` (línea nueva del hero) y el `.cta-title` (título más largo, con `max-width: 24ch`) se dimensionaron **por cálculo, nunca se vieron en un navegador**. Es lo único del reposicionamiento que quedó sin validar visualmente
+- [ ] **Terminal en mobile** — la línea más larga es de 62 chars y el ancho útil a <600px ronda los 46, así que scrollea horizontal dentro de `.terminal-body`. Es el comportamiento heredado del diseño, pero nunca se validó si molesta
 
 ### Deuda técnica conocida
 
-- **Tailwind quedó residual.** Tras borrar `SocialPill`/`Badge`/`SectionContainer`, el único consumidor real es `ContactModal.astro` (`hidden`, `fixed`, `inset-0`, `opacity-0`, `scale-95`, `animate-spin`). Se podrían reescribir en CSS plano y sacar la dependencia entera
-- **`404.astro` resuelve i18n en cliente**, no en build — el copy en español aparece después de que corre el script. Es la única página con ese patrón
+- [ ] **Tailwind quedó residual** — tras borrar `SocialPill`/`Badge`/`SectionContainer`, el único consumidor real es `ContactModal.astro` (`hidden`, `fixed`, `inset-0`, `opacity-0`, `scale-95`, `animate-spin`). Se podrían reescribir en CSS plano y sacar `tailwindcss` + `@tailwindcss/vite` del `package.json`
+- [ ] **`404.astro` resuelve i18n en cliente**, no en build — el copy en español aparece recién después de que corre el script. Es la única página con ese patrón
+- [ ] **`hero.*` y `term.hero.*` conviven** — quedaron dos familias de keys del hero tras el rediseño terminal. Las muertas ya se borraron, pero el naming sigue partido
+
+### Contenido
+
+- [ ] **`CV.md` / `CV-es.md` más allá del resumen** — solo se reencuadró el párrafo de Summary. Los bullets de experiencia siguen redactados con el enfoque anterior (tecnologías) en vez del nuevo (problemas de negocio). Si se editan, correr `npm run cv` y commitear los dos PDFs
 
 ---
 
