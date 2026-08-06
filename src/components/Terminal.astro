@@ -1,20 +1,26 @@
 ---
+export interface Props {
+  t: (key: string) => string;
+}
+
+const { t } = Astro.props;
+
 // Capa marketing (ver AGENTS.md → Posicionamiento de Marca): acá va
 // "Software Engineer", no "Backend Engineer".
-// El ancho útil a ≥1100px es ~66 caracteres — mantener las líneas por debajo.
+// Los `$ comandos` no se traducen — son shell, no copy.
 const lines = [
   { t: '$ whoami', cls: 'prompt' },
-  { t: 'gian.barboza · Senior Software Engineer', cls: 'key' },
-  { t: 'Building payments, distributed systems & AI-assisted software.', cls: 'val' },
+  { t: t('term.terminal.role'), cls: 'key' },
+  { t: t('term.terminal.building'), cls: 'val' },
   { t: '' },
   { t: '$ engineering_principles', cls: 'prompt' },
-  { t: '✓', cls: 'ok', suf: ' Production first' },
-  { t: '✓', cls: 'ok', suf: ' Measure before optimizing' },
-  { t: '✓', cls: 'ok', suf: ' Evolution over rewrites' },
-  { t: '✓', cls: 'ok', suf: ' Architecture over frameworks' },
+  { t: '✓', cls: 'ok', suf: ` ${t('term.terminal.p1')}` },
+  { t: '✓', cls: 'ok', suf: ` ${t('term.terminal.p2')}` },
+  { t: '✓', cls: 'ok', suf: ` ${t('term.terminal.p3')}` },
+  { t: '✓', cls: 'ok', suf: ` ${t('term.terminal.p4')}` },
   { t: '' },
   { t: '$ status', cls: 'prompt' },
-  { t: '✓ Available for full-time remote', cls: 'ok' },
+  { t: `✓ ${t('term.terminal.status')}`, cls: 'ok' },
 ];
 ---
 

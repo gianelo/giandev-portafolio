@@ -13,38 +13,20 @@ export const es: Record<string, string> = {
   'nav.timeline': 'Recorrido',
   'nav.stack': 'Stack',
   'nav.projects': 'Proyectos',
-  'nav.contact': 'Contacto',
   'nav.toggle.dark': 'Cambiar a modo oscuro',
   'nav.toggle.light': 'Cambiar a modo claro',
-  'nav.skip': 'Saltar al contenido principal',
   'nav.lang.switch': 'Cambiar idioma a Inglés',
 
-  // ── Hero ─────────────────────────────────────────────────
-  'hero.title': 'Gian Barboza',
-  'hero.subtitle': 'Ingeniero Backend Senior',
-  'hero.badge': 'Disponible para trabajo remoto',
-  'hero.bio': 'Ingeniero Backend Senior con <strong>más de 10 años</strong> construyendo sistemas distribuidos, <strong>infraestructura de pagos</strong> (Stripe, PayPal, DLocal, Shift4) y <strong>automatización con IA</strong>. Ex-CTO con enfoque en soluciones production-first.',
-  'hero.tagline': 'Más de 10 años construyendo sistemas de producción a escala',
-  'hero.cta.projects': 'Ver Proyectos',
-  'hero.cta.contact': 'Contactarme',
-  'hero.cta.email': 'Contáctame',
-  'cta.cv.download': 'Descargar CV',
+  // ── CV (compartido Hero + CTA) ───────────────────────────
   'cta.cv.url': '/gian-barboza-cv-es.pdf',
 
   // ── Impact ───────────────────────────────────────────────
-  'impact.title': 'Impacto Clave',
-  'impact.years.number': '10+',
   'impact.years.label': 'Años de Experiencia',
-  'impact.uptime.number': '99.9%',
   'impact.uptime.label': 'Uptime en Infraestructura Crítica',
-  'impact.volume.number': '$200K+',
   'impact.volume.label': 'Transacciones Procesadas / Mes',
-  'impact.payments.number': '5+',
   'impact.payments.label': 'Procesadores de Pago Integrados',
 
   // ── Timeline ─────────────────────────────────────────────
-  'timeline.title': 'Recorrido',
-  'timeline.subtitle': 'De desarrollador junior a CTO y backend senior en plataformas de pagos',
 
   'timeline.now.period': 'Nov 2023 — Actualidad',
   'timeline.now.role': 'Senior Backend Engineer',
@@ -67,18 +49,12 @@ export const es: Record<string, string> = {
   'timeline.fermat.desc': 'Desarrollé apps Android P2P sobre criptomonedas (taxi, e-commerce) donde el pago iba directo a la wallet del proveedor sin intermediarios. Primera exposición a sistemas descentralizados y a un entorno 100% remoto.',
 
   // ── Tech Stack ───────────────────────────────────────────
-  'stack.title': 'Expertise Técnico',
   'stack.backend.title': 'Backend & Arquitectura',
   'stack.infra.title': 'Infraestructura',
   'stack.payments.title': 'Pagos & Riesgo',
   'stack.ai.title': 'Automatización & IA',
 
   // ── Projects ─────────────────────────────────────────────
-  'projects.title': 'Case Studies',
-  'projects.subtitle': 'Problemas reales, decisiones técnicas y resultados medibles',
-  'projects.label.context': 'Contexto',
-  'projects.label.problem': 'Problema',
-  'projects.label.decision': 'Decisión Técnica',
 
   'projects.infra.title': 'Migración de Monolito a Infraestructura Distribuida',
   'projects.infra.context': 'Plataforma de giftcards y recargas con ~1,000 transacciones diarias y entre $100K y $300K mensuales procesados, corriendo sobre un único servidor.',
@@ -105,9 +81,6 @@ export const es: Record<string, string> = {
   'projects.payments.outcome': 'Disponibilidad de cobro continua durante incidentes de proveedores · Routing optimizado por costo y conversión · 5 gateways en producción',
 
   // ── Contact ──────────────────────────────────────────────
-  'contact.title': 'Trabajemos Juntos',
-  'contact.subtitle': 'Disponible para oportunidades full-time remotas',
-  'contact.cta': 'Ponte en Contacto',
   'contact.modal.title': 'Hablemos',
   'contact.modal.intro': 'Cuéntame sobre la oportunidad o el proyecto. Te respondo por email en menos de 24h.',
   'contact.modal.close': 'Cerrar',
@@ -136,6 +109,16 @@ export const es: Record<string, string> = {
   'term.hero.available': 'Disponible',
   'term.hero.tagline.html': 'Ingeniero de software especializado en <strong>plataformas de pago</strong>, <strong>sistemas distribuidos</strong> y <strong>desarrollo asistido por IA</strong>.',
   'term.hero.pitch': 'Transformo problemas complejos de negocio en soluciones confiables listas para producción.',
+
+  // ── Terminal (Hero) ──────────────────────────────────────
+  // Capa marketing. Ancho útil ~66 chars a ≥1100px — no pasarse.
+  'term.terminal.role': 'gian.barboza · Ingeniero de Software Senior',
+  'term.terminal.building': 'Pagos, sistemas distribuidos y desarrollo asistido por IA.',
+  'term.terminal.p1': 'Producción primero',
+  'term.terminal.p2': 'Medir antes de optimizar',
+  'term.terminal.p3': 'Evolucionar antes que reescribir',
+  'term.terminal.p4': 'Arquitectura sobre frameworks',
+  'term.terminal.status': 'Disponible para full-time remoto',
 
   'term.cta.resume': 'Descargar CV',
   'term.cta.contact': 'Hablemos',

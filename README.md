@@ -58,7 +58,7 @@ src/
 ├── components/
 │   ├── Nav.astro            # Sticky nav, live GMT-5 clock, theme toggle, lang switcher
 │   ├── Hero.astro           # Name, tagline, CTAs + terminal block
-│   ├── Terminal.astro       # Decorative ASCII terminal (aria-hidden)
+│   ├── Terminal.astro       # Decorative ASCII terminal (aria-hidden, i18n)
 │   ├── Timeline.astro       # #journey — 4 career milestones
 │   ├── Impact.astro         # #impact — 4 metrics with animated counters
 │   ├── Sparkline.astro      # Deterministic SVG sparkline
@@ -82,8 +82,6 @@ src/
 └── styles/
     └── global.css           # Design tokens, light variant, layout, all component styles
 ```
-
-`SocialPill.astro`, `Badge.astro`, and `SectionContainer.astro` are leftovers from the previous design and are no longer imported anywhere.
 
 ---
 

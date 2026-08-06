@@ -23,7 +23,7 @@ pdf_options:
 
 ## Summary
 
-Senior Backend Engineer with 10+ years building production systems at scale. Ex-CTO with hands-on expertise in distributed systems, payments infrastructure (Stripe, PayPal, DLocal, Shift4, Payeezy) and AI-driven automation. Led the migration of a single-server monolith to a 99.9%-uptime distributed platform processing $200K+/month in transactions.
+Senior Backend Engineer with 10+ years turning complex business problems into reliable production systems. Ex-CTO with hands-on expertise in payment platforms (Stripe, PayPal, DLocal, Shift4, Payeezy), distributed architecture and AI-assisted development. Led the migration of a single-server monolith to a 99.9%-uptime distributed platform processing $200K+/month in transactions.
 
 ## Experience
 
