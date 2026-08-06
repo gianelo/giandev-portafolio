@@ -288,11 +288,23 @@ a { color: inherit; text-decoration: none; }
   font-weight: 400;
   color: var(--fg-muted);
   letter-spacing: -0.01em;
-  margin: 0 0 28px;
+  margin: 0 0 10px;
   max-width: 36ch;
   line-height: 1.45;
 }
 .hero-tagline strong { color: var(--fg); font-weight: 500; }
+
+/* Segunda línea del hero: la propuesta de valor, un escalón por debajo
+   del tagline en tamaño y contraste. */
+.hero-pitch {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--fg-dim);
+  letter-spacing: -0.01em;
+  margin: 0;
+  max-width: 38ch;
+  line-height: 1.5;
+}
 
 .hero-actions {
   display: flex;
@@ -689,7 +701,9 @@ html.light .tag { background: rgba(0,0,0,0.02); }
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.05;
-  margin: 0 0 18px;
+  /* Sin tope el título se estira a los 1240px del wrap y queda ilegible */
+  max-width: 24ch;
+  margin: 0 auto 18px;
 }
 .cta-title .accent {
   color: var(--accent);
@@ -748,6 +762,7 @@ html.light .tag { background: rgba(0,0,0,0.02); }
   .hero { padding-top: 88px; padding-bottom: 72px; }
   .hero-meta { font-size: 11px; gap: 8px 14px; margin-bottom: 32px; }
   .hero-tagline { font-size: 19px; }
+  .hero-pitch { font-size: 16px; }
   .hero-actions { gap: 10px; }
 
   .stats-grid { grid-template-columns: repeat(4, 1fr); }
@@ -803,6 +818,7 @@ html.light .tag { background: rgba(0,0,0,0.02); }
   .hero { padding-top: 112px; padding-bottom: 96px; }
   .hero-name { font-size: clamp(72px, 9vw, 96px); }
   .hero-tagline { font-size: 21px; }
+  .hero-pitch { font-size: 17px; }
 
   .journey-item { grid-template-columns: 200px 1fr; gap: 48px; padding: 32px 0; }
   .journey-role { font-size: 19px; }

@@ -1,8 +1,12 @@
 export const es: Record<string, string> = {
   // ── Meta ─────────────────────────────────────────────────
-  'meta.title': 'Gian Barboza – Ingeniero Backend Senior · Pagos & IA',
-  'meta.description': 'Ingeniero Backend Senior con 10+ años construyendo infraestructura distribuida de pagos (Stripe, PayPal, DLocal, Shift4) y automatización con IA. Ex-CTO. Disponible para trabajo remoto.',
-  'meta.h1.role': 'Ingeniero Backend Senior especializado en infraestructura de pagos y automatización con IA',
+  // Capa SEO: mantiene "Ingeniero Backend Senior" — el término que buscan los
+  // recruiters. El hero visible posiciona como Ingeniero de Software (marketing).
+  'meta.title': 'Gian Barboza | Ingeniero Backend Senior | Plataformas de Pago',
+  'meta.description': 'Ingeniero Backend Senior con más de 10 años diseñando plataformas de pago, sistemas distribuidos y soluciones escalables. Disponible para trabajo remoto.',
+  // Se renderiza sr-only dentro del <h1> — invisible para el visitante, es la
+  // señal on-page más fuerte. Lleva la keyword del recruiter + la nueva cola.
+  'meta.h1.role': 'Ingeniero Backend Senior especializado en plataformas de pago, sistemas distribuidos y desarrollo asistido por IA',
 
   // ── Nav ──────────────────────────────────────────────────
   'nav.impact': 'Impacto',
@@ -130,7 +134,8 @@ export const es: Record<string, string> = {
   'term.hero.location': 'Rionegro, CO · GMT-5',
   'term.hero.years': '10+ años',
   'term.hero.available': 'Disponible',
-  'term.hero.tagline.html': 'Ingeniero backend senior construyendo <strong>infraestructura de pagos distribuida</strong> y <strong>automatización con IA</strong>. Ex-CTO. Production-first.',
+  'term.hero.tagline.html': 'Ingeniero de software especializado en <strong>plataformas de pago</strong>, <strong>sistemas distribuidos</strong> y <strong>desarrollo asistido por IA</strong>.',
+  'term.hero.pitch': 'Transformo problemas complejos de negocio en soluciones confiables listas para producción.',
 
   'term.cta.resume': 'Descargar CV',
   'term.cta.contact': 'Hablemos',
@@ -175,7 +180,7 @@ export const es: Record<string, string> = {
   'term.case.payments.result.text': 'gateways consolidados. Disponibilidad continua durante incidentes de proveedores. Routing optimizado por costo y conversión.',
 
   'term.cta.eyebrow': '— Trabajemos juntos',
-  'term.cta.title.html': 'Disponible para roles senior backend<br/>en <span class="accent">pagos</span> e <span class="accent">IA</span>.',
+  'term.cta.title.html': 'Disponible para roles Senior Backend<br/>e Ingeniería de Software en <span class="accent">pagos</span> e <span class="accent">IA</span>.',
   'term.cta.sub': 'Disponible para oportunidades full-time remotas. Respuesta más rápida por email o LinkedIn.',
 
   'term.footer.copy': '© {year} Gian Barboza · gianbarboza.com',

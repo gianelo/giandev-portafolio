@@ -200,7 +200,7 @@ export async function GET() {
                     maxWidth: '960px',
                   },
                   children:
-                    'Senior backend engineer · Distributed payments infrastructure & AI-powered automation.',
+                    'Software engineer · Payment platforms, distributed systems & AI-assisted development.',
                 },
               },
             ],

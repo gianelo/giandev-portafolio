@@ -2,27 +2,80 @@
 
 ## ¿Qué es este proyecto?
 
-Landing page personal de **Gian Barboza**, Senior Backend Engineer con 10+ años de experiencia. El objetivo principal es **conseguir trabajo remoto** como Backend / Platform Engineer. No es un blog ni un portafolio de diseño — es un pitch profesional estático, rápido y enfocado en conversión.
+Landing page personal de **Gian Barboza**, ingeniero de software con 10+ años de experiencia. El objetivo principal es **conseguir trabajo remoto** en roles Senior Backend / Software Engineering. No es un blog ni un portafolio de diseño — es un pitch profesional estático, rápido y enfocado en conversión.
 
 **Producción**: [https://gianbarboza.com](https://gianbarboza.com) (custom domain en Vercel, apex como canonical, `www` redirige con 308).
 
 ---
 
+## ⚠️ Posicionamiento de Marca — estrategia híbrida
+
+**Leé esto antes de tocar cualquier texto que mencione un rol.**
+
+La web usa **dos capas deliberadamente distintas**. Si ves "Software Engineer" en el hero y "Senior Backend Engineer" en el `<title>`, **no es una inconsistencia — es la estrategia. No las unifiques.**
+
+### El razonamiento
+
+Gian se posiciona como **Software Engineer** con especialización fuerte en backend, plataformas de pago, arquitectura distribuida y desarrollo asistido por IA. No quiere que lo lean como "PHP Backend Developer", y no quiere que la web gire alrededor de **tecnologías** (PHP, Laravel…) sino del **tipo de problemas que resuelve**.
+
+Pero **"Senior Backend Engineer" es el término que los recruiters buscan**. Sacarlo del SEO costaría tráfico calificado. De ahí las dos capas.
+
+| Capa | Quién la lee | Término |
+|------|--------------|---------|
+| **SEO / máquina** | Googlebot, ATS, recruiters filtrando | **Senior Backend Engineer** / Ingeniero Backend Senior |
+| **Marketing / humano** | El visitante que ya está en la página | **Software Engineer** specialized in… |
+
+### Capa SEO — NO quitar "Backend Engineer" de acá
+
+| Ubicación | Por qué |
+|-----------|---------|
+| `meta.title` (en/es) | Título en SERP |
+| `meta.description` (en/es) | Snippet en SERP |
+| **`meta.h1.role`** (en/es) | ⚠️ Se renderiza `sr-only` **dentro del `<h1>`** → invisible al visitante, señal on-page más fuerte. Aunque viva en el hero, es **capa SEO**, no marketing |
+| `Layout.astro` → JSON-LD `jobTitle` | Knowledge Graph |
+| `Layout.astro` → `knowsAbout: 'Backend Engineering'` | Campo de keywords del schema |
+| `Layout.astro` → props `title`/`description` por defecto | Fallback; mantener alineado con `meta.*` |
+| `timeline.now.role` (en/es) | Es su **cargo real** en Hablax. Coincide con LinkedIn. Keyword honesta en body copy indexado |
+| `term.section.01.title` (en/es) | "Junior dev → CTO → senior backend…" — narrativa indexada que refuerza el término |
+| `stack.backend.title` | Nombre de categoría |
+| **`CV.md` / `CV-es.md`** | Los ATS parsean literal. Es donde el término más rinde con recruiters |
+
+### Capa marketing — acá va "Software Engineer"
+
+| Ubicación | Nota |
+|-----------|------|
+| `term.hero.tagline.html` (en/es) | Título del hero: rol + tres dominios de especialización |
+| `term.hero.pitch` (en/es) | Subtítulo: la propuesta de valor (problemas de negocio → sistemas confiables) |
+| `Terminal.astro` → `whoami` + `engineering_principles` | Hardcoded, `aria-hidden`. Los principios comunican el posicionamiento: cómo trabaja, no qué frameworks usa |
+| `term.cta.title.html` (en/es) | "Open to Senior Backend & Software Engineering Roles" — híbrido explícito |
+| `og.png.ts` → tagline | Texto **dentro de un PNG** → cero valor SEO, los buscadores no lo leen. Es puro lo-que-ve-quien-comparte-el-link |
+| `Layout.astro` → easter egg de consola | Mantiene "senior backend engineer" **a propósito**: solo lo ven devs y refuerza el término del recruiter |
+
+### Regla práctica
+
+Antes de cambiar un texto de rol, preguntate: **¿lo lee una persona o una máquina?**
+Persona → Software Engineer. Máquina (o invisible, como `sr-only`) → Senior Backend Engineer.
+
+---
+
 ## Stack Técnico
 
-| Herramienta                     | Versión   | Uso                                                                 |
-|---------------------------------|-----------|---------------------------------------------------------------------|
-| Astro                           | 5.x       | Framework de sitio estático                                         |
-| Tailwind CSS                    | 4.x       | Estilos utility-first (con `@theme` para overrides)                 |
-| `@astrojs/sitemap`              | 3.x       | Genera `sitemap-index.xml` automáticamente al build                 |
-| `@fontsource-variable/onest`    | 5.x       | Onest Variable como única fuente del proyecto                       |
-| `astro:assets` + `<Image>`      | built-in  | Optimización automática de imágenes (foto Hero → WebP)              |
-| `@vercel/analytics`             | 2.x       | Web Analytics (componente `<Analytics />` en `Layout.astro`)        |
-| `satori` + `@resvg/resvg-js`    | —         | Genera `og.png` (1200×630) al build vía `src/pages/og.png.ts`       |
-| Web3Forms                       | —         | Endpoint externo del form de contacto (POST sin SDK)                |
-| md-to-pdf (via npx)             | —         | Genera `public/gian-barboza-cv.pdf` desde `CV.md`                   |
-| Vanilla JS                      | —         | Theme toggle, scroll observer, modal — sin frameworks JS            |
-| Node.js                         | 22 (nvm)  | Entorno de desarrollo                                               |
+| Herramienta                          | Versión  | Uso                                                                 |
+|--------------------------------------|----------|---------------------------------------------------------------------|
+| Astro                                | 6.x      | Framework de sitio estático                                         |
+| Tailwind CSS                         | 4.x      | Instalado vía `@tailwindcss/vite`. **Uso residual** — ver nota abajo |
+| `@astrojs/sitemap`                   | 3.x      | Genera `sitemap-index.xml` automáticamente al build                 |
+| `@fontsource-variable/inter-tight`   | 5.x      | Inter Tight Variable — fuente sans                                  |
+| `@fontsource-variable/jetbrains-mono`| 5.x      | JetBrains Mono Variable — fuente mono (nav, labels, botones, tags)   |
+| `@vercel/analytics`                  | 2.x      | Web Analytics (`<Analytics />` en `Layout.astro`)                   |
+| `@vercel/speed-insights`             | 2.x      | Core Web Vitals (`<SpeedInsights />` en `Layout.astro`)             |
+| `satori` + `@resvg/resvg-js`         | —        | Genera `og.png` (1200×630) al build vía `src/pages/og.png.ts`       |
+| Web3Forms                            | —        | Endpoint externo del form de contacto (POST sin SDK)                |
+| md-to-pdf (via npx)                  | —        | Genera los PDFs del CV desde `CV.md` / `CV-es.md`                   |
+| Vanilla JS                           | —        | Theme toggle, reloj, observers, contadores, modal — sin frameworks  |
+| Node.js                              | 22 (nvm) | Entorno de desarrollo                                               |
+
+> **Nota sobre Tailwind**: el rediseño terminal movió prácticamente todo el estilado a CSS plano con custom properties en `src/styles/global.css`. Tailwind sigue instalado y quedan utilidades sueltas en `ContactModal.astro` (`hidden`, `fixed`, `inset-0`, `opacity-0`, `scale-95`, `animate-spin`, etc.). **No hay bloque `@theme`** ni mapeo de tokens. Para estilos nuevos, preferí CSS plano con las vars del sistema.
 
 Build output: carpeta `dist/` (100% estático, sin servidor).
 
@@ -34,7 +87,7 @@ Build output: carpeta `dist/` (100% estático, sin servidor).
 npm run dev       # Dev server → http://localhost:4321
 npm run build     # Build de producción → dist/
 npm run preview   # Preview del build
-npm run cv        # Regenera public/gian-barboza-cv.pdf desde CV.md
+npm run cv        # Regenera ambos PDFs del CV (EN desde CV.md, ES desde CV-es.md)
 ```
 
 ---
@@ -43,24 +96,27 @@ npm run cv        # Regenera public/gian-barboza-cv.pdf desde CV.md
 
 ### Secciones (en orden de render)
 
-**Orden de secciones**: `Hero → Timeline (Journey) → Impact (Key Impact) → Projects (Case Studies) → TechStack (Technical Expertise) → Contact`
+`Nav → Hero → Timeline (Journey) → Impact → Projects (Case Studies) → TechStack → Contact → Footer`
 
-Decisión: el portfolio enfoca en **dónde trabajó y qué hizo** — Leadership fue removido (Hero → Timeline → Impact → Projects → TechStack → Contact). El recorrido laboral va antes que las métricas para que el lector vea el contexto antes de los números.
+El recorrido laboral va antes que las métricas para que el lector vea el contexto antes de los números.
 
-| Componente             | Sección     | Descripción                                                                        |
-|------------------------|-------------|------------------------------------------------------------------------------------|
-| `Nav.astro`            | Nav         | Sticky, theme toggle, language switcher (EN/ES), pill scrolled-state               |
-| `Hero.astro`           | Hero        | Foto real (`<Image>`), nombre + subtítulo + 5 pills (Contact, CV, LinkedIn, GitHub, WhatsApp) |
-| `Timeline.astro`       | Timeline    | Recorrido laboral (4 hitos, reciente primero) con dot + accent color por período   |
-| `Impact.astro`         | Impact      | 4 métricas: 10+ años, 99.9% uptime, $200K+/mes, 5+ procesadores                    |
-| `Projects.astro`       | Projects    | 4 case studies con bloques Contexto / Problema / Decisión Técnica / Resultado      |
-| `TechStack.astro`      | Stack       | 4 categorías con pills: Backend, Infra, Payments, AI                               |
-| `Contact.astro`        | Contact     | CTA abre modal + 4 pills (CV, WhatsApp, LinkedIn, GitHub)                          |
-| `ContactModal.astro`   | —           | Modal con form (name/email/message) → Web3Forms. Honeypot + timing anti-bot        |
-| `SectionHeading.astro` | —           | Heading compartido: título + bar amarillo + subtítulo opcional. **Sin emoji**      |
-| `SocialPill.astro`     | —           | Pill usable como `<a>`. Acepta `download` y atributos `data-*` via rest props      |
-| `Badge.astro`          | —           | Pill amarillo del Hero ("Available for remote work") con dot pulsante              |
-| `Starfield.astro`      | —           | 35 estrellas DOM con twinkle independiente, fixed-position, solo en dark mode      |
+| Componente             | Sección  | Descripción                                                                       |
+|------------------------|----------|-----------------------------------------------------------------------------------|
+| `Nav.astro`            | Nav      | Sticky con backdrop blur. Wordmark + dot verde pulsante + **reloj en vivo GMT-5**, links de sección, switcher EN/ES, theme toggle, CTA de contacto |
+| `Hero.astro`           | Hero     | Meta line (Available · ubicación · años), nombre grande, **tagline** (rol + especialización) + **pitch** (propuesta de valor), 4 botones (Contact, Résumé, LinkedIn, GitHub) + `<Terminal />` al lado |
+| `Terminal.astro`       | —        | Bloque ASCII decorativo (`$ whoami`, `$ engineering_principles`, `$ status`) con cursor parpadeante. `aria-hidden` — texto hardcoded, **no i18n** (pendiente: se ve en inglés también en `/es/`). Ancho útil ~66 chars a ≥1100px |
+| `Timeline.astro`       | `#journey` | 4 hitos laborales (reciente primero), pill "Current" en el actual              |
+| `Impact.astro`         | `#impact`  | 4 métricas con **contador animado** (IntersectionObserver + easing cúbico) y sparkline SVG de fondo |
+| `Sparkline.astro`      | —        | SVG determinista generado con `sin/cos` desde un `seed` — mismo output en cada build |
+| `Projects.astro`       | `#cases`   | 4 case studies en **acordeón** (solo uno abierto a la vez; el primero abre por default). Bloques Context / Problem / Decision / Result + tags |
+| `TechStack.astro`      | `#stack`   | 4 categorías con glyph mono (`/srv`, `/infra`, `/pay`, `/ai`) y pills de tags |
+| `Contact.astro`        | `#contact` | CTA grande + 2 botones + fila de contactos en mono. Renderiza también `<ContactModal />` y el `<footer>` |
+| `ContactModal.astro`   | —        | Modal con form (name/email/message) → Web3Forms. Focus trap, `inert` en el fondo, honeypot + timing guard |
+| `SectionHeading.astro` | —        | Heading compartido: `label` (con dot accent) + `title` + `sub` opcional          |
+
+### Componentes huérfanos
+
+`SocialPill.astro`, `Badge.astro` y `SectionContainer.astro` **no los importa nadie** — quedaron del diseño anterior. Los dos primeros usan variantes `dark:` de Tailwind que ya no funcionan (el proyecto invirtió la lógica a `.light`). Si tocás esa zona, borralos en vez de arreglarlos.
 
 ### Flujo de páginas
 
@@ -68,145 +124,127 @@ Decisión: el portfolio enfoca en **dónde trabajó y qué hizo** — Leadership
 /        → renderiza inglés directamente (sin redirect)
 /en/     → Landing en inglés (canonical apunta a /, no a sí misma)
 /es/     → Landing en español (canonical = /es/)
+404      → src/pages/404.astro (terminal-themed, i18n en cliente)
 ```
 
-- `src/pages/index.astro` renderiza el HTML de inglés directamente — **no es un redirect**, es la página completa
-- `getLangFromUrl()` devuelve `'en'` por defecto cuando la URL es `/`
-- En `Layout.astro` el canonical normaliza `/en/*` → `/` para evitar contenido duplicado en SEO
+- `src/pages/index.astro` renderiza el HTML de inglés directamente — **no es un redirect**
+- Los tres archivos de página son idénticos salvo la profundidad de los imports; `getLangFromUrl()` deriva el idioma de la URL y devuelve `'en'` por defecto
+- En `Layout.astro` el canonical normaliza `/en/*` → `/` para evitar contenido duplicado
 
 ### ⚠️ NO agregar bloque `i18n` en `astro.config.mjs`
 
-El proyecto maneja i18n manualmente. Si se agrega el bloque `i18n` con `prefixDefaultLocale: true`, Vercel intercepta `/` y fuerza un redirect a `/en/`. El `astro.config.mjs` debe tener **solo** Tailwind + sitemap:
-
-```js
-import { defineConfig } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
-import sitemap from '@astrojs/sitemap';
-
-export default defineConfig({
-  site: 'https://gianbarboza.com',
-  integrations: [
-    sitemap({ filter: (page) => !page.includes('/en/') }),  // /en/ excluido (duplica /)
-  ],
-  vite: { plugins: [tailwindcss()] }
-});
-```
+El proyecto maneja i18n manualmente. Si se agrega el bloque `i18n` con `prefixDefaultLocale: true`, Vercel intercepta `/` y fuerza un redirect a `/en/`. El `astro.config.mjs` debe tener **solo** Tailwind + sitemap.
 
 ---
 
-## Sistema de Paleta (palette swap architecture)
+## Sistema de Diseño — "Linear-meets-terminal"
 
-`src/styles/global.css` tiene un bloque comentado **PALETTE SYSTEM** que es la single source of truth.
+Estética actual: **dark terminal refinado**, mono para metadata y sans para contenido. Todo vive en `src/styles/global.css` (~950 líneas), organizado mobile-first.
 
-### Roles de color
+### Tokens (custom properties en `:root`)
 
-| Rol            | Tailwind tokens mapeados        | Uso                                                |
-|----------------|---------------------------------|----------------------------------------------------|
-| **Primary**    | `yellow-*` (vía `@theme`)       | Brand color: CTAs, pills, badge, focus ring, bio strong |
-| **Secondary**  | `indigo-*` (vía `@theme`)       | Supporting accent: subtítulo Hero, hover states secundarios |
-| **Categorical**| `violet-*`, `blue-*`, `emerald-*`, `amber-*`, `red-*` | Timeline eras, Projects case studies, Impact métricas — **se quedan stock** |
-| **Semantic**   | `emerald` (success), `red` (error) | Form states — significado universal               |
-| **Neutral**    | `zinc-*`                         | Texto, borders, card backgrounds                   |
+| Token                          | Valor (dark)                | Uso                                    |
+|--------------------------------|-----------------------------|----------------------------------------|
+| `--bg` / `--bg-elev`           | `#0a0a0b` / `#111113`       | Fondo de página / inputs               |
+| `--bg-card` / `--bg-card-hover`| `#131316` / `#16161a`       | Cards, terminal, modal                 |
+| `--border` / `--border-strong` | `rgba(255,255,255,.07/.12)` | Separadores / bordes de botones        |
+| `--fg` → `--fg-faint`          | white .94 / .62 / .42 / .24 | Escala de texto (4 niveles)            |
+| `--accent`                     | `oklch(0.82 0.16 85)`       | Ámbar cálido — CTAs, dots, números     |
+| `--green`                      | `oklch(0.78 0.16 150)`      | Indicadores "live" / success           |
+| `--red`                        | `oklch(0.68 0.18 25)`       | Error / 404                            |
+| `--font-sans` / `--font-mono`  | Inter Tight / JetBrains Mono| Tipografía                             |
+| `--maxw` / `--pad-x`           | `1240px` / responsive       | Layout                                 |
 
-### Para cambiar de paleta
+### Light mode
 
-Editar **solo dos bloques** en `global.css`:
-- `:root { --pal-primary-* / --pal-secondary-* / --pal-bg / --pal-fg / --pal-glow / --pal-bio-strong }` (light mode)
-- `.dark { ...mismo set... }` (dark mode)
+**Dark es el default.** El light se activa con la clase `.light` en `<html>`, que redefine solo los tokens neutros (`--bg`, `--fg`, `--border`…). El accent/green/red **no cambian** entre modos.
 
-Los componentes no se tocan porque el `@theme` re-mapea Tailwind tokens a las CSS vars.
+```css
+@custom-variant light (&:is(.light, .light *));
+```
 
-### Paleta activa: **Star Wars Crawl**
+Para cambiar la paleta: editar `:root` y `html.light` en `global.css`. Los componentes no se tocan.
 
-- Primary = Crawl yellow `#FFE81F` (oficial Lucasfilm)
-- Secondary = Sable blue (`#1e3a8a` light / `#60a5fa` dark)
-- Light bg `#fafaf9` / Dark bg `#000000` (negro puro)
+### Breakpoints (mobile-first)
+
+| Ancho     | Qué cambia                                                        |
+|-----------|-------------------------------------------------------------------|
+| base      | Todo apilado, stats 2×2, `--pad-x: 20px`                          |
+| ≥ 600px   | Stats 4-up, journey en grid `160px 1fr`, expertise 2 columnas, case-grid en 2 columnas, footer en fila |
+| ≥ 980px   | Aparecen los `.nav-links`, tipografía más grande                  |
+| ≥ 1100px  | Hero pasa a grid `1.1fr 1fr` (texto + terminal lado a lado)        |
+| ≥ 1240px  | Aparece el reloj en el nav, padding y títulos máximos              |
 
 ### ⚠️ OG image — sincronización manual
 
-`src/pages/og.png.ts` usa satori, que **no lee CSS vars**. Los colores están hardcoded inline. **Cuando se cambia la paleta, hay que actualizar og.png.ts a mano** (background, badge, subtitle color, CTA gradient, tech pills border). El archivo tiene un comment block recordando esto. Si te olvidás, el OG va a quedar desincronizado de la web.
+`src/pages/og.png.ts` usa satori, que **no lee CSS vars**. Los colores están hardcoded como hex al inicio del archivo (`const C = {...}`) con un comment block `PALETTE SYNC REQUIRED`. **Cuando cambies la paleta, actualizá ese objeto a mano.**
 
----
-
-## Sistema de Fuentes
-
-**Solo Onest Variable** está cargada (`@fontsource-variable/onest`). No hay display ni mono. Decisión por simplicidad y cohesión visual — fuentes display (Cinzel, Pathway Gothic) y monospace (Geist Mono) se probaron y descartaron.
-
-`src/components/Hero.astro` y `src/components/SectionHeading.astro` usan `font-bold tracking-tight` — sin clases `font-display` ni `font-mono`.
-
----
-
-## Starfield (dark mode visual)
-
-`src/components/Starfield.astro` — 35 `<span>` con `position: absolute`, dentro de un contenedor `position: fixed` que cubre el viewport.
-
-- Cada estrella tiene `animation-delay` y `animation-duration` distintos (calculados de forma determinística desde su índice). Twinkle 100% independiente entre estrellas.
-- `@keyframes starTwinkle` en `global.css` (opacity 0.3 ↔ 1)
-- Solo visible en `.dark` (CSS: `.starfield { display: none }` + `.dark .starfield { display: block }`)
-- Respeta `prefers-reduced-motion` — sin twinkle si el usuario lo tiene activado, estrellas quedan a opacity 0.7
-- Fixed-position → no scrollean con el contenido (efecto parallax / "viajás por el espacio")
-- `STAR_COUNT` en el componente para ajustar cantidad
+El OG replica el hero: meta line (dot verde · Available · Rionegro, CO · GMT-5 · 10+ yrs), "Gian Barboza." con el punto en accent, tagline, pills Ex-CTO / Payments · AI, y `gianbarboza.com ↗`. Fuente: `src/assets/fonts/inter-400.ttf`.
 
 ---
 
 ## Decisiones de Diseño / Convenciones
 
 ### Sin emojis
-**Decisión**: el portfolio no usa emojis en headings, cards ni copy. Se removieron todos en una pasada (incluyendo SectionHeading que ya no acepta prop `emoji`). Razones:
-- Inconsistencia entre plataformas (Apple/Google/Windows/Android renderean distinto)
-- Vibe casual/tutorial vs senior engineer
-- Compite con la paleta de marca
-
-**Si en el futuro hace falta iconografía**, usar **SVG icons inline** (ej. Lucide-style line icons) con `currentColor` para que sigan la paleta.
+El portfolio no usa emojis en headings, cards ni copy. Si hace falta iconografía, usar **SVG inline** con `currentColor` (como el flecha del 404 y el spinner del modal).
 
 ### Animaciones
-- `animate-hero`, `animate-hero-delay-1/2/3` — entrada del Hero
-- `reveal`, `reveal-delay-1/2/3/4` — secciones via IntersectionObserver en `Layout.astro`. El observer **unobserva** cada elemento tras marcarlo visible.
+- `.reveal` + `.reveal-delay-1/2/3/4` — IntersectionObserver en `Layout.astro`, que **desobserva** cada elemento tras marcarlo visible
+- Contadores de Impact — observer propio con `threshold: 0.4`, easing `1 - (1-p)³`, 1400ms
+- `@keyframes pulse` (dots live) y `@keyframes blink` (cursores del terminal y del 404)
+- **`prefers-reduced-motion`**: bloque global que anula animaciones/transiciones, apaga el cursor y muestra los `.reveal` de una. El contador de Impact también lo chequea en JS y salta al valor final.
 
 ### Tema
-Dark/light mode con clase `dark` en `<html>`, persiste en `localStorage`. **Dark por default en primera visita**.
-
-### IDs de sección
-`#impact`, `#timeline`, `#stack`, `#projects`, `#contact` — usados por la nav y CTAs.
+Dark por default. `Layout.astro` tiene un script inline **antes del body** que lee `localStorage.theme` y aplica `.light` — evita el flash. El botón del nav muestra el modo **destino** (si estás en dark, dice "LIGHT").
 
 ### Modal de contacto
-Cualquier elemento con `data-open-contact` dispara el modal. El script de `ContactModal.astro` hace `preventDefault()` sobre clicks.
+Cualquier elemento con `data-open-contact` lo dispara; el script hace `preventDefault()`.
 
 ### Sin JS framework
-Vanilla JS puro vía `<script is:inline>`.
+Vanilla JS puro vía `<script is:inline>`. Cuando hace falta pasar strings traducidos al cliente, se usa `define:vars` (ver `ContactModal.astro`).
 
-### Cards bg pattern
-Cards usan `bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800`. Light mode card bg = body bg (idéntico) — los cards se distinguen por el border. En dark, zinc-900/60 sobre body negro deja ver el card como ligeramente más claro.
+### Console easter egg
+`Layout.astro` imprime un mensaje Star Wars con estilos CSS en la consola + email y LinkedIn — CTA para devs que abren DevTools.
 
 ---
 
 ## Sistema de i18n
 
-**Regla clave**: todo el contenido textual vive en los archivos de traducción, **nunca hardcodeado en componentes**.
+**Regla clave**: todo el contenido textual vive en los archivos de traducción, **nunca hardcodeado en componentes**. (Excepción consciente: `Terminal.astro`, que es decorativo y `aria-hidden`.)
 
 - `src/i18n/en.ts` — Strings en inglés
 - `src/i18n/es.ts` — Strings en español (mismas keys)
-- `src/i18n/utils.ts` — `getLangFromUrl()`, `useTranslations()`
+- `src/i18n/utils.ts` — `getLangFromUrl()`, `useTranslations()`. El fallback es `es → en → key`
 
-Los componentes reciben `t` como prop y llaman `t('key')` para obtener texto.
+Los componentes reciben `t` como prop y llaman `t('key')`.
 
-### Keys notables
-- `meta.title` — el `<title>` del documento (también og:title y twitter:title). 50-60 chars óptimo para SEO
-- `hero.bio` — bio HTML con `<strong>` tags (renderizado vía `set:html`)
-- `cta.cv.url` = `/gian-barboza-cv.pdf` — link al CV PDF (Hero pill + Contact pill)
+### Grupos de keys
+
+| Prefijo      | Contenido                                                          |
+|--------------|--------------------------------------------------------------------|
+| `meta.*`     | `title`, `description`, y `h1.role` (keywords de rol en el H1 `sr-only`). **Los tres son capa SEO** → llevan "Senior Backend Engineer" |
+| `nav.*`      | Links, aria-labels del toggle y del switcher                       |
+| `timeline.*` | 4 hitos × (period / role / company / desc)                         |
+| `impact.*`   | Labels de las métricas (los números viven en `Impact.astro`)       |
+| `projects.*` | 4 case studies × (title / context / problem / decision / outcome)  |
+| `stack.*`    | Títulos de las 4 categorías (los tags viven en `TechStack.astro`)  |
+| `contact.*`  | Copy del CTA, del modal, del form, y URLs de contacto              |
+| **`term.*`** | Copy específico del rediseño terminal: labels de sección numerados (`01 — Journey`), métricas de los case cards, eyebrow/título del CTA, footer |
+
+Keys con HTML se renderizan con `set:html`: `hero.bio`, `term.hero.tagline.html`, `term.cta.title.html`.
+`term.footer.copy` usa el placeholder `{year}`, que `Contact.astro` reemplaza en build.
 
 ### Nav — Language Switcher
-- En `/` o `/en/` → muestra botón **ES** → lleva a `/es/`
-- En `/es/` → muestra botón **EN** → lleva a `/en/`
-- Hover del botón usa primary color (sigue paleta)
+En `/` o `/en/` muestra **ES** → lleva a `/es/`. En `/es/` muestra **EN** → lleva a `/en/`.
 
 ---
 
 ## Perfil del Dueño (Gian Barboza)
 
-- **Rol objetivo**: Senior Backend Engineer / Platform Engineer
+- **Rol objetivo**: Senior Backend Engineer / Software Engineer — ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida)
+- **Posicionamiento**: ingeniero que resuelve problemas complejos de negocio mediante arquitectura, sistemas distribuidos, plataformas de pago y desarrollo asistido por IA. **No** se posiciona alrededor de tecnologías puntuales (PHP, Laravel…)
 - **Modalidad**: Remote-first, full-time
-- **Ubicación**: Rionegro, Antioquia, Colombia
+- **Ubicación**: Rionegro, Antioquia, Colombia (GMT-5)
 - **Idiomas**: Español (nativo) · Inglés B2 (Upper-intermediate)
 - **Educación**: Ingeniero en Informática — Universidad Dr. Rafael Belloso Chacín (URBE), 2011–2015
 - **Experiencia clave**:
@@ -228,43 +266,48 @@ Los componentes reciben `t` como prop y llaman `t('key')` para obtener texto.
 
 ```
 .
-├── CV.md                          ← Fuente de verdad del CV
+├── CV.md                          ← Fuente de verdad del CV (EN)
+├── CV-es.md                       ← Fuente de verdad del CV (ES)
+├── cv.css                         ← Estilos para el render md-to-pdf
 ├── public/
-│   ├── favicon.svg
+│   ├── favicon.svg / favicon-32.png / apple-touch-icon.png / icon-192.png
 │   ├── robots.txt                 ← User-agent + Sitemap URL
-│   └── gian-barboza-cv.pdf        ← Generado por `npm run cv`
+│   ├── gian-barboza-cv.pdf        ← Generado por `npm run cv`
+│   └── gian-barboza-cv-es.pdf     ← Generado por `npm run cv`
 ├── src/
 │   ├── assets/
 │   │   ├── fonts/inter-400.ttf    ← Usado por og.png.ts (satori)
-│   │   └── profile.jpg            ← Foto Hero, optimizada por <Image>
+│   │   └── profile.jpg            ← Legacy: el diseño terminal no muestra foto
 │   ├── components/
-│   │   ├── Nav.astro
+│   │   ├── Nav.astro              ← Sticky, reloj GMT-5, theme toggle, lang switcher
 │   │   ├── Hero.astro
-│   │   ├── Impact.astro
-│   │   ├── Timeline.astro
-│   │   ├── TechStack.astro
-│   │   ├── Projects.astro
-│   │   ├── Contact.astro
-│   │   ├── ContactModal.astro
-│   │   ├── SectionHeading.astro   ← Sin prop emoji
-│   │   ├── SocialPill.astro
-│   │   ├── Badge.astro
-│   │   └── Starfield.astro        ← Dark-mode starfield
+│   │   ├── Terminal.astro         ← Bloque ASCII decorativo del hero
+│   │   ├── Timeline.astro         ← #journey
+│   │   ├── Impact.astro           ← #impact, contadores animados
+│   │   ├── Sparkline.astro        ← SVG determinista de fondo en las stats
+│   │   ├── Projects.astro         ← #cases, acordeón
+│   │   ├── TechStack.astro        ← #stack
+│   │   ├── Contact.astro          ← #contact + footer
+│   │   ├── ContactModal.astro     ← Form + focus trap + anti-bot
+│   │   ├── SectionHeading.astro
+│   │   ├── SocialPill.astro       ← HUÉRFANO (diseño anterior)
+│   │   ├── Badge.astro            ← HUÉRFANO (diseño anterior)
+│   │   └── SectionContainer.astro ← HUÉRFANO (diseño anterior)
 │   ├── i18n/
 │   │   ├── en.ts                  ← EDITAR AQUÍ contenido en inglés
 │   │   ├── es.ts                  ← EDITAR AQUÍ contenido en español
 │   │   └── utils.ts
 │   ├── layouts/
-│   │   └── Layout.astro           ← HTML shell, OG/Twitter meta, theme script,
-│   │                                scroll observer, <Analytics />, <Starfield />
+│   │   └── Layout.astro           ← HTML shell, meta OG/Twitter, hreflang, JSON-LD,
+│   │                                theme script, skip-link, observer, Analytics
 │   ├── pages/
 │   │   ├── index.astro            ← Renderiza inglés directamente (NO redirect)
 │   │   ├── en/index.astro
 │   │   ├── es/index.astro
+│   │   ├── 404.astro              ← Terminal-themed, i18n resuelto en cliente
 │   │   └── og.png.ts              ← Genera OG image al build (satori + resvg)
 │   └── styles/
-│       └── global.css             ← Tailwind, dark variant, PALETTE SYSTEM,
-│                                    starfield CSS, animaciones
+│       └── global.css             ← Tokens, light variant, layout, todos los componentes
 ├── .env.example                   ← Plantilla; `.env` es gitignored
 └── AGENTS.md                      ← Este archivo
 ```
@@ -275,47 +318,64 @@ Los componentes reciben `t` como prop y llaman `t('key')` para obtener texto.
 
 ### Sitemap + robots.txt
 - `@astrojs/sitemap` genera `dist/sitemap-index.xml` y `dist/sitemap-0.xml` al build
-- `filter: (page) => !page.includes('/en/')` excluye `/en/*` porque `/` ya sirve el contenido en inglés (evita URLs duplicadas)
-- `public/robots.txt` apunta al sitemap: `Sitemap: https://gianbarboza.com/sitemap-index.xml`
+- `filter: (page) => !page.includes('/en/')` excluye `/en/*` porque `/` ya sirve ese contenido
+- `public/robots.txt` apunta al sitemap
 
-### Open Graph + Twitter Card
-- Meta tags en `Layout.astro` con `og:type`, `og:url`, `og:title`, `og:description`, `og:image`, `og:image:width/height`, `og:locale`, `twitter:card=summary_large_image`
-- OG image **dinámico** generado por `src/pages/og.png.ts` con `satori` (renders SVG from JSX-like) + `@resvg/resvg-js` (rasteriza a PNG)
-- Salida: `dist/og.png` (1200×630, ~136 KB)
-- Incluye CTA "View Portfolio →" + URL `gianbarboza.com` + tech pills
+### Meta e indexación
+- **`noindex` automático fuera de producción**: `Layout.astro` lee `import.meta.env.VERCEL_ENV`. Solo `'production'` emite `index,follow`; cualquier preview (`*.vercel.app`, subdominios) cae en `noindex,nofollow`
+- **Canonical**: normaliza `/en/*` → `/` para que no compitan
+- **hreflang**: `en` → `/`, `es` → `/es/`, `x-default` → `/`
+- **Open Graph + Twitter Card**: `og:type/url/title/description/image/image:width/height/site_name/locale`, `twitter:card=summary_large_image`
 
-### Canonical
-- Cada página declara `<link rel="canonical" href={canonicalUrl} />` y `<meta property="og:url">`
-- `Layout.astro` normaliza `/en/*` → `/` para que `/` y `/en/` no compitan como canonical (mismo contenido)
-- En el sitemap solo aparecen `/` y `/es/`
+### JSON-LD
+Un solo `<script type="application/ld+json">` con `@graph` de dos nodos enlazados por `@id`:
+- **Person** (`#person`) — jobTitle, address, email, telephone, `sameAs` (LinkedIn/GitHub), `alumniOf`, `knowsAbout` (stack + dominios), `knowsLanguage`
+- **WebSite** (`#website`) — `inLanguage: ['en-US','es-ES']`, con `author`/`publisher` apuntando al Person
+
+### H1 con keywords
+El `<h1>` visual es solo "Gian Barboza." (marcado `aria-hidden`). Al lado hay un `<span class="sr-only">` con `Gian Barboza — {meta.h1.role}`, que inyecta las keywords de rol para buscadores y lectores de pantalla sin romper el diseño.
+
+⚠️ **`meta.h1.role` es capa SEO**: lleva "Senior Backend Engineer" aunque el hero visible diga "Software Engineer". No lo "corrijas" para que coincida — ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida).
 
 ### Pendiente
-- Submit del sitemap a [Google Search Console](https://search.google.com/search-console) (property `gianbarboza.com`)
+- Submit del sitemap a [Google Search Console](https://search.google.com/search-console)
+
+---
+
+## Accesibilidad
+
+- **Skip link** (`.skip-link`) → salta al `<main id="main">`; oculto hasta recibir foco
+- **Focus trap del modal**: `Tab`/`Shift+Tab` ciclan dentro del dialog, `Escape` cierra, el foco vuelve al elemento que lo abrió, y el resto del `<body>` recibe `inert`. El modal se portea a `document.body` para no quedar atrapado por su propio `inert`
+- **`:focus-visible`** global con outline accent
+- **`aria-*`**: `aria-expanded` en los case cards, `aria-pressed` en el theme toggle, `aria-invalid` en los campos del form, `role="status"` + `aria-live="polite"` en el estado del envío
+- **`prefers-reduced-motion`** respetado en CSS y en el JS del contador
+- El `<title>` y la `<meta name="description">` se localizan por idioma
 
 ---
 
 ## CV / Resume flow
 
-- `CV.md` en la raíz es la **fuente de verdad** del CV (1-2 páginas, bullets outcome-first)
-- `npm run cv` corre `npx --yes md-to-pdf CV.md && mv CV.pdf public/gian-barboza-cv.pdf`
-  - **Nota**: `md-to-pdf` removió el flag `--dest-dir` en versiones recientes; el script genera el PDF en root y lo mueve a public/
-- El PDF se sirve en `/gian-barboza-cv.pdf` (público)
-- Los pills "Download Resume / Descargar CV" del Hero y del Contact apuntan a la key `cta.cv.url`
-- Después de editar `CV.md`, correr `npm run cv` **y commitear el PDF** para que Vercel lo sirva actualizado
+- `CV.md` y `CV-es.md` en la raíz son la **fuente de verdad** (1-2 páginas, bullets outcome-first). `cv.css` define el estilo del PDF
+- ⚠️ El CV es **capa SEO**: la línea de rol dice "Senior Backend Engineer" / "Ingeniero Backend Senior" porque los ATS parsean literal. **No cambiarla a "Software Engineer"**
+- `npm run cv` genera **ambos** PDFs y los mueve a `public/`
+  - **Nota**: `md-to-pdf` removió el flag `--dest-dir`; el script genera en root y mueve
+- Se sirven en `/gian-barboza-cv.pdf` y `/gian-barboza-cv-es.pdf`
+- El link vive en la key `cta.cv.url`; los botones "Download résumé" del Hero y del CTA lo usan
+- Después de editar los `.md`, correr `npm run cv` **y commitear los PDFs**
 
 ---
 
 ## Formulario de contacto
 
-- `ContactModal.astro` postea a `https://api.web3forms.com/submit`
-- El CTA del Contact y el pill de email del Hero disparan el modal via `[data-open-contact]`
+- `ContactModal.astro` postea a `https://api.web3forms.com/submit` con `fetch`
 - **Protecciones anti-bot**:
   - Honeypot (`botcheck` checkbox oculto — Web3Forms descarta si viene marcado)
-  - Timing guard (`openedAt` — rechaza submits en <2 segundos)
-  - HTML5 `required` + `type="email"` + `maxlength`
+  - Timing guard (`BOT_MIN_OPEN_MS = 2000` — descarta submits en <2s)
+  - HTML5 `required` + `type="email"` + `maxlength` (100 / 200 / 2000)
   - `subject` y `from_name` hardcoded en hidden inputs
-- Constantes nombradas: `BOT_MIN_OPEN_MS`, `CLOSE_ANIM_MS`, `SUCCESS_CLOSE_DELAY_MS`
-- Akismet de Web3Forms a veces marca como spam mensajes cortos/genéricos con email pattern fake — comportamiento esperado, configurable en el dashboard de Web3Forms
+- Constantes nombradas: `BOT_MIN_OPEN_MS`, `CLOSE_ANIM_MS`, `SUCCESS_CLOSE_DELAY_MS`, `FOCUSABLE`
+- El form usa `novalidate` + validación manual, para controlar el mensaje y enfocar el primer campo inválido
+- Akismet de Web3Forms a veces marca como spam mensajes cortos/genéricos con email fake — comportamiento esperado, configurable en su dashboard
 
 ---
 
@@ -324,22 +384,21 @@ Los componentes reciben `t` como prop y llaman `t('key')` para obtener texto.
 | Variable                 | Uso                                                | Dónde va                                                  |
 |--------------------------|----------------------------------------------------|-----------------------------------------------------------|
 | `PUBLIC_WEB3FORMS_KEY`   | Access key del formulario de contacto (Web3Forms)  | `.env` local + Vercel (Production + Preview + Development)|
+| `VERCEL_ENV`             | Inyectada por Vercel; decide `index` vs `noindex`  | Automática — no configurar                                |
 
 - `.env` está gitignored; `.env.example` se sube al repo como plantilla
-- La key es pública por diseño (se postea desde el browser). Protección real = honeypot + timing check + rate limit de Web3Forms
-- En Vercel: Settings → Environment Variables → agregar `PUBLIC_WEB3FORMS_KEY` con el valor real, en los 3 scopes
-- **IMPORTANTE**: cuando cambias una env var en Vercel, el deploy actual NO se actualiza — hay que hacer Redeploy o disparar un nuevo commit
+- La key es pública por diseño (se postea desde el browser). Protección real = honeypot + timing + rate limit de Web3Forms
+- **IMPORTANTE**: cuando cambias una env var en Vercel, el deploy actual NO se actualiza — hay que hacer Redeploy o disparar un commit
 
 ### Vercel Web Analytics
-- Paquete `@vercel/analytics` ya instalado; `<Analytics />` renderizado en `Layout.astro`
-- El script solo registra eventos cuando **Web Analytics está habilitado**: Vercel → proyecto → Analytics → **Enable Web Analytics**
-- Free tier: 2,500 eventos/mes (Hobby plan)
+- `<Analytics />` y `<SpeedInsights />` renderizados en `Layout.astro`
+- Solo registran eventos con **Web Analytics habilitado**: Vercel → proyecto → Analytics → Enable
+- Free tier: 2,500 eventos/mes (Hobby)
 
 ### Vercel Domain Setup (gianbarboza.com)
 - Comprado en Cloudflare Registrar (DNS también en Cloudflare)
-- Apex `gianbarboza.com` → Production Domain en Vercel
-- `www.gianbarboza.com` → Redirect 308 a apex
-- DNS records en Cloudflare con **proxy gris (DNS only)** — no naranja, sino choca con SSL de Vercel
+- Apex `gianbarboza.com` → Production Domain; `www` → Redirect 308 al apex
+- DNS records en Cloudflare con **proxy gris (DNS only)** — el naranja choca con el SSL de Vercel
 - SSL emitido automáticamente por Vercel
 
 ---
@@ -347,12 +406,15 @@ Los componentes reciben `t` como prop y llaman `t('key')` para obtener texto.
 ## Filosofía de Cambios
 
 - Cambios de **contenido** → solo editar `src/i18n/en.ts` y `src/i18n/es.ts`
-- Cambios de **layout/diseño** → editar el componente `.astro` correspondiente
-- Cambios de **paleta** → editar solo el bloque PALETTE SYSTEM en `global.css`
+- Cambios de **texto de rol** → respetar las dos capas. Persona lee → "Software Engineer". Máquina lee (o es `sr-only`) → "Senior Backend Engineer". **Nunca unificar las dos** — ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida)
+- Cambios de **layout/diseño** → editar el componente `.astro` + su bloque en `global.css`
+- Cambios de **paleta** → editar `:root` y `html.light` en `global.css`, **y sincronizar `og.png.ts`**
+- **CSS plano con las custom properties**, no clases de Tailwind nuevas
 - **No crear archivos nuevos** si no es estrictamente necesario
 - **No agregar JS frameworks** — mantener Vanilla JS
 - **Mantener paridad de keys** entre `en.ts` y `es.ts` siempre
 - **No agregar emojis** — usar SVG inline si hace falta iconografía
+- Todo cambio de layout se valida en los 4 breakpoints (mobile-first)
 
 ---
 
@@ -360,5 +422,7 @@ Los componentes reciben `t` como prop y llaman `t('key')` para obtener texto.
 
 - El dueño siempre audita el código antes de hacer commit o push
 - **No agregar `Co-Authored-By` de ninguna IA en los commits** — autoría exclusiva del desarrollador
-- `.claude/` está en `.gitignore` (config local de Claude Code, no se trackea)
-- `AGENTS.md` y `CLAUDE.md` sí se suben al repo (documentación del proyecto)
+- **Nunca `git add -A`** — pasar siempre rutas explícitas (hay archivos de trabajo sin trackear en la raíz)
+- `.claude/`, `.agents/` y `screenshots/` están en `.gitignore`
+- `/public/` se sirve públicamente — **nunca** guardar ahí referencias de diseño ni capturas locales
+- `AGENTS.md` y `README.md` sí se suben al repo

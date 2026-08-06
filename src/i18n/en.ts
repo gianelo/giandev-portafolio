@@ -1,8 +1,12 @@
 export const en: Record<string, string> = {
   // ── Meta ─────────────────────────────────────────────────
-  'meta.title': 'Gian Barboza – Senior Backend Engineer · Payments & AI',
-  'meta.description': 'Senior Backend Engineer with 10+ years building distributed payments infrastructure (Stripe, PayPal, DLocal, Shift4) and AI-powered automation. Ex-CTO. Available for remote work.',
-  'meta.h1.role': 'Senior Backend Engineer specialized in payments infrastructure and AI automation',
+  // SEO layer: keeps "Senior Backend Engineer" — the term recruiters search for.
+  // The visible hero copy positions him as a Software Engineer (marketing layer).
+  'meta.title': 'Gian Barboza | Senior Backend Engineer | Payment Systems',
+  'meta.description': 'Senior Backend Engineer with 10+ years building payment platforms, distributed systems and AI-assisted software. Available for remote work.',
+  // Rendered sr-only inside the <h1> — invisible to visitors, strongest on-page
+  // ranking signal. Carries the recruiter keyword + the new specialization tail.
+  'meta.h1.role': 'Senior Backend Engineer specialized in payment platforms, distributed systems and AI-assisted development',
 
   // ── Nav ──────────────────────────────────────────────────
   'nav.impact': 'Impact',
@@ -130,7 +134,8 @@ export const en: Record<string, string> = {
   'term.hero.location': 'Rionegro, CO · GMT-5',
   'term.hero.years': '10+ yrs',
   'term.hero.available': 'Available',
-  'term.hero.tagline.html': 'Senior backend engineer building <strong>distributed payments infrastructure</strong> and <strong>AI-powered automation</strong>. Ex-CTO. Ships production-first.',
+  'term.hero.tagline.html': 'Senior Software Engineer specialized in <strong>payment platforms</strong>, <strong>distributed systems</strong> and <strong>AI-assisted development</strong>.',
+  'term.hero.pitch': 'Turning complex business problems into reliable production systems.',
 
   'term.cta.resume': 'Download résumé',
   'term.cta.contact': 'Get in touch',
@@ -175,7 +180,7 @@ export const en: Record<string, string> = {
   'term.case.payments.result.text': 'gateways consolidated. Continuous availability during provider incidents. Routing optimized for cost and conversion.',
 
   'term.cta.eyebrow': '— Let\'s work together',
-  'term.cta.title.html': 'Open to senior backend roles<br/>in <span class="accent">payments</span> &amp; <span class="accent">AI</span>.',
+  'term.cta.title.html': 'Open to Senior Backend &amp; Software Engineering Roles<br/>in <span class="accent">payments</span> &amp; <span class="accent">AI</span>.',
   'term.cta.sub': 'Available for full-time remote opportunities. Fastest reply via email or LinkedIn.',
 
   'term.footer.copy': '© {year} Gian Barboza · gianbarboza.com',
