@@ -3,11 +3,27 @@ import { es } from './es';
 
 const translations = { en, es } as const;
 
-export type Lang = 'en' | 'es';
+export const LANGS = ['en', 'es'] as const;
+
+export type Lang = (typeof LANGS)[number];
+
+/** The locale served at the site root. */
+export const DEFAULT_LANG: Lang = 'en';
 
 export function getLangFromUrl(url: URL): Lang {
   const [, lang] = url.pathname.split('/');
   return lang === 'es' ? 'es' : 'en';
+}
+
+/**
+ * Home URL for a locale — the single source of truth for where each language
+ * lives. The default locale is served at the site root, so this never returns
+ * `/en/`: that path is a non-canonical duplicate of `/` (excluded from the
+ * sitemap, canonical points to `/`), and linking to it strands the visitor on
+ * a page they cannot navigate back from.
+ */
+export function getLocaleHref(lang: Lang): string {
+  return lang === DEFAULT_LANG ? '/' : `/${lang}/`;
 }
 
 export function useTranslations(lang: Lang) {
