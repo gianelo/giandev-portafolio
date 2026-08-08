@@ -8,9 +8,10 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run src",
-    "test:build": "astro build && vitest run tests",
+    "test:build": "astro build && vitest run tests/build-output.test.ts",
     "test:all": "npm run test && npm run test:build",
-    "cv": "npx --yes md-to-pdf CV.md && mv CV.pdf public/gian-barboza-cv.pdf && npx --yes md-to-pdf CV-es.md && mv CV-es.pdf public/gian-barboza-cv-es.pdf"
+    "cv": "npx --yes md-to-pdf CV.md && mv CV.pdf public/gian-barboza-cv.pdf && npx --yes md-to-pdf CV-es.md && mv CV-es.pdf public/gian-barboza-cv-es.pdf",
+    "test:live": "vitest run tests/live-redirects.test.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
