@@ -7,6 +7,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "test": "vitest run src",
+    "test:build": "astro build && vitest run tests",
+    "test:all": "npm run test && npm run test:build",
     "cv": "npx --yes md-to-pdf CV.md && mv CV.pdf public/gian-barboza-cv.pdf && npx --yes md-to-pdf CV-es.md && mv CV-es.pdf public/gian-barboza-cv-es.pdf"
   },
   "dependencies": {
@@ -18,5 +21,8 @@
     "@vercel/speed-insights": "^2.0.0",
     "astro": "^6.2.1",
     "satori": "^0.19.2"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.10"
   }
 }

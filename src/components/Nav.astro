@@ -1,4 +1,6 @@
 ---
+import { getLocaleHref } from '../i18n/utils';
+
 export interface Props {
   lang: string;
   t: (key: string) => string;
@@ -6,7 +8,7 @@ export interface Props {
 
 const { lang, t } = Astro.props;
 const otherLang = lang === 'en' ? 'es' : 'en';
-const otherLangUrl = `/${otherLang}/`;
+const otherLangUrl = getLocaleHref(otherLang);
 ---
 
 <nav class="nav" aria-label={lang === 'es' ? 'Navegación principal' : 'Primary'}>
