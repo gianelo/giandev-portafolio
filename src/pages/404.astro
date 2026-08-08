@@ -1,5 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+// One static 404.html answers every unmatched route, so the visitor's language
+// is unknown at build time. It is resolved client-side by the script below.
 ---
 
 <Layout
@@ -153,40 +156,45 @@ import Layout from '../layouts/Layout.astro';
   }
 </style>
 
-<script is:inline>
-  (function () {
-    const path = window.location.pathname;
-    const isES = path.startsWith('/es/') || path.startsWith('/es');
-    const lang = isES ? 'es' : 'en';
+<!--
+  Bundled rather than `is:inline` so it can import the same locale helpers the
+  rest of the site uses. Inlining would mean restating the language rules here,
+  and every past bug on this page came from exactly that kind of second copy.
+-->
+<script>
+  import { getLangFromPath, getLocaleHref } from '../i18n/utils';
 
-    document.documentElement.lang = lang;
+  const path = window.location.pathname;
+  const lang = getLangFromPath(path);
 
-    document.querySelectorAll('[data-text]').forEach((el) => {
-      const value = el.getAttribute(`data-i18n-${lang}`);
-      if (value) {
-        el.textContent = value;
-        if (el.dataset.text === '') el.removeAttribute('data-text');
-      }
-    });
+  document.documentElement.lang = lang;
 
-    const cta = document.querySelector('[data-text-cta]');
-    if (cta) {
-      const value = cta.getAttribute(`data-i18n-${lang}`);
-      const span = cta.querySelector('[data-cta-text]');
-      if (value && span) span.textContent = value;
+  document.querySelectorAll('[data-text]').forEach((el) => {
+    const value = el.getAttribute(`data-i18n-${lang}`);
+    if (value) {
+      el.textContent = value;
+      if ((el as HTMLElement).dataset.text === '') el.removeAttribute('data-text');
     }
+  });
 
-    const pathEl = document.querySelector('[data-text-path]');
-    if (pathEl) pathEl.textContent = path || '/lost-page';
+  const cta = document.querySelector('[data-text-cta]');
+  if (cta) {
+    // This page ships no nav, so the button is the only way out — its target
+    // has to follow the language, not just its label.
+    cta.setAttribute('href', getLocaleHref(lang));
+    const value = cta.getAttribute(`data-i18n-${lang}`);
+    const span = cta.querySelector('[data-cta-text]');
+    if (value && span) span.textContent = value;
+  }
 
-    if (lang === 'es') {
-      const titles = {
-        title: '404 — Página no encontrada · Gian Barboza',
-        desc: 'La página que buscas no existe o ha sido movida.',
-      };
-      document.title = titles.title;
-      const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) metaDesc.setAttribute('content', titles.desc);
+  const pathEl = document.querySelector('[data-text-path]');
+  if (pathEl) pathEl.textContent = path || '/lost-page';
+
+  if (lang === 'es') {
+    document.title = '404 — Página no encontrada · Gian Barboza';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', 'La página que buscas no existe o ha sido movida.');
     }
-  })();
+  }
 </script>
