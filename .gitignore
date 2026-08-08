@@ -35,4 +35,6 @@ public/example-responsive/
 public/screenshots/
 screenshots/
 
+# Generated tooling indexes — regenerable, and full of machine-local paths
 .codegraph/
+.atl/
