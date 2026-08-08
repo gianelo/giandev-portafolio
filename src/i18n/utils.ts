@@ -10,11 +10,6 @@ export type Lang = (typeof LANGS)[number];
 /** The locale served at the site root. */
 export const DEFAULT_LANG: Lang = 'en';
 
-export function getLangFromUrl(url: URL): Lang {
-  const [, lang] = url.pathname.split('/');
-  return lang === 'es' ? 'es' : 'en';
-}
-
 /**
  * Home URL for a locale — the single source of truth for where each language
  * lives. The default locale is served at the site root, so this never returns
