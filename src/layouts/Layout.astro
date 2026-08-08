@@ -156,7 +156,16 @@ const jsonLdGraph = {
     <script is:inline>
       (function () {
         if (typeof console === 'undefined' || !console.log) return;
-        const title = 'font-family: Georgia, serif; font-size: 18px; font-style: italic; color: #FFE81F; padding: 8px 0; text-shadow: 0 0 8px rgba(255,232,31,0.4);';
+        // DevTools renders %c styles outside the page, so var(--accent) does not
+        // resolve here. Read the token's computed value instead of restating it:
+        // the accent then has one definition, in global.css.
+        const accent = getComputedStyle(document.documentElement)
+          .getPropertyValue('--accent')
+          .trim();
+        const glow = accent ? ` text-shadow: 0 0 8px ${accent};` : '';
+        const title = `font-family: Georgia, serif; font-size: 18px; font-style: italic; color: ${accent}; padding: 8px 0;${glow}`;
+        // Neutral grey on purpose: this line has to stay legible against both
+        // the light and dark DevTools console, which no page token targets.
         const heading = 'font-size: 13px; font-weight: 600; color: inherit; padding-top: 4px;';
         const muted = 'font-size: 12px; color: #888;';
         console.log('%cThese aren\'t the bugs you\'re looking for.', title);
