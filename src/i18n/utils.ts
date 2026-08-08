@@ -26,6 +26,20 @@ export function getLocaleHref(lang: Lang): string {
   return lang === DEFAULT_LANG ? '/' : `/${lang}/`;
 }
 
+/**
+ * Locale encoded in a URL path, read from its first segment. The inverse of
+ * `getLocaleHref`, for the one case where the language is only knowable at
+ * runtime: the 404 page, which a static host serves for every unmatched route.
+ *
+ * Compares the whole segment deliberately — a `startsWith('/es')` test also
+ * matches `/estadisticas`, `/essays`, `/espanol`… and hands them the wrong
+ * language.
+ */
+export function getLangFromPath(path: string): Lang {
+  const segment = path.split('/')[1];
+  return LANGS.includes(segment as Lang) ? (segment as Lang) : DEFAULT_LANG;
+}
+
 export function useTranslations(lang: Lang) {
   return function t(key: string): string {
     return translations[lang][key] ?? translations['en'][key] ?? key;
