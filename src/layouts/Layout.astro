@@ -19,8 +19,7 @@ const skipLabel = lang === 'es' ? 'Saltar al contenido principal' : 'Skip to mai
 
 const siteUrl = Astro.site?.href.replace(/\/$/, '') ?? 'https://gianbarboza.com';
 const ogImage = `${siteUrl}/og.png`;
-const canonicalPath = Astro.url.pathname.replace(/^\/en(\/|$)/, '/');
-const canonicalUrl = new URL(canonicalPath, siteUrl).href;
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 
 // Solo el deploy de producción (gianbarboza.com) se indexa.
 // Vercel inyecta VERCEL_ENV = 'production' | 'preview' | 'development'.
