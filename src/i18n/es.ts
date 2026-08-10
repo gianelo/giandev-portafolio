@@ -37,7 +37,7 @@ export const es: Record<string, string> = {
   'timeline.freelance.period': 'Abr 2023 — Nov 2023',
   'timeline.freelance.role': 'Full Stack Engineer · Freelance',
   'timeline.freelance.company': 'Clientes independientes · Remoto',
-  'timeline.freelance.desc': 'Construí un e-commerce de productos digitales end-to-end con stack moderno: Next.js, TypeScript, Clean Architecture, Vitest y CI/CD con GitHub Actions. Integración completa de Stripe y PayPal, automatización de envíos y sistema administrativo propio.',
+  'timeline.freelance.desc': 'Construí un e-commerce de productos digitales end-to-end con stack moderno: Next.js, TypeScript, Clean Architecture y Vitest. Integración completa de Stripe y PayPal, automatización de envíos y sistema administrativo propio.',
 
   'timeline.cto.period': 'Dic 2017 — Abr 2023',
   'timeline.cto.role': 'Full Stack Developer → CTO',
