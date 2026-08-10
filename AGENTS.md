@@ -10,53 +10,48 @@ Landing page personal de **Gian Barboza**, ingeniero de software con 10+ años d
 
 ---
 
-## ⚠️ Posicionamiento de Marca — estrategia híbrida
+## ⚠️ Posicionamiento de Marca — un solo rol, dos dimensiones
 
 **Leé esto antes de tocar cualquier texto que mencione un rol.**
 
-La web usa **dos capas deliberadamente distintas**. Si ves "Software Engineer" en el hero y "Senior Backend Engineer" en el `<title>`, **no es una inconsistencia — es la estrategia. No las unifiques.**
+El rol es uno solo y va igual en todos lados, visible e invisible:
+
+> **Senior Backend Engineer & Software Architect**
+> *Ingeniero Backend Senior y Arquitecto de Software*
+
+**Esto reemplaza la vieja estrategia de dos capas** (hero decía "Software Engineer", `<title>` decía "Senior Backend Engineer"). Ya no hay capas separadas: si encontrás un texto con solo una mitad del rol, es un resto sin migrar, no una decisión.
 
 ### El razonamiento
 
-Gian se posiciona como **Software Engineer** con especialización fuerte en backend, plataformas de pago, arquitectura distribuida y desarrollo asistido por IA. No quiere que lo lean como "PHP Backend Developer", y no quiere que la web gire alrededor de **tecnologías** (PHP, Laravel…) sino del **tipo de problemas que resuelve**.
+El objetivo es poder aplicar a **Senior Backend Engineer, Senior Software Engineer, Software Architect, Backend Architect, Technical Lead** y Staff Engineer cuando corresponda. Un solo título no cubre ese rango; el título compuesto sí.
 
-Pero **"Senior Backend Engineer" es el término que los recruiters buscan**. Sacarlo del SEO costaría tráfico calificado. De ahí las dos capas.
+- **"Senior Backend Engineer" va primero** porque es el término que los recruiters y los ATS buscan. Sacarlo costaría tráfico calificado.
+- **"Software Architect" es la segunda dimensión**, y no se afirma: **se demuestra en los Case Studies**. Ahí está el peso de la prueba.
 
-| Capa | Quién la lee | Término |
-|------|--------------|---------|
-| **SEO / máquina** | Googlebot, ATS, recruiters filtrando | **Senior Backend Engineer** / Ingeniero Backend Senior |
-| **Marketing / humano** | El visitante que ya está en la página | **Software Engineer** specialized in… |
+No es "un backend que además sabe algo de arquitectura". Son las dos cosas, y el perfil sigue siendo **hands-on**.
 
-### Capa SEO — NO quitar "Backend Engineer" de acá
-
-| Ubicación | Por qué |
-|-----------|---------|
-| `meta.title` (en/es) | Título en SERP |
-| `meta.description` (en/es) | Snippet en SERP |
-| **`meta.h1.role`** (en/es) | ⚠️ Se renderiza `sr-only` **dentro del `<h1>`** → invisible al visitante, señal on-page más fuerte. Aunque viva en el hero, es **capa SEO**, no marketing |
-| `Layout.astro` → JSON-LD `jobTitle` | Knowledge Graph |
-| `Layout.astro` → `knowsAbout: 'Backend Engineering'` | Campo de keywords del schema |
-| `Layout.astro` → props `title`/`description` por defecto | Fallback; mantener alineado con `meta.*` |
-| `timeline.now.role` (en/es) | Es su **cargo real** en Hablax. Coincide con LinkedIn. Keyword honesta en body copy indexado |
-| `term.section.01.title` (en/es) | "Junior dev → CTO → senior backend…" — narrativa indexada que refuerza el término |
-| `stack.backend.title` | Nombre de categoría |
-| **`CV.md` / `CV-es.md`** | Los ATS parsean literal. Es donde el término más rinde con recruiters |
-
-### Capa marketing — acá va "Software Engineer"
+### Dónde vive el rol completo
 
 | Ubicación | Nota |
 |-----------|------|
-| `term.hero.tagline.html` (en/es) | Título del hero: rol + tres dominios de especialización |
-| `term.hero.pitch` (en/es) | Subtítulo: la propuesta de valor (problemas de negocio → sistemas confiables) |
-| `Terminal.astro` → `term.terminal.*` | Los principios comunican el posicionamiento: **cómo trabaja**, no qué frameworks usa |
-| `term.cta.title.html` (en/es) | "Open to Senior Backend & Software Engineering Roles" — híbrido explícito |
-| `og.png.ts` → tagline | Texto **dentro de un PNG** → cero valor SEO, los buscadores no lo leen. Es puro lo-que-ve-quien-comparte-el-link |
-| `Layout.astro` → easter egg de consola | Mantiene "senior backend engineer" **a propósito**: solo lo ven devs y refuerza el término del recruiter |
+| `meta.title` / `meta.description` (en/es) | SERP |
+| **`meta.h1.role`** (en/es) | Se renderiza `sr-only` dentro del `<h1>` → invisible al visitante, señal on-page más fuerte |
+| `term.terminal.role` (en/es) | Línea `whoami` del hero. ⚠️ Ancho útil ~66 chars — medir antes de alargar |
+| `term.section.01.title` (en/es) | "Developer → CTO → Senior Backend Engineer & Software Architect" |
+| `term.cta.title.html` (en/es) | CTA final |
+| `Layout.astro` → JSON-LD `jobTitle`, `knowsAbout` | Knowledge Graph y keywords del schema |
+| **`CV.md` / `CV-es.md`** | Los ATS parsean literal |
+| `timeline.now.role` (en/es) | ⚠️ Excepción: es su **cargo real** en Hablax y coincide con LinkedIn. **No inflarlo** |
 
-### Regla práctica
+### La arquitectura se demuestra, no se declara
 
-Antes de cambiar un texto de rol, preguntate: **¿lo lee una persona o una máquina?**
-Persona → Software Engineer. Máquina (o invisible, como `sr-only`) → Senior Backend Engineer.
+Los Case Studies (`projects.*`) siguen el marco **Problem → Architecture → Result**. Cada uno tiene que dejar ver una decisión, su trade-off y qué cambió en producción. `term.case.label.decision` dice "Architecture" / "Arquitectura" a propósito.
+
+**Regla dura**: no inventar tecnologías, métricas ni proyectos. Todo lo que aparezca tiene que estar respaldado por `CV.md` o por el contenido ya existente.
+
+### Qué evitar en el copy
+
+Nada de "passionate about technology", "results-driven", "innovative solutions", "cutting-edge", "transforming businesses". El texto tiene que sonar a alguien que construyó estos sistemas: problemas reales, decisiones técnicas, trade-offs, resultados.
 
 ---
 
@@ -217,7 +212,7 @@ Los componentes reciben `t` como prop y llaman `t('key')`.
 
 | Prefijo      | Contenido                                                          |
 |--------------|--------------------------------------------------------------------|
-| `meta.*`     | `title`, `description`, y `h1.role` (keywords de rol en el H1 `sr-only`). **Los tres son capa SEO** → llevan "Senior Backend Engineer" |
+| `meta.*`     | `title`, `description`, y `h1.role` (keywords de rol en el H1 `sr-only`). Los tres llevan el rol completo: "Senior Backend Engineer & Software Architect" |
 | `nav.*`      | Links, aria-labels del toggle y del switcher                       |
 | `timeline.*` | 4 hitos × (period / role / company / desc)                         |
 | `impact.*`   | Labels de las métricas (los números viven en `Impact.astro`)       |
@@ -236,7 +231,7 @@ En `/` o `/en/` muestra **ES** → lleva a `/es/`. En `/es/` muestra **EN** → 
 
 ## Perfil del Dueño (Gian Barboza)
 
-- **Rol objetivo**: Senior Backend Engineer / Software Engineer — ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida)
+- **Rol objetivo**: Senior Backend Engineer & Software Architect (cubre también Software/Backend Architect, Technical Lead, Staff) — ver [Posicionamiento de Marca](#-posicionamiento-de-marca--un-solo-rol-dos-dimensiones)
 - **Posicionamiento**: ingeniero que resuelve problemas complejos de negocio mediante arquitectura, sistemas distribuidos, plataformas de pago y desarrollo asistido por IA. **No** se posiciona alrededor de tecnologías puntuales (PHP, Laravel…)
 - **Modalidad**: Remote-first, full-time
 - **Ubicación**: Rionegro, Antioquia, Colombia (GMT-5)
@@ -327,7 +322,7 @@ Un solo `<script type="application/ld+json">` con `@graph` de dos nodos enlazado
 ### H1 con keywords
 El `<h1>` visual es solo "Gian Barboza." (marcado `aria-hidden`). Al lado hay un `<span class="sr-only">` con `Gian Barboza — {meta.h1.role}`, que inyecta las keywords de rol para buscadores y lectores de pantalla sin romper el diseño.
 
-⚠️ **`meta.h1.role` es capa SEO**: lleva "Senior Backend Engineer" aunque el hero visible diga "Software Engineer". No lo "corrijas" para que coincida — ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida).
+⚠️ **`meta.h1.role` se renderiza `sr-only` dentro del `<h1>`**: invisible al visitante, señal on-page más fuerte. Lleva el rol completo, igual que el copy visible — ver [Posicionamiento de Marca](#-posicionamiento-de-marca--un-solo-rol-dos-dimensiones).
 
 ### Pendiente
 - Submit del sitemap a [Google Search Console](https://search.google.com/search-console) — ver [Pendientes](#pendientes)
@@ -348,7 +343,7 @@ El `<h1>` visual es solo "Gian Barboza." (marcado `aria-hidden`). Al lado hay un
 ## CV / Resume flow
 
 - `CV.md` y `CV-es.md` en la raíz son la **fuente de verdad** (1-2 páginas, bullets outcome-first). `cv.css` define el estilo del PDF
-- ⚠️ El CV es **capa SEO**: la línea de rol dice "Senior Backend Engineer" / "Ingeniero Backend Senior" porque los ATS parsean literal. **No cambiarla a "Software Engineer"**
+- ⚠️ Los ATS parsean el CV literal: la línea de rol tiene que arrancar con "Senior Backend Engineer" / "Ingeniero Backend Senior". **No la reemplaces por solo "Software Architect"**
 - `npm run cv` genera **ambos** PDFs y los mueve a `public/`
   - **Nota**: `md-to-pdf` removió el flag `--dest-dir`; el script genera en root y mueve
 - Se sirven en `/gian-barboza-cv.pdf` y `/gian-barboza-cv-es.pdf`
@@ -398,7 +393,7 @@ El `<h1>` visual es solo "Gian Barboza." (marcado `aria-hidden`). Al lado hay un
 ## Filosofía de Cambios
 
 - Cambios de **contenido** → solo editar `src/i18n/en.ts` y `src/i18n/es.ts`
-- Cambios de **texto de rol** → respetar las dos capas. Persona lee → "Software Engineer". Máquina lee (o es `sr-only`) → "Senior Backend Engineer". **Nunca unificar las dos** — ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida)
+- Cambios de **texto de rol** → el rol completo va igual en todos lados, visible e invisible. **No lo partas en dos capas** — ver [Posicionamiento de Marca](#-posicionamiento-de-marca--un-solo-rol-dos-dimensiones)
 - Cambios de **layout/diseño** → editar el componente `.astro` + su bloque en `global.css`
 - Cambios de **paleta** → editar `:root` y `html.light` en `global.css`, **y sincronizar `og.png.ts`**
 - **CSS plano con las custom properties** — no hay framework de CSS y no se reintroduce Tailwind
@@ -422,7 +417,7 @@ Estado al 2026-08-06, después del reposicionamiento de marca y de sacar Tailwin
 
 - [ ] **Submit del sitemap a Google Search Console** — property `gianbarboza.com`, sitemap en `https://gianbarboza.com/sitemap-index.xml`. Nunca se hizo
 - [ ] **Invalidar la caché del OG image** — el texto de `og.png` cambió con el reposicionamiento, pero LinkedIn/X/WhatsApp cachean la preview por semanas. Forzar refresh en el [Post Inspector de LinkedIn](https://www.linkedin.com/post-inspector/) y en el Card Validator de X
-- [ ] **Alinear LinkedIn con la web** — el headline debería seguir la misma estrategia de dos capas (ver [Posicionamiento de Marca](#-posicionamiento-de-marca--estrategia-híbrida)): "Senior Backend Engineer" para el buscador interno de recruiters, la especialización en el about
+- [ ] **Alinear LinkedIn con la web** — el headline debería decir "Senior Backend Engineer & Software Architect" (ver [Posicionamiento de Marca](#-posicionamiento-de-marca--un-solo-rol-dos-dimensiones)), con los dominios de especialización en el about
 
 ### Deuda técnica conocida
 

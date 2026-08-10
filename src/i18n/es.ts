@@ -1,12 +1,13 @@
 export const es: Record<string, string> = {
   // ── Meta ─────────────────────────────────────────────────
-  // Capa SEO: mantiene "Ingeniero Backend Senior" — el término que buscan los
-  // recruiters. El hero visible posiciona como Ingeniero de Software (marketing).
-  'meta.title': 'Gian Barboza | Ingeniero Backend Senior | Plataformas de Pago',
-  'meta.description': 'Ingeniero Backend Senior con más de 10 años diseñando plataformas de pago, sistemas distribuidos y soluciones escalables. Disponible para trabajo remoto.',
+  // Un solo posicionamiento en todos lados: "Ingeniero Backend Senior y Arquitecto
+  // de Software". "Ingeniero Backend Senior" va primero porque es el término que
+  // buscan los recruiters; "Arquitecto" es lo que los case studies deben demostrar.
+  'meta.title': 'Gian Barboza | Ingeniero Backend Senior y Arquitecto de Software',
+  'meta.description': 'Ingeniero Backend Senior y Arquitecto de Software con más de 10 años construyendo sistemas backend, arquitecturas distribuidas y plataformas de pago. Disponible para trabajo remoto.',
   // Se renderiza sr-only dentro del <h1> — invisible para el visitante, es la
-  // señal on-page más fuerte. Lleva la keyword del recruiter + la nueva cola.
-  'meta.h1.role': 'Ingeniero Backend Senior especializado en plataformas de pago, sistemas distribuidos y desarrollo asistido por IA',
+  // señal on-page más fuerte. Lleva el rol completo, igual que el copy visible.
+  'meta.h1.role': 'Ingeniero Backend Senior y Arquitecto de Software',
 
   // ── Nav ──────────────────────────────────────────────────
   'nav.impact': 'Impacto',
@@ -49,7 +50,8 @@ export const es: Record<string, string> = {
   'timeline.fermat.desc': 'Desarrollé apps Android P2P sobre criptomonedas (taxi, e-commerce) donde el pago iba directo a la wallet del proveedor sin intermediarios. Primera exposición a sistemas descentralizados y a un entorno 100% remoto.',
 
   // ── Tech Stack ───────────────────────────────────────────
-  'stack.backend.title': 'Backend & Arquitectura',
+  'stack.backend.title': 'Ingeniería Backend',
+  'stack.architecture.title': 'Arquitectura',
   'stack.infra.title': 'Infraestructura',
   'stack.payments.title': 'Pagos & Riesgo',
   'stack.ai.title': 'Automatización & IA',
@@ -57,28 +59,28 @@ export const es: Record<string, string> = {
   // ── Projects ─────────────────────────────────────────────
 
   'projects.infra.title': 'Migración de Monolito a Infraestructura Distribuida',
-  'projects.infra.context': 'Plataforma de giftcards y recargas con ~1,000 transacciones diarias y entre $100K y $300K mensuales procesados, corriendo sobre un único servidor.',
-  'projects.infra.problem': 'Caídas recurrentes de ~3 horas en picos de tráfico (Día de las Madres, Año Nuevo) por el sistema de llamadas consumiendo todos los recursos. Pérdida directa de revenue en los días más lucrativos del año.',
-  'projects.infra.decision': 'Migración a DigitalOcean con 8 servidores separando capas (web, base de datos, dev). Balanceo HTTP con HAProxy, replicación MySQL master-slave para alta disponibilidad, failover entre nodos, backups y planes de recovery automatizados. Ejecutado manualmente sobre Linux por restricciones del stack legacy, liderando un equipo de 4 developers.',
+  'projects.infra.context': 'Plataforma de giftcards y recargas con ~1,000 transacciones diarias y entre $100K y $300K mensuales procesados — todo sobre un único servidor.',
+  'projects.infra.problem': 'Un problema de disponibilidad, no de throughput. El sistema de llamadas consumía todos los recursos de la máquina, así que los picos del Día de las Madres y Año Nuevo tumbaban la plataforma entera durante ~3 horas, en las fechas más lucrativas del año.',
+  'projects.infra.decision': 'Rediseño hacia una arquitectura distribuida de 8 servidores en DigitalOcean, separando capas web, base de datos y dev para que ninguna carga pudiera ahogar a otra. HAProxy para balanceo HTTP, replicación MySQL master-slave para capacidad de lectura y standby, failover entre nodos, backups automatizados y runbooks de recovery. El trade-off: el stack legacy no permitía aprovisionamiento automático, así que la topología se construyó a mano sobre Linux — más lento de levantar, pero eliminó el punto único de falla sin reescribir la aplicación primero. Liderando un equipo de 4 developers.',
   'projects.infra.outcome': '99.9% uptime sostenido desde 2019 · Cero caídas en fechas críticas durante los últimos ~5 años',
 
   'projects.seo.title': 'SEO Programático con IA a Escala',
   'projects.seo.context': 'Presupuesto de miles de dólares mensuales en publicidad pagada, catálogo de más de 1,600 productos por proveedor multiplicado por múltiples países y servicios.',
-  'projects.seo.problem': 'Reducir la dependencia de paid ads sin sacrificar la adquisición de clientes. Generar contenido a escala humana para miles de combinaciones país/servicio/producto era inviable.',
-  'projects.seo.decision': 'Pipeline de generación jerárquica en 3 niveles (país → país/servicio → país/servicio/producto) poblando miles de combinaciones vía ChatGPT-4o con prompts curados por vertical. Trigger automático: cuando entra un producto nuevo, se regeneran las landings de los niveles afectados sin intervención manual.',
+  'projects.seo.problem': 'Cortar la dependencia de la adquisición pagada sin perder volumen. Escribir el contenido de las landings a mano para miles de combinaciones país/servicio/producto nunca iba a ocurrir.',
+  'projects.seo.decision': 'Diseñado como pipeline jerárquico y no como una generación puntual de contenido: tres niveles (país → país/servicio → país/servicio/producto), cada uno heredando contexto del anterior, poblados vía ChatGPT-4o con prompts curados por vertical. El pipeline es orientado a eventos — cuando entra un producto nuevo al catálogo, regenera solo los niveles afectados, así la superficie de contenido crece con el catálogo en lugar de quedarse atrás.',
   'projects.seo.outcome': 'Reemplazo significativo del presupuesto de ads con tráfico orgánico · Mejor ratio de clientes nuevos que el canal pagado · Escala mantenida de forma autónoma con el catálogo',
 
   'projects.fraud.title': 'Sistema de Detección de Fraude con Reglas Extensibles',
   'projects.fraud.context': 'Plataforma de pagos expuesta a dos vectores de fraude: transaccional (tarjetas robadas, patrones sospechosos) y de acceso (multicuentas, intentos de hackeo).',
-  'projects.fraud.problem': 'Necesidad de agregar reglas nuevas frecuentemente sin tocar el pipeline central, y de detectar patrones de cuenta y dispositivo sospechosos sin degradar la experiencia de usuarios legítimos.',
-  'projects.fraud.decision': 'Motor de reglas basado en Factory + Single Responsibility Principle: cada regla se autoregistra y recibe contexto normalizado, permitiendo extender sin modificar el evaluador. Capa separada para fraude de acceso con device fingerprinting. Se exploró evaluación contextual con LLMs vía n8n imitando decisiones de soporte; funcionó a baja escala pero se archivó por costos prohibitivos del modelo.',
-  'projects.fraud.outcome': 'Reducción significativa de la carga de revisión manual · Base técnica para incorporar nuevas reglas en horas en lugar de semanas',
+  'projects.fraud.problem': 'Los patrones de fraude nuevos aparecían más rápido de lo que el pipeline podía absorberlos: cada regla implicaba editar el evaluador central. Y detectar cuentas o dispositivos sospechosos no podía costar fricción para los usuarios legítimos.',
+  'projects.fraud.decision': 'Separación del evaluador y las reglas. Un Factory construye cada regla, cada regla tiene una única responsabilidad, se autoregistra y recibe contexto ya normalizado — agregar un patrón significa agregar una clase, nunca editar el motor. El fraude de acceso corre como capa propia sobre device fingerprinting, manteniendo las señales de sesión (multicuentas, account takeover) fuera del camino transaccional. También se prototipó evaluación contextual con un LLM vía n8n, imitando cómo decide un agente de soporte; funcionó a bajo volumen y se archivó a propósito — el costo por decisión del modelo no sobrevivía a escala de producción.',
+  'projects.fraud.outcome': 'Reducción significativa de la carga de revisión manual · Reglas nuevas en horas en lugar de semanas · Ambos vectores de fraude cubiertos sin que uno toque el código del otro',
 
   'projects.payments.title': 'Integración Multi-Gateway de Pagos con Failover',
   'projects.payments.context': 'Operación global de giftcards y recargas donde un único gateway deja brechas geográficas, de conversión y de disponibilidad.',
-  'projects.payments.problem': 'Los distintos gateways cubren distintos países y fees; cualquiera puede caerse o empezar a rechazar más transacciones. Se requería cobertura continua y flexibilidad comercial para optimizar por país y método.',
-  'projects.payments.decision': 'Abstracción donde el admin configura gateway activo y prioridades por producto. Ante una falla o rechazo del proveedor activo, failover automático al siguiente en la cadena. 5 procesadores integrados (PayPal, Payeezy, DLocal, Stripe, Shift4) con features completos: 3DS, refunds, voids, Apple Pay, Google Pay y tokenización propia de tarjetas.',
-  'projects.payments.outcome': 'Disponibilidad de cobro continua durante incidentes de proveedores · Routing optimizado por costo y conversión · 5 gateways en producción',
+  'projects.payments.problem': 'Cada gateway cubre distintos países con distintos fees, y cualquiera puede caerse o empezar a rechazar más sin aviso. La plataforma necesitaba cobertura ininterrumpida más la libertad comercial de elegir proveedor por país y por método.',
+  'projects.payments.decision': 'Todos los proveedores detrás de una única interfaz de pago interna: cinco APIs muy distintas se normalizan a una sola forma de request/response, así el resto de la plataforma nunca se entera de qué procesador ejecutó el cobro. El routing es configuración, no código — el admin define gateway activo y cadena de prioridad por producto, y una falla o rechazo del proveedor activo cae automáticamente al siguiente. PayPal, Payeezy, DLocal, Stripe y Shift4 integrados de punta a punta, con 3DS, refunds, voids, Apple Pay, Google Pay y tokenización propia de tarjetas.',
+  'projects.payments.outcome': 'Los pagos siguen disponibles durante incidentes de proveedores · Routing ajustado por país para costo y conversión · 5 gateways en producción detrás de una interfaz',
 
   // ── Contact ──────────────────────────────────────────────
   'contact.modal.title': 'Hablemos',
@@ -107,13 +109,13 @@ export const es: Record<string, string> = {
   'term.hero.location': 'Rionegro, CO · GMT-5',
   'term.hero.years': '10+ años',
   'term.hero.available': 'Disponible',
-  'term.hero.tagline.html': 'Ingeniero de software especializado en <strong>plataformas de pago</strong>, <strong>sistemas distribuidos</strong> y <strong>desarrollo asistido por IA</strong>.',
+  'term.hero.tagline.html': 'Diseño y construyo <strong>sistemas backend</strong>, <strong>arquitecturas distribuidas</strong> y <strong>plataformas de pago</strong> para producción.',
   'term.hero.pitch': 'Transformo problemas complejos de negocio en soluciones confiables listas para producción.',
 
   // ── Terminal (Hero) ──────────────────────────────────────
   // Capa marketing. Ancho útil ~66 chars a ≥1100px — no pasarse.
-  'term.terminal.role': 'gian.barboza · Ingeniero de Software Senior',
-  'term.terminal.building': 'Pagos, sistemas distribuidos y desarrollo asistido por IA.',
+  'term.terminal.role': 'gian.barboza · Ingeniero Backend Senior y Arquitecto de Software',
+  'term.terminal.building': 'Diseño de sistemas backend, arquitectura distribuida y pagos.',
   'term.terminal.p1': 'Producción primero',
   'term.terminal.p2': 'Medir antes de optimizar',
   'term.terminal.p3': 'Evolucionar antes que reescribir',
@@ -124,16 +126,16 @@ export const es: Record<string, string> = {
   'term.cta.contact': 'Hablemos',
 
   'term.section.01.label': '01 — Recorrido',
-  'term.section.01.title': 'Desarrollador junior → CTO → backend senior en plataformas de pagos.',
-  'term.section.01.sub': 'Una década de decisiones compuestas entre monolitos, sistemas distribuidos e IA.',
+  'term.section.01.title': 'Desarrollador → CTO → Ingeniero Backend Senior y Arquitecto de Software',
+  'term.section.01.sub': 'Una década diseñando, construyendo y evolucionando sistemas en producción entre pagos, infraestructura distribuida y automatización.',
 
   'term.section.02.label': '02 — Impacto Clave',
   'term.section.02.title': 'Números que llegaron a producción.',
   'term.section.02.sub': 'Algunas métricas que resumen una década de decisiones.',
 
   'term.section.03.label': '03 — Case Studies',
-  'term.section.03.title': 'Cuatro problemas, cuatro sistemas en producción.',
-  'term.section.03.sub': 'Haz click en cualquier card para expandir contexto, problema, decisión y resultado.',
+  'term.section.03.title': 'Cuatro sistemas en producción y las decisiones detrás.',
+  'term.section.03.sub': 'Abre cualquier card para ver el contexto, el problema, la decisión de arquitectura y qué cambió en producción.',
 
   'term.section.04.label': '04 — Stack',
   'term.section.04.title': 'Expertise técnico.',
@@ -143,7 +145,7 @@ export const es: Record<string, string> = {
 
   'term.case.label.context': 'Contexto',
   'term.case.label.problem': 'Problema',
-  'term.case.label.decision': 'Decisión',
+  'term.case.label.decision': 'Arquitectura',
   'term.case.label.result': 'Resultado',
 
   'term.case.infra.metric': '99.9% uptime',
@@ -163,8 +165,8 @@ export const es: Record<string, string> = {
   'term.case.payments.result.text': 'gateways consolidados. Disponibilidad continua durante incidentes de proveedores. Routing optimizado por costo y conversión.',
 
   'term.cta.eyebrow': '— Trabajemos juntos',
-  'term.cta.title.html': 'Disponible para roles Senior Backend<br/>e Ingeniería de Software en <span class="accent">pagos</span> e <span class="accent">IA</span>.',
-  'term.cta.sub': 'Disponible para oportunidades full-time remotas. Respuesta más rápida por email o LinkedIn.',
+  'term.cta.title.html': 'Disponible para roles de Ingeniero Backend Senior<br/>y Arquitecto de Software en <span class="accent">sistemas backend</span>, <span class="accent">arquitectura distribuida</span> y <span class="accent">pagos</span>.',
+  'term.cta.sub': 'Disponible full-time y en remoto, para sistemas en producción con exigencia técnica real. Respuesta más rápida por email o LinkedIn.',
 
   'term.footer.copy': '© {year} Gian Barboza · gianbarboza.com',
   'term.footer.deploy': 'Construido con dedicación · Astro · Vercel',
