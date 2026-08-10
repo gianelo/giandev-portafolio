@@ -1,12 +1,13 @@
 export const en: Record<string, string> = {
   // ── Meta ─────────────────────────────────────────────────
-  // SEO layer: keeps "Senior Backend Engineer" — the term recruiters search for.
-  // The visible hero copy positions him as a Software Engineer (marketing layer).
-  'meta.title': 'Gian Barboza | Senior Backend Engineer | Payment Systems',
-  'meta.description': 'Senior Backend Engineer with 10+ years building payment platforms, distributed systems and AI-assisted software. Available for remote work.',
+  // One positioning everywhere: "Senior Backend Engineer & Software Architect".
+  // "Senior Backend Engineer" leads because it is the term recruiters search for;
+  // "Software Architect" is what the case studies then have to prove.
+  'meta.title': 'Gian Barboza | Senior Backend Engineer & Software Architect',
+  'meta.description': 'Senior Backend Engineer & Software Architect with 10+ years building backend systems, distributed architectures and payment platforms. Available for remote work.',
   // Rendered sr-only inside the <h1> — invisible to visitors, strongest on-page
   // ranking signal. Carries the recruiter keyword + the new specialization tail.
-  'meta.h1.role': 'Senior Backend Engineer specialized in payment platforms, distributed systems and AI-assisted development',
+  'meta.h1.role': 'Senior Backend Engineer & Software Architect',
 
   // ── Nav ──────────────────────────────────────────────────
   'nav.impact': 'Impact',
@@ -49,7 +50,8 @@ export const en: Record<string, string> = {
   'timeline.fermat.desc': 'Built P2P Android apps on top of cryptocurrencies (taxi, e-commerce) where payments landed directly in the provider\'s wallet with no intermediaries. First exposure to decentralized systems and 100% remote work.',
 
   // ── Tech Stack ───────────────────────────────────────────
-  'stack.backend.title': 'Backend & Architecture',
+  'stack.backend.title': 'Backend Engineering',
+  'stack.architecture.title': 'Architecture',
   'stack.infra.title': 'Infrastructure',
   'stack.payments.title': 'Payments & Risk',
   'stack.ai.title': 'Automation & AI',
@@ -57,28 +59,28 @@ export const en: Record<string, string> = {
   // ── Projects ─────────────────────────────────────────────
 
   'projects.infra.title': 'Monolith to Distributed Infrastructure Migration',
-  'projects.infra.context': 'Gift cards and top-up platform processing ~1,000 transactions/day and $100K–$300K in monthly volume, running on a single server.',
-  'projects.infra.problem': 'Recurring ~3-hour outages during traffic spikes (Mother\'s Day, New Year\'s Eve) because the calling system consumed all resources. Direct revenue loss on the most lucrative days of the year.',
-  'projects.infra.decision': 'Migrated to DigitalOcean with 8 servers separating concerns (web, database, dev). HTTP load balancing with HAProxy, MySQL master-slave replication for high availability, node-level failover, automated backups, and recovery runbooks. Executed manually over Linux due to legacy-stack constraints, leading a team of 4 developers.',
+  'projects.infra.context': 'Gift cards and top-up platform processing ~1,000 transactions/day and $100K–$300K in monthly volume — all of it on a single server.',
+  'projects.infra.problem': 'An availability problem, not a throughput one. The calling system consumed every resource on the box, so traffic spikes on Mother\'s Day and New Year\'s Eve took the whole platform down for ~3 hours — on the most lucrative dates of the year.',
+  'projects.infra.decision': 'Redesigned it as an 8-server distributed architecture on DigitalOcean, separating web, database and dev tiers so no workload could starve another. HAProxy for HTTP load balancing, MySQL master-slave replication for read capacity and standby, node-level failover, automated backups and recovery runbooks. The trade-off: the legacy stack could not be provisioned automatically, so the topology was built by hand over Linux — slower to stand up, but it removed the single point of failure without rewriting the application first. Led a team of 4 through the migration.',
   'projects.infra.outcome': '99.9% uptime sustained since 2019 · Zero outages during peak dates over the last ~5 years',
 
   'projects.seo.title': 'Programmatic SEO with AI at Scale',
   'projects.seo.context': 'Thousands of dollars in monthly paid-ad spend, with a catalog of 1,600+ products per provider multiplied across multiple countries and services.',
-  'projects.seo.problem': 'Reduce paid-ad dependency without hurting acquisition. Generating content at human scale for thousands of country/service/product combinations was unfeasible.',
-  'projects.seo.decision': 'Hierarchical generation pipeline across 3 tiers (country → country/service → country/service/product), populating thousands of combinations via ChatGPT-4o with prompts curated per vertical. Automatic trigger: when a new product lands, affected landings are regenerated with zero manual intervention.',
+  'projects.seo.problem': 'Cut the dependency on paid acquisition without losing volume. Writing landing content by hand for thousands of country/service/product combinations was never going to happen.',
+  'projects.seo.decision': 'Designed it as a hierarchical pipeline rather than a one-off content dump: three tiers (country → country/service → country/service/product), each inheriting context from the one above, populated through ChatGPT-4o with prompts curated per vertical. The pipeline is event-driven — a new product landing in the catalog regenerates the affected tiers on its own, so the content surface grows with the catalog instead of drifting behind it.',
   'projects.seo.outcome': 'Significant replacement of ad spend with organic traffic · Better new-client ratio than the paid channel · Scales autonomously with the catalog',
 
   'projects.fraud.title': 'Fraud Detection with Extensible Rule Engine',
   'projects.fraud.context': 'Payments platform exposed to two fraud vectors: transactional (stolen cards, suspicious patterns) and access-level (multi-accounts, account-takeover attempts).',
-  'projects.fraud.problem': 'Need to add new rules frequently without touching the central pipeline, and to detect suspicious account/device patterns without degrading the experience for legitimate users.',
-  'projects.fraud.decision': 'Rule engine based on Factory + Single Responsibility: each rule self-registers and receives normalized context, allowing extension without modifying the evaluator. Separate access-fraud layer using device fingerprinting. Explored contextual LLM evaluation via n8n to mimic support agents\' decisions; it worked at small scale but was shelved due to prohibitive model costs.',
-  'projects.fraud.outcome': 'Significant reduction in manual review load · Technical foundation to ship new rules in hours instead of weeks',
+  'projects.fraud.problem': 'New fraud patterns appeared faster than the pipeline could absorb them: every rule meant editing the central evaluator. And detecting suspicious accounts or devices could not come at the cost of friction for legitimate users.',
+  'projects.fraud.decision': 'Separated the evaluator from the rules. A Factory builds each rule, every rule owns a single responsibility, self-registers, and receives an already-normalized context — so adding a pattern means adding a class, never editing the engine. Access fraud runs as its own layer on device fingerprinting, keeping session signals (multi-account abuse, account takeover) out of the transactional path. Also prototyped contextual evaluation with an LLM through n8n, imitating how support agents decide; it worked at low volume and was shelved on purpose — the per-decision model cost did not survive production scale.',
+  'projects.fraud.outcome': 'Significant reduction in manual review load · New rules ship in hours instead of weeks · Both fraud vectors covered without either touching the other\'s code',
 
   'projects.payments.title': 'Multi-Gateway Payments Integration with Failover',
   'projects.payments.context': 'Global gift cards and top-up operation where relying on a single gateway leaves gaps in geography, conversion, and availability.',
-  'projects.payments.problem': 'Different gateways cover different countries and fees; any one of them can go down or start rejecting more. We needed continuous coverage and commercial flexibility to optimize per country and method.',
-  'projects.payments.decision': 'Abstraction where the admin configures the active gateway and priorities per product. On failure or rejection from the active provider, automatic failover to the next in the chain. 5 processors integrated (PayPal, Payeezy, DLocal, Stripe, Shift4) with full features: 3DS, refunds, voids, Apple Pay, Google Pay, and in-house card tokenization.',
-  'projects.payments.outcome': 'Continuous payment availability during provider incidents · Routing optimized for cost and conversion · 5 gateways in production',
+  'projects.payments.problem': 'Each gateway covers different countries at different fees, and any of them can go down or start rejecting more without warning. The platform needed uninterrupted coverage plus the commercial freedom to choose a provider per country and per method.',
+  'projects.payments.decision': 'Put every provider behind one internal payment interface: five very different APIs normalize into a single request/response shape, so the rest of the platform never learns which processor ran the charge. Routing is configuration, not code — the admin sets the active gateway and a priority chain per product, and a failure or rejection from the active provider falls through to the next one automatically. Integrated PayPal, Payeezy, DLocal, Stripe and Shift4 end to end, with 3DS, refunds, voids, Apple Pay, Google Pay and in-house card tokenization.',
+  'projects.payments.outcome': 'Payments stay available through provider incidents · Routing tuned per country for cost and conversion · 5 gateways in production behind one interface',
 
   // ── Contact ──────────────────────────────────────────────
   'contact.modal.title': "Let's Talk",
@@ -107,13 +109,13 @@ export const en: Record<string, string> = {
   'term.hero.location': 'Rionegro, CO · GMT-5',
   'term.hero.years': '10+ yrs',
   'term.hero.available': 'Available',
-  'term.hero.tagline.html': 'Senior Software Engineer specialized in <strong>payment platforms</strong>, <strong>distributed systems</strong> and <strong>AI-assisted development</strong>.',
+  'term.hero.tagline.html': 'Designing and building <strong>backend systems</strong>, <strong>distributed architectures</strong> and <strong>payment platforms</strong> for production.',
   'term.hero.pitch': 'Turning complex business problems into reliable production systems.',
 
   // ── Terminal (Hero) ──────────────────────────────────────
-  // Capa marketing. Ancho útil ~66 chars a ≥1100px — no pasarse.
-  'term.terminal.role': 'gian.barboza · Senior Software Engineer',
-  'term.terminal.building': 'Building payments, distributed systems & AI-assisted software.',
+  // Usable width is ~66 chars at ≥1100px — do not exceed it.
+  'term.terminal.role': 'gian.barboza · Senior Backend Engineer & Software Architect',
+  'term.terminal.building': 'Designing backend systems, distributed architecture & payments.',
   'term.terminal.p1': 'Production first',
   'term.terminal.p2': 'Measure before optimizing',
   'term.terminal.p3': 'Evolution over rewrites',
@@ -124,16 +126,16 @@ export const en: Record<string, string> = {
   'term.cta.contact': 'Get in touch',
 
   'term.section.01.label': '01 — Journey',
-  'term.section.01.title': 'Junior dev → CTO → senior backend on payments platforms.',
-  'term.section.01.sub': 'A decade of compounding decisions across monoliths, distributed systems, and AI.',
+  'term.section.01.title': 'Developer → CTO → Senior Backend Engineer & Software Architect',
+  'term.section.01.sub': 'A decade of designing, building and evolving production systems across payments, distributed infrastructure and automation.',
 
   'term.section.02.label': '02 — Key Impact',
   'term.section.02.title': 'Numbers that shipped to production.',
   'term.section.02.sub': 'A few metrics that summarize a decade of decisions.',
 
   'term.section.03.label': '03 — Case Studies',
-  'term.section.03.title': 'Four problems, four production systems.',
-  'term.section.03.sub': 'Click any card to expand context, problem, decision, and result.',
+  'term.section.03.title': 'Four production systems, and the decisions behind them.',
+  'term.section.03.sub': 'Open any card for the context, the problem, the architecture decision, and what it changed in production.',
 
   'term.section.04.label': '04 — Stack',
   'term.section.04.title': 'Technical expertise.',
@@ -143,7 +145,7 @@ export const en: Record<string, string> = {
 
   'term.case.label.context': 'Context',
   'term.case.label.problem': 'Problem',
-  'term.case.label.decision': 'Decision',
+  'term.case.label.decision': 'Architecture',
   'term.case.label.result': 'Result',
 
   'term.case.infra.metric': '99.9% uptime',
@@ -163,8 +165,8 @@ export const en: Record<string, string> = {
   'term.case.payments.result.text': 'gateways consolidated. Continuous availability during provider incidents. Routing optimized for cost and conversion.',
 
   'term.cta.eyebrow': '— Let\'s work together',
-  'term.cta.title.html': 'Open to Senior Backend &amp; Software Engineering Roles<br/>in <span class="accent">payments</span> &amp; <span class="accent">AI</span>.',
-  'term.cta.sub': 'Available for full-time remote opportunities. Fastest reply via email or LinkedIn.',
+  'term.cta.title.html': 'Open to Senior Backend Engineer &amp; Software Architect roles<br/>in <span class="accent">backend systems</span>, <span class="accent">distributed architecture</span> &amp; <span class="accent">payments</span>.',
+  'term.cta.sub': 'Available full-time and remote, for production systems with real technical constraints. Fastest reply via email or LinkedIn.',
 
   'term.footer.copy': '© {year} Gian Barboza · gianbarboza.com',
   'term.footer.deploy': 'Built with care · Astro · Vercel',

@@ -5,9 +5,9 @@ export interface Props {
 
 const { t } = Astro.props;
 
-// Capa marketing (ver AGENTS.md → Posicionamiento de Marca): acá va
-// "Software Engineer", no "Backend Engineer".
-// Los `$ comandos` no se traducen — son shell, no copy.
+// Positioning (see AGENTS.md → Posicionamiento de Marca): the role line reads
+// "Senior Backend Engineer & Software Architect" everywhere, visible copy included.
+// The `$ commands` are not translated — they are shell, not copy.
 const lines = [
   { t: '$ whoami', cls: 'prompt' },
   { t: t('term.terminal.role'), cls: 'key' },
