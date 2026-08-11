@@ -200,7 +200,7 @@ export async function GET() {
                     maxWidth: '960px',
                   },
                   children:
-                    'Software engineer · Payment platforms, distributed systems & AI-assisted development.',
+                    'Senior Backend Engineer & Software Architect · Backend systems, distributed architecture and payments.',
                 },
               },
             ],
@@ -226,7 +226,7 @@ export async function GET() {
                   style: { display: 'flex', alignItems: 'center' },
                   children: [
                     stat('Uptime', '99.9%'),
-                    stat('Gateways', '5+'),
+                    stat('Payment providers', '5'),
                     {
                       type: 'div' as const,
                       props: {
