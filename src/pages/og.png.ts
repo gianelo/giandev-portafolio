@@ -43,16 +43,23 @@ export async function GET() {
     resolve(process.cwd(), 'src/assets/fonts/inter-400.ttf')
   );
 
-  const stat = (label: string, value: string) => ({
+  // `last` drops the trailing divider so the row ends clean. Every stat goes
+  // through here — no bespoke inline blocks, so removing or reordering one
+  // cannot leave a separator hanging.
+  const stat = (label: string, value: string, last = false) => ({
     type: 'div' as const,
     props: {
       style: {
         display: 'flex',
         flexDirection: 'column' as const,
         gap: '6px',
-        paddingRight: '40px',
-        borderRight: `1px solid ${C.border}`,
-        marginRight: '40px',
+        ...(last
+          ? {}
+          : {
+              paddingRight: '40px',
+              borderRight: `1px solid ${C.border}`,
+              marginRight: '40px',
+            }),
       },
       children: [
         {
@@ -227,43 +234,7 @@ export async function GET() {
                   children: [
                     stat('Uptime', '99.9%'),
                     stat('Payment providers', '5'),
-                    {
-                      type: 'div' as const,
-                      props: {
-                        style: {
-                          display: 'flex',
-                          flexDirection: 'column' as const,
-                          gap: '6px',
-                        },
-                        children: [
-                          {
-                            type: 'div' as const,
-                            props: {
-                              style: {
-                                fontSize: '32px',
-                                fontWeight: 500,
-                                color: C.fg,
-                                letterSpacing: '-0.02em',
-                                lineHeight: 1,
-                              },
-                              children: '$200K+',
-                            },
-                          },
-                          {
-                            type: 'div' as const,
-                            props: {
-                              style: {
-                                fontSize: '13px',
-                                color: C.fgDim,
-                                letterSpacing: '0.12em',
-                                textTransform: 'uppercase' as const,
-                              },
-                              children: 'Monthly volume',
-                            },
-                          },
-                        ],
-                      },
-                    },
+                    stat('Monthly volume', '$200K+', true),
                   ],
                 },
               },
