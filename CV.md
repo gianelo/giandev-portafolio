@@ -23,7 +23,7 @@ pdf_options:
 
 ## Summary
 
-Senior Backend Engineer and Software Architect with 10+ years of hands-on experience designing, building and evolving production systems. Ex-CTO with experience in distributed architectures, multi-provider payment platforms, fraud detection, API integration and production infrastructure. Designed and led the migration of a single-server monolith to an 8-server distributed platform sustaining 99.9% uptime while processing $200K+ per month in transactions.
+Senior Backend Engineer and Software Architect with 10+ years of hands-on experience designing, building and evolving production systems — distributed architectures, multi-provider payment platforms, fraud detection, API integration and production infrastructure. Designed and led the migration of a single-server monolith to an 8-server distributed platform sustaining 99.9% uptime while processing $200K+ per month in transactions.
 
 ## Experience
 

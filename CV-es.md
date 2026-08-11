@@ -23,7 +23,7 @@ pdf_options:
 
 ## Resumen
 
-Ingeniero Backend Senior y Arquitecto de Software con más de 10 años de experiencia hands-on diseñando, construyendo y evolucionando sistemas en producción. Ex-CTO con experiencia en arquitecturas distribuidas, plataformas de pago multi-proveedor, detección de fraude, integración de APIs e infraestructura de producción. Diseñé y lideré la migración de un monolito de un servidor a una plataforma distribuida de 8 servidores, sosteniendo 99.9% de uptime y procesando $200K+ mensuales en transacciones.
+Ingeniero Backend Senior y Arquitecto de Software con más de 10 años de experiencia hands-on diseñando, construyendo y evolucionando sistemas en producción — arquitecturas distribuidas, plataformas de pago multi-proveedor, detección de fraude, integración de APIs e infraestructura de producción. Diseñé y lideré la migración de un monolito de un servidor a una plataforma distribuida de 8 servidores, sosteniendo 99.9% de uptime y procesando $200K+ mensuales en transacciones.
 
 ## Experiencia
 
