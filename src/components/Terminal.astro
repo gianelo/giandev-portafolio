@@ -8,10 +8,30 @@ const { t } = Astro.props;
 // Positioning (see AGENTS.md → Posicionamiento de Marca): the role line reads
 // "Senior Backend Engineer & Software Architect" everywhere, visible copy included.
 // The `$ commands` are not translated — they are shell, not copy.
+// Domain slugs stay untranslated for the same reason the `$ commands` do: they
+// read as directory names, not copy. Each one maps to real work on this page —
+// four of them are the case studies below.
+const domains = [
+  'payments',
+  'distributed-systems',
+  'infrastructure',
+  'fraud-detection',
+  'automation',
+];
+
+const tree = domains.map((d, i) => ({
+  t: `${i === domains.length - 1 ? '└──' : '├──'} ${d}`,
+  cls: 'val',
+}));
+
 const lines = [
   { t: '$ whoami', cls: 'prompt' },
   { t: t('term.terminal.role'), cls: 'key' },
   { t: t('term.terminal.building'), cls: 'val' },
+  { t: '' },
+  { t: '$ tree architecture/', cls: 'prompt' },
+  { t: 'architecture/', cls: 'key' },
+  ...tree,
   { t: '' },
   { t: '$ engineering_principles', cls: 'prompt' },
   { t: '✓', cls: 'ok', suf: ` ${t('term.terminal.p1')}` },
