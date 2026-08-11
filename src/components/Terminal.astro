@@ -19,12 +19,20 @@ const domains = [
   'automation',
 ];
 
-const tree = domains.map((d, i) => ({
+/** A rendered terminal row. Blank rows carry no class; `suf` is the unstyled
+ *  tail after a coloured marker, so both are optional. */
+interface Line {
+  t: string;
+  cls?: string;
+  suf?: string;
+}
+
+const tree: Line[] = domains.map((d, i) => ({
   t: `${i === domains.length - 1 ? '└──' : '├──'} ${d}`,
   cls: 'val',
 }));
 
-const lines = [
+const lines: Line[] = [
   { t: '$ whoami', cls: 'prompt' },
   { t: t('term.terminal.role'), cls: 'key' },
   { t: t('term.terminal.building'), cls: 'val' },

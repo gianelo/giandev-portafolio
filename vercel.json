@@ -1,9 +1,21 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run test && npm run test:build",
+  "buildCommand": "npm run typecheck && npm run test && npm run test:build",
   "redirects": [
-    { "source": "/en/", "destination": "/", "statusCode": 301 },
-    { "source": "/en", "destination": "/", "statusCode": 301 },
-    { "source": "/en/:path*", "destination": "/", "statusCode": 301 }
+    {
+      "source": "/en/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/en",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/:path*",
+      "destination": "/",
+      "statusCode": 301
+    }
   ]
 }
