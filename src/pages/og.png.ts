@@ -280,7 +280,12 @@ export async function GET() {
     ],
   });
 
-  const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
+  // Satori lays out at 1200×630; resvg rasterizes that vector output at 2x.
+  // LinkedIn and X re-encode shared images and serve them on retina displays,
+  // so a 1x card renders soft — the text especially. The layout is unchanged,
+  // only the pixel density. Keep og:image:width/height in Layout.astro in step:
+  // the social-card test asserts the meta matches the real IHDR dimensions.
+  const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 2400 } });
   const pngBuffer = resvg.render().asPng();
 
   // resvg returns a Node Buffer, which Response does not accept as BodyInit:
