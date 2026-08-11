@@ -135,7 +135,7 @@ const jsonLdGraph = {
     <meta name="twitter:image" content={ogImage} />
 
     <!-- JSON-LD: Person + WebSite (linked via @graph) for Knowledge Graph + i18n signal -->
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLdGraph)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLdGraph)} />
 
     <!-- Theme init: dark is default. Toggle .light class on <html>. -->
     <script is:inline>

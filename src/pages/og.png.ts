@@ -312,7 +312,13 @@ export async function GET() {
   const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
   const pngBuffer = resvg.render().asPng();
 
-  return new Response(pngBuffer, {
+  // resvg returns a Node Buffer, which Response does not accept as BodyInit:
+  // a Buffer can be backed by a SharedArrayBuffer, and that is not valid body
+  // input. Copying into a plain Uint8Array settles it without a cast — it runs
+  // once at build time on ~60KB.
+  const png = new Uint8Array(pngBuffer);
+
+  return new Response(png, {
     headers: {
       'Content-Type': 'image/png',
       'Cache-Control': 'public, max-age=31536000, immutable',
