@@ -246,7 +246,7 @@ export async function GET() {
                                 letterSpacing: '-0.02em',
                                 lineHeight: 1,
                               },
-                              children: 'Ex-CTO',
+                              children: '$200K+',
                             },
                           },
                           {
@@ -258,7 +258,7 @@ export async function GET() {
                                 letterSpacing: '0.12em',
                                 textTransform: 'uppercase' as const,
                               },
-                              children: 'Payments · AI',
+                              children: 'Monthly volume',
                             },
                           },
                         ],
