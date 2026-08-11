@@ -61,7 +61,7 @@ export const en: Record<string, string> = {
   'projects.infra.title': 'Monolith to Distributed Infrastructure Migration',
   'projects.infra.context': 'Gift cards and top-up platform processing ~1,000 transactions/day and $100K–$300K in monthly volume — all of it on a single server.',
   'projects.infra.problem': 'An availability problem, not a throughput one. The calling system consumed every resource on the box, so traffic spikes on Mother\'s Day and New Year\'s Eve took the whole platform down for ~3 hours — on the most lucrative dates of the year.',
-  'projects.infra.decision': 'Redesigned it as an 8-server distributed architecture on DigitalOcean, separating web, database and dev tiers so no workload could starve another. HAProxy for HTTP load balancing, MySQL master-slave replication for read capacity and standby, node-level failover, automated backups and recovery runbooks. The trade-off: the legacy stack could not be provisioned automatically, so the topology was built by hand over Linux — slower to stand up, but it removed the single point of failure without rewriting the application first. Led a team of 4 through the migration.',
+  'projects.infra.decision': '<p>Redesigned it as an 8-server distributed architecture on DigitalOcean, separating web, database and dev tiers so no workload could starve another. HAProxy for HTTP load balancing, MySQL master-slave replication for read capacity and standby, node-level failover, automated backups and recovery runbooks.</p><p>The trade-off: the legacy stack could not be provisioned automatically, so the topology was built by hand over Linux — slower to stand up, but it removed the single point of failure without rewriting the application first. Led a team of 4 through the migration.</p>',
   'projects.infra.outcome': '99.9% uptime sustained since 2019 · Zero outages during peak dates over the last ~5 years',
 
   'projects.seo.title': 'Programmatic SEO with AI at Scale',
@@ -73,14 +73,14 @@ export const en: Record<string, string> = {
   'projects.fraud.title': 'Fraud Detection with Extensible Rule Engine',
   'projects.fraud.context': 'Payments platform exposed to two fraud vectors: transactional (stolen cards, suspicious patterns) and access-level (multi-accounts, account-takeover attempts).',
   'projects.fraud.problem': 'New fraud patterns appeared faster than the pipeline could absorb them: every rule meant editing the central evaluator. And detecting suspicious accounts or devices could not come at the cost of friction for legitimate users.',
-  'projects.fraud.decision': 'Separated the evaluator from the rules. A Factory builds each rule, every rule owns a single responsibility, self-registers, and receives an already-normalized context — so adding a pattern means adding a class, never editing the engine. Access fraud runs as its own layer on device fingerprinting, keeping session signals (multi-account abuse, account takeover) out of the transactional path. Also prototyped contextual evaluation with an LLM through n8n, imitating how support agents decide; it worked at low volume and was shelved on purpose — the per-decision model cost did not survive production scale.',
+  'projects.fraud.decision': '<p>Separated the evaluator from the rules. A <strong>Factory</strong> builds each rule, every rule owns a <strong>single responsibility</strong>, self-registers, and receives an already-normalized context — so adding a pattern means adding a class, never editing the engine. Access fraud runs as its own layer on device fingerprinting, keeping session signals (multi-account abuse, account takeover) out of the transactional path.</p><p>Also prototyped contextual evaluation with an LLM through n8n, imitating how support agents decide. It worked at low volume and was shelved on purpose — the per-decision model cost did not survive production scale.</p>',
   'projects.fraud.outcome': 'Significant reduction in manual review load · New rules ship in hours instead of weeks · Both fraud vectors covered without either touching the other\'s code',
 
   'projects.payments.title': 'Multi-Gateway Payments Integration with Failover',
   'projects.payments.context': 'Global gift cards and top-up operation where relying on a single gateway leaves gaps in geography, conversion, and availability.',
-  'projects.payments.problem': 'Each gateway covers different countries at different fees, and any of them can go down or start rejecting more without warning. The platform needed uninterrupted coverage plus the commercial freedom to choose a provider per country and per method.',
-  'projects.payments.decision': 'Put every provider behind one internal payment interface: five very different APIs normalize into a single request/response shape, so the rest of the platform never learns which processor ran the charge. Routing is configuration, not code — the admin sets the active gateway and a priority chain per product, and a failure or rejection from the active provider falls through to the next one automatically. Integrated PayPal, Payeezy, DLocal, Stripe and Shift4 end to end, with 3DS, refunds, voids, Apple Pay, Google Pay and in-house card tokenization.',
-  'projects.payments.outcome': 'Payments stay available through provider incidents · Routing tuned per country for cost and conversion · 5 gateways in production behind one interface',
+  'projects.payments.problem': 'Each gateway covers different countries at different fees, and any of them can go down or start rejecting more without warning. On top of that, every provider ships its own API shape — integrating them one by one would have scattered provider-specific code across the platform.',
+  'projects.payments.decision': '<p>Every provider sits behind a single payment contract. Each integration adapts its own API — different auth, field names and error shapes — into normalized request and response objects, so the rest of the platform charges, refunds or voids without knowing which processor is on the other side.</p><p>Selection and behaviour are decoupled through design patterns: a <strong>Factory</strong> resolves which integration to build, <strong>Strategy</strong> lets each provider carry its own behaviour behind the shared contract, <strong>Adapters</strong> absorb the per-API differences, a <strong>Builder</strong> assembles the more complex provider requests, and a <strong>Repository</strong> keeps transaction persistence out of the payment logic. Routing is configuration, not code — active provider and priority chain per product — with automatic failover when the active one fails or rejects. Five processors integrated end to end (PayPal, Payeezy, DLocal, Stripe, Shift4) with 3DS, refunds, voids, Apple Pay, Google Pay and in-house card tokenization.</p>',
+  'projects.payments.outcome': '5 payment providers in production behind one contract · A new provider integrates without touching platform code · Payments stay available through provider incidents · Routing tuned per country for cost and conversion',
 
   // ── Contact ──────────────────────────────────────────────
   'contact.modal.title': "Let's Talk",
@@ -110,7 +110,7 @@ export const en: Record<string, string> = {
   'term.hero.years': '10+ yrs',
   'term.hero.available': 'Available',
   'term.hero.tagline.html': 'Designing and building <strong>backend systems</strong>, <strong>distributed architectures</strong> and <strong>payment platforms</strong> for production.',
-  'term.hero.pitch': 'Turning complex business problems into reliable production systems.',
+  'term.hero.pitch': 'Hands-on: I design the architecture and write the code that runs in production.',
 
   // ── Terminal (Hero) ──────────────────────────────────────
   // Usable width is ~66 chars at ≥1100px — do not exceed it.
@@ -160,9 +160,9 @@ export const en: Record<string, string> = {
   'term.case.fraud.result.num': 'Hours',
   'term.case.fraud.result.text': 'to ship new rules instead of weeks. Significant reduction in manual review load.',
 
-  'term.case.payments.metric': '5 gateways',
+  'term.case.payments.metric': '5 payment providers',
   'term.case.payments.result.num': '5',
-  'term.case.payments.result.text': 'gateways consolidated. Continuous availability during provider incidents. Routing optimized for cost and conversion.',
+  'term.case.payments.result.text': 'payment providers behind one contract. Continuous availability during provider incidents. Routing optimized for cost and conversion.',
 
   'term.cta.eyebrow': '— Let\'s work together',
   'term.cta.title.html': 'Open to Senior Backend Engineer &amp; Software Architect roles<br/>in <span class="accent">backend systems</span>, <span class="accent">distributed architecture</span> &amp; <span class="accent">payments</span>.',

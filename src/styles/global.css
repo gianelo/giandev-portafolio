@@ -661,6 +661,8 @@ a { color: inherit; text-decoration: none; }
   padding-top: 4px;
 }
 .case-grid .text strong { color: var(--fg); font-weight: 500; }
+/* p is margin-zeroed by the base reset, so paragraphs inside a case need a gap. */
+.case-grid .text p + p { margin-top: 12px; }
 
 .case-result {
   display: flex;

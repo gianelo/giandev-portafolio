@@ -61,7 +61,7 @@ export const es: Record<string, string> = {
   'projects.infra.title': 'Migración de Monolito a Infraestructura Distribuida',
   'projects.infra.context': 'Plataforma de giftcards y recargas con ~1,000 transacciones diarias y entre $100K y $300K mensuales procesados — todo sobre un único servidor.',
   'projects.infra.problem': 'Un problema de disponibilidad, no de throughput. El sistema de llamadas consumía todos los recursos de la máquina, así que los picos del Día de las Madres y Año Nuevo tumbaban la plataforma entera durante ~3 horas, en las fechas más lucrativas del año.',
-  'projects.infra.decision': 'Rediseño hacia una arquitectura distribuida de 8 servidores en DigitalOcean, separando capas web, base de datos y dev para que ninguna carga pudiera ahogar a otra. HAProxy para balanceo HTTP, replicación MySQL master-slave para capacidad de lectura y standby, failover entre nodos, backups automatizados y runbooks de recovery. El trade-off: el stack legacy no permitía aprovisionamiento automático, así que la topología se construyó a mano sobre Linux — más lento de levantar, pero eliminó el punto único de falla sin reescribir la aplicación primero. Liderando un equipo de 4 developers.',
+  'projects.infra.decision': '<p>Rediseño hacia una arquitectura distribuida de 8 servidores en DigitalOcean, separando capas web, base de datos y dev para que ninguna carga pudiera ahogar a otra. HAProxy para balanceo HTTP, replicación MySQL master-slave para capacidad de lectura y standby, failover entre nodos, backups automatizados y runbooks de recovery.</p><p>El trade-off: el stack legacy no permitía aprovisionamiento automático, así que la topología se construyó a mano sobre Linux — más lento de levantar, pero eliminó el punto único de falla sin reescribir la aplicación primero. Liderando un equipo de 4 developers.</p>',
   'projects.infra.outcome': '99.9% uptime sostenido desde 2019 · Cero caídas en fechas críticas durante los últimos ~5 años',
 
   'projects.seo.title': 'SEO Programático con IA a Escala',
@@ -73,14 +73,14 @@ export const es: Record<string, string> = {
   'projects.fraud.title': 'Sistema de Detección de Fraude con Reglas Extensibles',
   'projects.fraud.context': 'Plataforma de pagos expuesta a dos vectores de fraude: transaccional (tarjetas robadas, patrones sospechosos) y de acceso (multicuentas, intentos de hackeo).',
   'projects.fraud.problem': 'Los patrones de fraude nuevos aparecían más rápido de lo que el pipeline podía absorberlos: cada regla implicaba editar el evaluador central. Y detectar cuentas o dispositivos sospechosos no podía costar fricción para los usuarios legítimos.',
-  'projects.fraud.decision': 'Separación del evaluador y las reglas. Un Factory construye cada regla, cada regla tiene una única responsabilidad, se autoregistra y recibe contexto ya normalizado — agregar un patrón significa agregar una clase, nunca editar el motor. El fraude de acceso corre como capa propia sobre device fingerprinting, manteniendo las señales de sesión (multicuentas, account takeover) fuera del camino transaccional. También se prototipó evaluación contextual con un LLM vía n8n, imitando cómo decide un agente de soporte; funcionó a bajo volumen y se archivó a propósito — el costo por decisión del modelo no sobrevivía a escala de producción.',
+  'projects.fraud.decision': '<p>Separación del evaluador y las reglas. Un <strong>Factory</strong> construye cada regla, cada regla tiene una <strong>única responsabilidad</strong>, se autoregistra y recibe contexto ya normalizado — agregar un patrón significa agregar una clase, nunca editar el motor. El fraude de acceso corre como capa propia sobre device fingerprinting, manteniendo las señales de sesión (multicuentas, account takeover) fuera del camino transaccional.</p><p>También se prototipó evaluación contextual con un LLM vía n8n, imitando cómo decide un agente de soporte. Funcionó a bajo volumen y se archivó a propósito — el costo por decisión del modelo no sobrevivía a escala de producción.</p>',
   'projects.fraud.outcome': 'Reducción significativa de la carga de revisión manual · Reglas nuevas en horas en lugar de semanas · Ambos vectores de fraude cubiertos sin que uno toque el código del otro',
 
   'projects.payments.title': 'Integración Multi-Gateway de Pagos con Failover',
   'projects.payments.context': 'Operación global de giftcards y recargas donde un único gateway deja brechas geográficas, de conversión y de disponibilidad.',
-  'projects.payments.problem': 'Cada gateway cubre distintos países con distintos fees, y cualquiera puede caerse o empezar a rechazar más sin aviso. La plataforma necesitaba cobertura ininterrumpida más la libertad comercial de elegir proveedor por país y por método.',
-  'projects.payments.decision': 'Todos los proveedores detrás de una única interfaz de pago interna: cinco APIs muy distintas se normalizan a una sola forma de request/response, así el resto de la plataforma nunca se entera de qué procesador ejecutó el cobro. El routing es configuración, no código — el admin define gateway activo y cadena de prioridad por producto, y una falla o rechazo del proveedor activo cae automáticamente al siguiente. PayPal, Payeezy, DLocal, Stripe y Shift4 integrados de punta a punta, con 3DS, refunds, voids, Apple Pay, Google Pay y tokenización propia de tarjetas.',
-  'projects.payments.outcome': 'Los pagos siguen disponibles durante incidentes de proveedores · Routing ajustado por país para costo y conversión · 5 gateways en producción detrás de una interfaz',
+  'projects.payments.problem': 'Cada gateway cubre distintos países con distintos fees, y cualquiera puede caerse o empezar a rechazar más sin aviso. Además, cada proveedor trae su propia forma de API — integrarlos uno por uno habría desparramado código específico de cada uno por toda la plataforma.',
+  'projects.payments.decision': '<p>Todos los proveedores viven detrás de un único contrato de pago. Cada integración adapta su propia API —distinta autenticación, distintos nombres de campos, distintas formas de error— a objetos de request y response normalizados, así el resto de la plataforma cobra, reembolsa o anula sin saber qué procesador hay del otro lado.</p><p>La selección y el comportamiento se desacoplan con patrones de diseño: un <strong>Factory</strong> resuelve qué integración construir, <strong>Strategy</strong> permite que cada proveedor tenga su propio comportamiento detrás del contrato común, los <strong>Adapters</strong> absorben las diferencias de cada API, un <strong>Builder</strong> arma los requests más complejos y un <strong>Repository</strong> mantiene la persistencia de transacciones fuera de la lógica de pago. El routing es configuración, no código —proveedor activo y cadena de prioridad por producto— con failover automático cuando el activo falla o rechaza. Cinco procesadores integrados de punta a punta (PayPal, Payeezy, DLocal, Stripe, Shift4) con 3DS, refunds, voids, Apple Pay, Google Pay y tokenización propia de tarjetas.</p>',
+  'projects.payments.outcome': '5 proveedores de pago en producción detrás de un contrato · Un proveedor nuevo se integra sin tocar código de la plataforma · Los pagos siguen disponibles durante incidentes de proveedores · Routing ajustado por país para costo y conversión',
 
   // ── Contact ──────────────────────────────────────────────
   'contact.modal.title': 'Hablemos',
@@ -110,7 +110,7 @@ export const es: Record<string, string> = {
   'term.hero.years': '10+ años',
   'term.hero.available': 'Disponible',
   'term.hero.tagline.html': 'Diseño y construyo <strong>sistemas backend</strong>, <strong>arquitecturas distribuidas</strong> y <strong>plataformas de pago</strong> para producción.',
-  'term.hero.pitch': 'Transformo problemas complejos de negocio en soluciones confiables listas para producción.',
+  'term.hero.pitch': 'Hands-on: diseño la arquitectura y escribo el código que corre en producción.',
 
   // ── Terminal (Hero) ──────────────────────────────────────
   // Capa marketing. Ancho útil ~66 chars a ≥1100px — no pasarse.
@@ -160,9 +160,9 @@ export const es: Record<string, string> = {
   'term.case.fraud.result.num': 'Horas',
   'term.case.fraud.result.text': 'para lanzar reglas nuevas en lugar de semanas. Reducción significativa de la carga de revisión manual.',
 
-  'term.case.payments.metric': '5 gateways',
+  'term.case.payments.metric': '5 proveedores de pago',
   'term.case.payments.result.num': '5',
-  'term.case.payments.result.text': 'gateways consolidados. Disponibilidad continua durante incidentes de proveedores. Routing optimizado por costo y conversión.',
+  'term.case.payments.result.text': 'proveedores de pago detrás de un contrato. Disponibilidad continua durante incidentes de proveedores. Routing optimizado por costo y conversión.',
 
   'term.cta.eyebrow': '— Trabajemos juntos',
   'term.cta.title.html': 'Disponible para roles de Ingeniero Backend Senior<br/>y Arquitecto de Software en <span class="accent">sistemas backend</span>, <span class="accent">arquitectura distribuida</span> y <span class="accent">pagos</span>.',
