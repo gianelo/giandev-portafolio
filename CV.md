@@ -57,6 +57,16 @@ Senior Backend Engineer and Software Architect with 10+ years of hands-on experi
 
 - Removed intermediaries from consumer payments, building P2P Android apps on cryptocurrency infrastructure (ride-hailing, e-commerce) where funds settled wallet to wallet. First exposure to decentralized systems and fully remote work.
 
+## Independent Project
+
+### Rentoru — Independent Full Stack Developer
+*Venezuela long-term rentals · Public beta, still in development · Publicly available at [https://rentoru.com](https://rentoru.com) · Corrections ahead of the marketing launch*
+
+- TypeScript/React/Next.js listings, drafts, filtered search, property management and CSV imports; domain/application/infrastructure layers, PostgreSQL/Drizzle/Neon.
+- Auth.js Google OAuth/email via Resend; ownership authorization, rate-limited contacts; lifecycle emails, retries and scheduled cleanup.
+- Signed, validated Cloudflare R2 uploads; Sharp WebP derivatives and perceptual deduplication.
+- Vitest unit/integration and Playwright (including JS-disabled); GitHub Actions type/coverage/build/integration checks.
+
 ## Selected Architecture & Systems
 
 - **Multi-Gateway Payment Architecture** — 5 providers (Stripe, PayPal, DLocal, Shift4, Payeezy) behind a single payment contract. Adapters normalize each API into shared request/response objects; Factory and Strategy decouple provider selection from behaviour; Builder assembles the complex requests, Repository isolates transaction persistence. Configurable routing and priority per product with automatic failover. 3DS, refunds, voids, Apple Pay, Google Pay, in-house tokenization.

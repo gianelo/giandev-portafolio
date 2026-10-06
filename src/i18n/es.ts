@@ -82,6 +82,14 @@ export const es: Record<string, string> = {
   'projects.payments.decision': '<p>Todos los proveedores viven detrás de un único contrato de pago. Cada integración adapta su propia API —distinta autenticación, distintos nombres de campos, distintas formas de error— a objetos de request y response normalizados, así el resto de la plataforma cobra, reembolsa o anula sin saber qué procesador hay del otro lado.</p><p>La selección y el comportamiento se desacoplan con patrones de diseño: un <strong>Factory</strong> resuelve qué integración construir, <strong>Strategy</strong> permite que cada proveedor tenga su propio comportamiento detrás del contrato común, los <strong>Adapters</strong> absorben las diferencias de cada API, un <strong>Builder</strong> arma los requests más complejos y un <strong>Repository</strong> mantiene la persistencia de transacciones fuera de la lógica de pago. El routing es configuración, no código —proveedor activo y cadena de prioridad por producto— con failover automático cuando el activo falla o rechaza. Cinco procesadores integrados de punta a punta (PayPal, Payeezy, DLocal, Stripe, Shift4) con 3DS, refunds, voids, Apple Pay, Google Pay y tokenización propia de tarjetas.</p>',
   'projects.payments.outcome': '5 proveedores de pago en producción detrás de un contrato · Un proveedor nuevo se integra sin tocar código de la plataforma · Los pagos siguen disponibles durante incidentes de proveedores · Routing ajustado por país para costo y conversión',
 
+  'projects.rentoru.title': 'Rentoru — Alquiler Residencial',
+  'projects.rentoru.context': 'Producto full stack independiente de alquiler residencial a largo plazo en Venezuela. Beta pública, aún en desarrollo: disponible públicamente y funcional, con correcciones antes del lanzamiento promocional.',
+  'projects.rentoru.url': 'https://rentoru.com',
+  'projects.rentoru.link': 'Visitar Rentoru',
+  'projects.rentoru.problem': 'Publicar una vivienda requiere más que un formulario: los borradores persistentes, la gestión de propiedades y la importación de carteras por CSV deben convivir con la búsqueda filtrada, los controles de titularidad y el acceso controlado al contacto de quien publica.',
+  'projects.rentoru.decision': '<p>Desarrollado con TypeScript, React y Next.js, con un backend separado en capas de dominio, aplicación e infraestructura. La persistencia en PostgreSQL utiliza Drizzle ORM sobre Neon. Auth.js gestiona Google OAuth y el acceso por correo electrónico mediante Resend; la autorización por titularidad controla la gestión de propiedades y el acceso al contacto de quien publica tiene límites de frecuencia.</p><p>El procesamiento de imágenes utiliza cargas firmadas a Cloudflare R2 con validación, versiones WebP generadas con Sharp y detección perceptual de duplicados. Los correos del ciclo de vida, el manejo de reintentos y la limpieza programada cubren las operaciones en segundo plano. Las pruebas unitarias y de integración con Vitest y las pruebas de navegador con Playwright incluyen flujos sin JavaScript, con controles de tipos, cobertura, compilación e integración en GitHub Actions.</p>',
+  'projects.rentoru.outcome': 'Beta pública, aún en desarrollo · Publicación, borradores, búsqueda y gestión de carteras disponibles · Correcciones antes del lanzamiento promocional',
+
   // ── Contact ──────────────────────────────────────────────
   'contact.modal.title': 'Hablemos',
   'contact.modal.intro': 'Cuéntame sobre la oportunidad o el proyecto. Te respondo por email en menos de 24h.',
@@ -134,8 +142,8 @@ export const es: Record<string, string> = {
   'term.section.02.sub': 'Algunas métricas que resumen una década de decisiones.',
 
   'term.section.03.label': '03 — Case Studies',
-  'term.section.03.title': 'Cuatro sistemas en producción y las decisiones detrás.',
-  'term.section.03.sub': 'Abre cualquier card para ver el contexto, el problema, la decisión de arquitectura y qué cambió en producción.',
+  'term.section.03.title': 'Sistemas en producción y un producto independiente en beta pública.',
+  'term.section.03.sub': 'Explora el contexto, el problema y la arquitectura de sistemas en producción y Rentoru, un producto independiente disponible públicamente y aún en desarrollo.',
 
   'term.section.04.label': '04 — Stack',
   'term.section.04.title': 'Expertise técnico.',
@@ -159,6 +167,10 @@ export const es: Record<string, string> = {
   'term.case.fraud.metric': 'Horas, no semanas',
   'term.case.fraud.result.num': 'Horas',
   'term.case.fraud.result.text': 'para lanzar reglas nuevas en lugar de semanas. Reducción significativa de la carga de revisión manual.',
+
+  'term.case.rentoru.metric': 'Beta pública',
+  'term.case.rentoru.result.num': 'Beta pública',
+  'term.case.rentoru.result.text': 'Aún en desarrollo, disponible públicamente y funcional. Publicación, borradores persistentes, búsqueda filtrada e importación de carteras por CSV disponibles; correcciones antes del lanzamiento promocional.',
 
   'term.case.payments.metric': '5 proveedores de pago',
   'term.case.payments.result.num': '5',

@@ -57,6 +57,16 @@ Ingeniero Backend Senior y Arquitecto de Software con más de 10 años de experi
 
 - Eliminé los intermediarios en pagos de consumo, construyendo apps Android P2P sobre infraestructura de criptomonedas (taxi, e-commerce) donde los fondos se liquidaban de wallet a wallet. Primera exposición a sistemas descentralizados y trabajo totalmente remoto.
 
+## Proyecto Independiente
+
+### Rentoru — Desarrollador Full Stack Independiente
+*Alquiler a largo plazo en Venezuela · Beta pública, aún en desarrollo · Disponible públicamente en [https://rentoru.com](https://rentoru.com) · Correcciones antes del lanzamiento promocional*
+
+- Anuncios, borradores, búsqueda filtrada, gestión de propiedades e importación CSV en TypeScript/React/Next.js; capas dominio/aplicación/infraestructura, PostgreSQL/Drizzle/Neon.
+- Auth.js Google OAuth/correo vía Resend; autorización por propietario, contactos con límite de frecuencia; correos de ciclo de vida, reintentos y limpieza programada.
+- Cargas Cloudflare R2 firmadas y validadas; variantes WebP con Sharp y deduplicación perceptual.
+- Vitest unitarias/integración y Playwright (sin JS incluido); GitHub Actions verifica tipos/cobertura/compilación/integración.
+
 ## Arquitectura y Sistemas Destacados
 
 - **Arquitectura de Pagos Multi-Gateway** — 5 proveedores (Stripe, PayPal, DLocal, Shift4, Payeezy) detrás de un contrato de pago único. Los Adapters normalizan cada API a objetos de request/response compartidos; Factory y Strategy desacoplan la selección del proveedor de su comportamiento; Builder arma los requests complejos y Repository aísla la persistencia. Enrutamiento y prioridad configurables por producto con failover automático, 3DS, reembolsos, voids, Apple Pay, Google Pay y tokenización propia.

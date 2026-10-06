@@ -8,12 +8,15 @@ export interface Props {
 
 const { t } = Astro.props;
 
-type CaseKey = 'infra' | 'seo' | 'fraud' | 'payments';
+type CaseKey = 'infra' | 'seo' | 'fraud' | 'payments' | 'rentoru';
 
-// Order is deliberate: the first card renders expanded, so it carries the
-// strongest differentiator. Multi-gateway payments leads, then the two other
-// architecture-heavy cases, then SEO.
+// Order is deliberate: the first card renders expanded. The newest independent
+// product, Rentoru, leads; the existing cases retain their relative order.
 const cases: { key: CaseKey; tags: string[] }[] = [
+  {
+    key: 'rentoru',
+    tags: ['TypeScript', 'Next.js', 'PostgreSQL', 'Drizzle ORM', 'Cloudflare R2', 'Vitest', 'Playwright'],
+  },
   {
     key: 'payments',
     tags: ['Stripe', 'PayPal', 'DLocal', 'Shift4', 'Payeezy', 'Payment Routing', '3DS', 'Apple Pay', 'Google Pay', 'Tokenization'],
@@ -70,6 +73,11 @@ const cases: { key: CaseKey; tags: string[] }[] = [
                 <div class="case-result">
                   <span class="num">{t(`term.case.${c.key}.result.num`)}</span>
                   <span>{t(`term.case.${c.key}.result.text`)}</span>
+                  {c.key === 'rentoru' && (
+                    <div>
+                      <a class="btn" href={t('projects.rentoru.url')}>{t('projects.rentoru.link')}</a>
+                    </div>
+                  )}
                 </div>
                 <div class="tag-row">
                   {c.tags.map((tag) => <span class="tag">{tag}</span>)}

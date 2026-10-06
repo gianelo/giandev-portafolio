@@ -82,6 +82,14 @@ export const en: Record<string, string> = {
   'projects.payments.decision': '<p>Every provider sits behind a single payment contract. Each integration adapts its own API — different auth, field names and error shapes — into normalized request and response objects, so the rest of the platform charges, refunds or voids without knowing which processor is on the other side.</p><p>Selection and behaviour are decoupled through design patterns: a <strong>Factory</strong> resolves which integration to build, <strong>Strategy</strong> lets each provider carry its own behaviour behind the shared contract, <strong>Adapters</strong> absorb the per-API differences, a <strong>Builder</strong> assembles the more complex provider requests, and a <strong>Repository</strong> keeps transaction persistence out of the payment logic. Routing is configuration, not code — active provider and priority chain per product — with automatic failover when the active one fails or rejects. Five processors integrated end to end (PayPal, Payeezy, DLocal, Stripe, Shift4) with 3DS, refunds, voids, Apple Pay, Google Pay and in-house card tokenization.</p>',
   'projects.payments.outcome': '5 payment providers in production behind one contract · A new provider integrates without touching platform code · Payments stay available through provider incidents · Routing tuned per country for cost and conversion',
 
+  'projects.rentoru.title': 'Rentoru — Residential Rentals',
+  'projects.rentoru.context': 'Independent full-stack product for long-term residential rentals in Venezuela. Public beta, still in development: publicly available and functional, with corrections ahead of the marketing launch.',
+  'projects.rentoru.url': 'https://rentoru.com',
+  'projects.rentoru.link': 'Visit Rentoru',
+  'projects.rentoru.problem': 'Publishing a rental involves more than a listing form: persistent drafts, property management and CSV portfolio imports need to work alongside filtered search, ownership checks and controlled access to publisher contacts.',
+  'projects.rentoru.decision': '<p>Built with TypeScript, React and Next.js, with a backend separated into domain, application and infrastructure layers. PostgreSQL persistence uses Drizzle ORM on Neon. Auth.js handles Google OAuth and email sign-in through Resend; ownership authorization controls property management, and access to publisher contacts is rate-limited.</p><p>The image pipeline uses signed Cloudflare R2 uploads with validation, Sharp-generated WebP derivatives and perceptual duplicate detection. Lifecycle emails, retry handling and scheduled cleanup cover background operations. Vitest unit and integration tests and Playwright browser tests include JavaScript-disabled flows, with GitHub Actions checks for types, coverage, builds and integration.</p>',
+  'projects.rentoru.outcome': 'Public beta, still in development · Listings, drafts, search and portfolio management available · Corrections ahead of the marketing launch',
+
   // ── Contact ──────────────────────────────────────────────
   'contact.modal.title': "Let's Talk",
   'contact.modal.intro': "Tell me about the opportunity or project. I'll get back by email within 24h.",
@@ -134,8 +142,8 @@ export const en: Record<string, string> = {
   'term.section.02.sub': 'A few metrics that summarize a decade of decisions.',
 
   'term.section.03.label': '03 — Case Studies',
-  'term.section.03.title': 'Four production systems, and the decisions behind them.',
-  'term.section.03.sub': 'Open any card for the context, the problem, the architecture decision, and what it changed in production.',
+  'term.section.03.title': 'Production systems and an independent public-beta product.',
+  'term.section.03.sub': 'Explore the context, problem and architecture behind production systems and Rentoru, a publicly available independent product still in development.',
 
   'term.section.04.label': '04 — Stack',
   'term.section.04.title': 'Technical expertise.',
@@ -159,6 +167,10 @@ export const en: Record<string, string> = {
   'term.case.fraud.metric': 'Hours, not weeks',
   'term.case.fraud.result.num': 'Hours',
   'term.case.fraud.result.text': 'to ship new rules instead of weeks. Significant reduction in manual review load.',
+
+  'term.case.rentoru.metric': 'Public beta',
+  'term.case.rentoru.result.num': 'Public beta',
+  'term.case.rentoru.result.text': 'Still in development, publicly available and functional. Listings, persistent drafts, filtered search and CSV portfolio imports available; corrections ahead of the marketing launch.',
 
   'term.case.payments.metric': '5 payment providers',
   'term.case.payments.result.num': '5',
