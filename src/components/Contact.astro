@@ -18,7 +18,7 @@ const year = new Date().getFullYear();
 const footerCopy = t('term.footer.copy').replace('{year}', String(year));
 ---
 
-<section class="cta" id="contact">
+<section class="cta wrap" id="contact">
   <div class="cta-eyebrow reveal">{t('term.cta.eyebrow')}</div>
   <h2 class="cta-title reveal" set:html={t('term.cta.title.html')}></h2>
   <p class="cta-sub reveal">{t('term.cta.sub')}</p>
@@ -42,7 +42,7 @@ const footerCopy = t('term.footer.copy').replace('{year}', String(year));
 
 <ContactModal lang={lang} t={t} />
 
-<footer class="footer">
+<footer class="footer wrap">
   <span>{footerCopy}</span>
   <span>{t('term.footer.deploy')}</span>
 </footer>

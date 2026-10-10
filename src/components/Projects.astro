@@ -46,15 +46,29 @@ const cases: { key: CaseKey; tags: string[] }[] = [
   <div class="case-list reveal">
     {cases.map((c, i) => (
       <article class={`case ${i === 0 ? 'open' : ''}`} data-case={c.key}>
-        <button type="button" class="case-head" aria-expanded={i === 0 ? 'true' : 'false'}>
-          <span class="case-num">{String(i + 1).padStart(2, '0')}</span>
-          <h3 class="case-title">{t(`projects.${c.key}.title`)}</h3>
-          <div class="case-meta">
-            <span class="metric">{t(`term.case.${c.key}.metric`)}</span>
-            <span class="case-toggle" aria-hidden="true">+</span>
-          </div>
-        </button>
-        <div class="case-body">
+        <h3>
+          <button
+            type="button"
+            class="case-head"
+            id={`case-trigger-${c.key}`}
+            aria-controls={`case-panel-${c.key}`}
+            aria-expanded={i === 0 ? 'true' : 'false'}
+          >
+            <span class="case-num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="case-heading">
+              <span class="case-title">{t(`projects.${c.key}.title`)}</span>
+              <span class="case-metric">{t(`term.case.${c.key}.metric`)}</span>
+            </span>
+            <span class="case-toggle" aria-hidden="true">{i === 0 ? '−' : '+'}</span>
+          </button>
+        </h3>
+        <div
+          class="case-body"
+          id={`case-panel-${c.key}`}
+          role="region"
+          aria-labelledby={`case-trigger-${c.key}`}
+          hidden={i !== 0}
+        >
           <div class="case-body-inner">
             <div class="case-grid">
               <div class="label">{t('term.case.label.context')}</div>
@@ -103,11 +117,19 @@ const cases: { key: CaseKey; tags: string[] }[] = [
           other.classList.remove('open');
           const btn = other.querySelector('.case-head');
           if (btn) btn.setAttribute('aria-expanded', 'false');
+          const panel = other.querySelector('.case-body');
+          if (panel) panel.hidden = true;
+          const toggle = other.querySelector('.case-toggle');
+          if (toggle) toggle.textContent = '+';
         });
         // Open this one if it wasn't already
         if (!isOpen) {
           card.classList.add('open');
           head.setAttribute('aria-expanded', 'true');
+          const panel = card.querySelector('.case-body');
+          if (panel) panel.hidden = false;
+          const toggle = card.querySelector('.case-toggle');
+          if (toggle) toggle.textContent = '−';
         }
       });
     });

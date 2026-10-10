@@ -10,17 +10,18 @@ import { resolve } from 'node:path';
  * of the tokens in src/styles/global.css. If the palette in global.css
  * changes (--bg, --accent, --green, --fg), update this file too.
  *
- * Active aesthetic: refined dark terminal (Linear-meets-terminal).
+ * Active aesthetic: flat terminal editorial (Open Design reference).
  *   --bg            #0a0a0b
  *   --bg-elev       #111113
- *   --bg-card       #131316
+ *   --bg-card       #111113
  *   --accent        oklch(0.82 0.16 85)  ≈ #e2b94f  (warm amber)
  *   --green         oklch(0.78 0.16 150) ≈ #3fc480  (live indicator)
- *   --fg            rgba(255,255,255,0.94)
- *   --fg-muted      rgba(255,255,255,0.62)
- *   --fg-dim        rgba(255,255,255,0.42)
- *   --border        rgba(255,255,255,0.07)
- *   --border-strong rgba(255,255,255,0.12)
+ *   --fg            #f4f4f5
+ *   --fg-muted      #b4b4bc
+ *   --fg-dim        #b4b4bc
+ *   --fg-faint      #85858f
+ *   --border        #303034
+ *   --border-strong #45454c
  */
 
 const C = {
@@ -30,12 +31,12 @@ const C = {
   accentSoft: 'rgba(226, 185, 79, 0.10)',
   accentBorder: 'rgba(226, 185, 79, 0.28)',
   green: '#3fc480',
-  fg: 'rgba(255, 255, 255, 0.94)',
-  fgMuted: 'rgba(255, 255, 255, 0.62)',
-  fgDim: 'rgba(255, 255, 255, 0.42)',
-  fgFaint: 'rgba(255, 255, 255, 0.24)',
-  border: 'rgba(255, 255, 255, 0.07)',
-  borderStrong: 'rgba(255, 255, 255, 0.12)',
+  fg: '#f4f4f5',
+  fgMuted: '#b4b4bc',
+  fgDim: '#b4b4bc',
+  fgFaint: '#85858f',
+  border: '#303034',
+  borderStrong: '#45454c',
 };
 
 export async function GET() {
@@ -100,7 +101,7 @@ export async function GET() {
         display: 'flex',
         flexDirection: 'column' as const,
         justifyContent: 'space-between',
-        background: `radial-gradient(ellipse 900px 480px at 50% -10%, rgba(226, 185, 79, 0.10), transparent 60%), ${C.bg}`,
+        background: C.bg,
         padding: '72px 80px',
         fontFamily: 'Inter',
         position: 'relative' as const,
