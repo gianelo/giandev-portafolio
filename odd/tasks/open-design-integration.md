@@ -1,7 +1,7 @@
 # Open Design integration
 
 ## Intent and constraints
-Implement supplied Open Design project 7277ca5d-522d-4caa-9ade-0ff4e0d06f80/index.html in Astro, preserving EN/ES content, five cases/categories, routes/SEO, theme persistence/light accent convention, CV files/links and real Web3Forms behavior. No new frameworks/dependencies or mockup runtime/mailto. Unrelated Rentoru task changes preserved. No staging/commits/publication performed; owner audit required by repository policy. Forecast 1000–1500 authored diff lines, advisory heuristic only; native candidate measured 1493.
+Implement supplied Open Design project 7277ca5d-522d-4caa-9ade-0ff4e0d06f80/index.html in Astro, preserving EN/ES content, five cases/categories, routes/SEO, theme persistence/light accent convention, CV files/links and real Web3Forms behavior. No new frameworks/dependencies or mockup runtime/mailto. Unrelated Rentoru task changes preserved. Owner authorized commit and push after local verification. Implementation committed as 3eddc73 on feat/open-design-integration and pushed to origin; unrelated Rentoru task changes excluded. Forecast 1000–1500 authored diff lines, advisory heuristic only; native candidate measured 1493.
 
 ## Tasks
 - [x] T1 Implement design and regressions. Delegated gentle-ai-worker (multi-file/preparation trigger): CSS, Hero/sidebar, Terminal in Journey, responsive navigation, flat sections, accessible accordion, modal styling, OG palette and build tests.
@@ -15,4 +15,4 @@ Initial 320px overlap fixed and independently confirmed. Initial native assessme
 Skipped intentionally: CV generation (unchanged files), live deployed routing checks (local implementation not deployed). Real email delivery not tested; submission mocked.
 
 ## Outcome and next step
-Implementation and local verification complete. Owner visual/code audit next; no source commits or deployment performed.
+Implementation and local verification complete. Work-unit commit: 3eddc73 (feat(ui): integrate responsive Open Design portfolio layout), pushed to origin/feat/open-design-integration. main unchanged; no PR, merge or production deployment performed. Next: owner branch review and merge decision.
