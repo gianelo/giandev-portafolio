@@ -1,5 +1,6 @@
 ---
 import SectionHeading from './SectionHeading.astro';
+import Terminal from './Terminal.astro';
 
 export interface Props {
   lang: string;
@@ -25,19 +26,24 @@ const milestones: { key: MilestoneKey; current?: boolean }[] = [
     sub={t('term.section.01.sub')}
   />
 
-  <div class="journey-list">
-    {milestones.map((m, i) => (
-      <div class={`journey-item reveal reveal-delay-${Math.min(i + 1, 4)}`}>
-        <div class="journey-date">{t(`timeline.${m.key}.period`)}</div>
-        <div>
-          <h3 class="journey-role">
-            {t(`timeline.${m.key}.role`)}
-            {m.current && <span class="pill">{t('term.journey.current')}</span>}
-          </h3>
-          <p class="journey-company">{t(`timeline.${m.key}.company`)}</p>
-          <p class="journey-desc">{t(`timeline.${m.key}.desc`)}</p>
+  <div class="journey-layout">
+    <div class="journey-list">
+      {milestones.map((m, i) => (
+        <div class={`journey-item reveal reveal-delay-${Math.min(i + 1, 4)}`}>
+          <div class="journey-date">{t(`timeline.${m.key}.period`)}</div>
+          <div>
+            <h3 class="journey-role">
+              {t(`timeline.${m.key}.role`)}
+              {m.current && <span class="pill">{t('term.journey.current')}</span>}
+            </h3>
+            <p class="journey-company">{t(`timeline.${m.key}.company`)}</p>
+            <p class="journey-desc">{t(`timeline.${m.key}.desc`)}</p>
+          </div>
         </div>
-      </div>
-    ))}
+      ))}
+    </div>
+    <div class="reveal reveal-delay-2">
+      <Terminal t={t} />
+    </div>
   </div>
 </section>

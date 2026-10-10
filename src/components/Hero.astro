@@ -1,54 +1,50 @@
 ---
-import Terminal from './Terminal.astro';
-
 export interface Props {
   lang: string;
   t: (key: string) => string;
 }
 
 const { t } = Astro.props;
-
-const linkedinUrl = 'https://linkedin.com/in/gian-barboza';
-const githubUrl = 'https://github.com/gianelo';
+const linkedinUrl = t('contact.linkedin.url');
+const githubUrl = t('contact.github.url');
 ---
 
 <header class="hero wrap">
-  <div class="hero-meta reveal">
-    <span class="live"><span class="dot"></span>{t('term.hero.available')}</span>
-    <span>·</span>
-    <span>{t('term.hero.location')}</span>
-    <span>·</span>
-    <span>{t('term.hero.years')}</span>
-  </div>
-
   <div class="hero-grid">
-    <div>
+    <div class="hero-main">
+      <div class="hero-meta reveal">
+        <span class="live"><span class="dot" aria-hidden="true"></span>{t('term.hero.available')}</span>
+        <span>{t('term.hero.location')}</span>
+        <span>{t('term.hero.years')}</span>
+      </div>
       <h1 class="hero-name reveal">
-        <span aria-hidden="true">Gian<br />Barboza<span class="accent">.</span></span>
+        <span aria-hidden="true">Gian Barboza<span class="accent">.</span></span>
         <span class="sr-only">Gian Barboza — {t('meta.h1.role')}</span>
       </h1>
-
+      <p class="hero-role reveal">{t('meta.h1.role')}</p>
       <p class="hero-tagline reveal" set:html={t('term.hero.tagline.html')}></p>
       <p class="hero-pitch reveal reveal-delay-1">{t('term.hero.pitch')}</p>
-
       <div class="hero-actions reveal">
         <button type="button" class="btn primary" data-open-contact>
-          {t('term.cta.contact')} <span class="arrow">→</span>
+          {t('term.cta.contact')} <span class="arrow" aria-hidden="true">→</span>
         </button>
-        <a class="btn" href={t('cta.cv.url')} download>
-          {t('term.cta.resume')}
-        </a>
-        <a class="btn" href={linkedinUrl} target="_blank" rel="noopener noreferrer">
-          LinkedIn
-        </a>
-        <a class="btn" href={githubUrl} target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>
+        <a class="btn" href={t('cta.cv.url')} download>{t('term.cta.resume')}</a>
       </div>
     </div>
 
-    <div class="reveal reveal-delay-2">
-      <Terminal t={t} />
-    </div>
+    <aside class="hero-side reveal reveal-delay-2">
+      <a class="text-link hero-index" href="#cases">
+        {t('nav.projects')} <span aria-hidden="true">→</span>
+      </a>
+      <div class="hero-socials">
+        <a class="text-link" href={linkedinUrl} target="_blank" rel="noopener noreferrer">
+          LinkedIn <span aria-hidden="true">↗</span>
+        </a>
+        <a class="text-link" href={githubUrl} target="_blank" rel="noopener noreferrer">
+          GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <p class="hero-status">{t('term.terminal.status')}</p>
+    </aside>
   </div>
 </header>

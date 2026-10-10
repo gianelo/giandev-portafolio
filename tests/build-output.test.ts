@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import { beforeAll, describe, expect, it } from 'vitest';
 
-import { LANGS, getLocaleHref } from '../src/i18n/utils';
+import { LANGS, getLocaleHref, useTranslations } from '../src/i18n/utils';
 
 /**
  * Assertions against the generated site rather than its source.
@@ -80,7 +80,91 @@ describe('internal links', () => {
   });
 });
 
+describe('portfolio design contract', () => {
+  const caseKeys = ['rentoru', 'payments', 'fraud', 'infra', 'seo'];
+  const categoryKeys = ['backend', 'architecture', 'infra', 'payments', 'ai'];
+  const milestoneKeys = ['now', 'freelance', 'cto', 'fermat'];
+
+  // Compare copy independently of HTML escaping and architecture paragraph tags.
+  function text(source: string) {
+    return source.replace(/<[^>]*>/g, ' ').replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"').replace(/&#39;|&#x27;/g, "'")
+      .replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/\s+/g, ' ').trim();
+  }
+
+  for (const lang of LANGS) {
+    const href = getLocaleHref(lang);
+    const t = useTranslations(lang);
+
+    it(`keeps the accessible H1 and visible full role on ${href}`, () => {
+      const source = html[href];
+      const h1 = source.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? '';
+      expect(h1).toContain('class="sr-only"');
+      expect(text(h1)).toContain(`Gian Barboza — ${t('meta.h1.role')}`);
+      expect(h1).not.toMatch(/<br\b/);
+      const role = source.match(/<p class="hero-role[^\"]*">([\s\S]*?)<\/p>/)?.[1] ?? '';
+      expect(text(role)).toBe(t('meta.h1.role'));
+    });
+
+    it(`keeps content, expertise, metrics and localized CV links on ${href}`, () => {
+      const source = html[href];
+      const copy = text(source);
+      for (const key of caseKeys) {
+        for (const field of ['title', 'context', 'problem', 'decision']) {
+          expect(copy, `${key}.${field}`).toContain(text(t(`projects.${key}.${field}`)));
+        }
+        for (const field of ['metric', 'result.num', 'result.text']) {
+          expect(copy).toContain(text(t(`term.case.${key}.${field}`)));
+        }
+      }
+      expect(source.match(/data-case="/g)).toHaveLength(5);
+      expect(source.match(/class="exp-card\b/g)).toHaveLength(5);
+      for (const key of categoryKeys) expect(copy).toContain(t(`stack.${key}.title`));
+      for (const key of milestoneKeys) {
+        for (const field of ['period', 'role', 'company', 'desc']) {
+          expect(copy).toContain(text(t(`timeline.${key}.${field}`)));
+        }
+      }
+      expect(source.match(/data-counter="/g)).toHaveLength(4);
+      expect(source.match(new RegExp(`href="${t('cta.cv.url')}"`, 'g'))).toHaveLength(2);
+      expect(source).toContain('href="https://rentoru.com"');
+    });
+
+    it(`links accordion headings to labelled panels with only the first visible on ${href}`, () => {
+      const source = html[href];
+      for (const [index, key] of caseKeys.entries()) {
+        const trigger = source.match(new RegExp(`<button\\b[^>]*id="case-trigger-${key}"[^>]*>`))?.[0] ?? '';
+        const panel = source.match(new RegExp(`<div\\b[^>]*id="case-panel-${key}"[^>]*>`))?.[0] ?? '';
+        expect(trigger).toContain(`aria-controls="case-panel-${key}"`);
+        expect(trigger).toContain(`aria-expanded="${index === 0}"`);
+        expect(source).toMatch(new RegExp(`<h3\\b[^>]*>\\s*${trigger.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
+        expect(panel).toContain('role="region"');
+        expect(panel).toContain(`aria-labelledby="case-trigger-${key}"`);
+        expect(/\shidden(?:[\s=>])/.test(panel)).toBe(index !== 0);
+      }
+    });
+
+    it(`moves Terminal into Journey and keeps the clock and contact runtime on ${href}`, () => {
+      const source = html[href];
+      const journey = source.match(/<section[^>]*id="journey"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
+      expect(journey).toContain('class="terminal"');
+      expect(source).toContain('id="nav-clock"');
+      expect(source).toContain('class="hero-side');
+      expect(source).toContain('https://api.web3forms.com/submit');
+      expect(source).toContain('name="botcheck"');
+      for (const length of [100, 200, 2000]) expect(source).toContain(`maxlength="${length}"`);
+    });
+  }
+});
+
 describe('crawler contract', () => {
+  it('allows indexing only for a production build', () => {
+    const robots = process.env.VERCEL_ENV === 'production' ? 'index,follow' : 'noindex,nofollow';
+    for (const [href, source] of Object.entries(html)) {
+      expect(source, `robots on ${href}`).toContain(`<meta name="robots" content="${robots}">`);
+    }
+  });
+
   it('give every page a self-referencing canonical', () => {
     for (const [href, source] of Object.entries(html)) {
       expect(source, `canonical on ${href}`).toContain(
@@ -199,10 +283,26 @@ describe('social card', () => {
 
     for (const token of [
       '--bg: #0a0a0b',
+      '--bg-elev: #111113',
+      '--bg-card: #111113',
+      '--fg: #f4f4f5',
+      '--fg-muted: #b4b4bc',
+      '--fg-dim: #b4b4bc',
+      '--fg-faint: #85858f',
+      '--border: #303034',
+      '--border-strong: #45454c',
       '--accent: oklch(0.82 0.16 85)',
       '--green: oklch(0.78 0.16 150)',
     ]) {
       expect(css, `${token} changed — update the hex values in og.png.ts`).toContain(token);
+    }
+    const og = readFileSync(OG_SOURCE, 'utf8');
+    for (const [property, hex] of [
+      ['bg', '#0a0a0b'], ['bgElev', '#111113'], ['fg', '#f4f4f5'],
+      ['fgMuted', '#b4b4bc'], ['fgDim', '#b4b4bc'], ['fgFaint', '#85858f'],
+      ['border', '#303034'], ['borderStrong', '#45454c'],
+    ]) {
+      expect(og).toContain(`${property}: '${hex}'`);
     }
   });
 });

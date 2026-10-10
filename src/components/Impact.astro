@@ -1,6 +1,5 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import Sparkline from './Sparkline.astro';
 
 export interface Props {
   lang: string;
@@ -33,7 +32,7 @@ const stats: Stat[] = [
   />
 
   <div class="stats-grid reveal">
-    {stats.map((s, i) => (
+    {stats.map((s) => (
       <div class="stat">
         <div class="stat-value">
           <span
@@ -44,7 +43,6 @@ const stats: Stat[] = [
           >{(s.prefix ?? '') + (s.decimals ? s.value.toFixed(s.decimals) : s.value)}</span><span class="unit">{s.suffix ?? ''}</span>
         </div>
         <div class="stat-label">{t(`impact.${s.key}.label`)}</div>
-        <Sparkline seed={i + 1} color="var(--accent)" />
       </div>
     ))}
   </div>
