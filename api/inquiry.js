@@ -1,3 +1,4 @@
+import { createHmac } from "node:crypto";
 import { allowedOrigin, validateInquiry } from "../src/lib/inquiry.js";
 
 export default async function handler(req, res) {
@@ -42,35 +43,77 @@ export default async function handler(req, res) {
     return res.status(400).json({ success: false });
   const invalid = validateInquiry(data);
   if (invalid.length) return res.status(400).json({ success: false, invalid });
-  if (!process.env.PUBLIC_WEB3FORMS_KEY)
+  if (
+    typeof data.turnstileToken !== "string" ||
+    !data.turnstileToken.trim() ||
+    data.turnstileToken.length > 2048
+  )
+    return res.status(400).json({ success: false });
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  const from = process.env.INQUIRY_FROM_EMAIL?.trim();
+  const to = process.env.INQUIRY_TO_EMAIL?.trim();
+  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY?.trim();
+  if (!apiKey || !from || !to || !turnstileSecret)
     return res.status(503).json({ success: false });
   try {
-    const payload = {
-      access_key: process.env.PUBLIC_WEB3FORMS_KEY,
-      subject: "Project inquiry — gianbarboza.com",
-      from_name: data.name,
-    };
-    for (const field of [
-      "name",
-      "email",
-      "company",
-      "today",
-      "help",
-      "budget",
-      "timeline",
-    ])
-      payload[field] = data[field] || "";
-    const response = await fetch("https://api.web3forms.com/submit", {
+    const verification = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        body: new URLSearchParams({
+          secret: turnstileSecret,
+          response: data.turnstileToken,
+        }),
+        signal: AbortSignal.timeout(10000),
+      },
+    );
+    if (!verification.ok) return res.status(502).json({ success: false });
+    const challenge = await verification.json();
+    if (
+      challenge?.success !== true ||
+      challenge.hostname !== new URL(req.headers.origin).hostname ||
+      challenge.action !== "inquiry"
+    )
+      return res.status(400).json({ success: false });
+
+    // Only validated inquiry fields go into plain text, never headers or HTML.
+    const text = [
+      ["Name", data.name],
+      ["Email", data.email],
+      ["Company", data.company],
+      ["Current situation", data.today],
+      ["Help requested", data.help],
+      ["Budget", data.budget],
+      ["Timeline", data.timeline],
+    ]
+      .map(([label, value]) => `${label}: ${value?.trim() || ""}`)
+      .join("\n\n");
+    // A lost response must not turn a retry of the same inquiry into two emails.
+    // The HMAC hides personal details from the provider's idempotency header.
+    const retryKey = createHmac("sha256", apiKey)
+      .update(JSON.stringify([req.headers.origin, data.startedAt, text]))
+      .digest("hex");
+    const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+        "Idempotency-Key": `inquiry/${retryKey}`,
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        subject: "Project inquiry — gianbarboza.com",
+        reply_to: data.email.trim(),
+        text,
+      }),
       signal: AbortSignal.timeout(10000),
     });
     if (!response.ok) return res.status(502).json({ success: false });
     const result = await response.json();
-    return res
-      .status(result.success === true ? 200 : 502)
-      .json({ success: result.success === true });
+    // API acceptance is not a claim of delivery to the recipient's inbox.
+    const accepted = typeof result?.id === "string" && !!result.id.trim();
+    return res.status(accepted ? 200 : 502).json({ success: accepted });
   } catch {
     return res.status(502).json({ success: false });
   }

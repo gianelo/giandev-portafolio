@@ -406,72 +406,37 @@ describe('inquiry boundary', () => {
         const res = response();
         await handler(request(body), res);
         expect(res.code).toBe(400);
-        expect(res.body.success).toBe(false);
-        if (body && typeof body === 'object' && !Array.isArray(body)) expect(res.body.invalid).toContain('email');
+        expect(res.body).toEqual(body && typeof body === 'object' && !Array.isArray(body)
+          ? { success: false, invalid: ['email'] }
+          : { success: false });
+        expect(fetchMock).not.toHaveBeenCalled();
       }
       expect(fetchMock).not.toHaveBeenCalled();
     } finally { fetchMock.mockRestore(); }
   });
-  it('does not confirm an HTTP provider failure', async () => {
-    const old = process.env.PUBLIC_WEB3FORMS_KEY; process.env.PUBLIC_WEB3FORMS_KEY = 'test-key';
-    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue({ ok: false, status: 500 } as any);
-    try {
-      const res = response();
-      await handler(request({ ...valid, startedAt: Date.now() - 3000 }), res);
-      expect(res.code).toBe(502);
-      expect(res.body.success).toBe(false);
-    } finally { fetchMock.mockRestore(); if (old === undefined) delete process.env.PUBLIC_WEB3FORMS_KEY; else process.env.PUBLIC_WEB3FORMS_KEY = old; }
-  });
-  it('returns 503 without the existing public variable even if a separate key is set', async () => {
-    vi.stubEnv('PUBLIC_WEB3FORMS_KEY', undefined);
-    vi.stubEnv('WEB3FORMS_KEY', 'unused-separate-key');
-    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation(() => { throw Error('unexpected fetch'); });
-    try {
-      const res = response();
-      await handler(request({ ...valid, startedAt: Date.now() - 3000 }), res);
-      expect(res.code).toBe(503);
-      expect(res.body.success).toBe(false);
-      expect(fetchMock).not.toHaveBeenCalled();
-    } finally { fetchMock.mockRestore(); vi.unstubAllEnvs(); }
-  });
+  // Provider acceptance, configuration, Turnstile and transport failure cases
+  // run independently of generated site output in inquiry-provider.test.ts.
   it('rejects the honeypot and early submissions before contacting provider', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation(() => { throw Error('unexpected fetch'); });
-    try { for (const body of [{ ...valid, startedAt: Date.now() - 3000, website: 'spam' }, { ...valid, startedAt: Date.now() }]) { const res = response(); await handler(request(body), res); expect(res.code).toBe(400); } expect(fetchMock).not.toHaveBeenCalled(); } finally { fetchMock.mockRestore(); }
-  });
-  it('uses only the existing public variable and confirms only provider acceptance', async () => {
-    vi.stubEnv('PUBLIC_WEB3FORMS_KEY', 'existing-key-test-sentinel');
-    vi.stubEnv('WEB3FORMS_KEY', undefined);
-    const fetchMock = vi.spyOn(globalThis, 'fetch');
     try {
-      for (const accepted of [false, true]) {
-        fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ success: accepted }) } as any);
+      for (const body of [{ ...valid, startedAt: Date.now() - 3000, website: 'spam' }, { ...valid, startedAt: Date.now() }]) {
         const res = response();
-        await handler(request({ ...valid, startedAt: Date.now() - 3000 }), res);
-        expect(res.code).toBe(accepted ? 200 : 502);
-        expect(res.body.success).toBe(accepted);
-        const [url, options] = fetchMock.mock.calls.at(-1)!;
-        expect(url).toBe('https://api.web3forms.com/submit');
-        expect(JSON.parse(options!.body as string).access_key).toBe('existing-key-test-sentinel');
+        await handler(request(body), res);
+        expect(res.code).toBe(400);
+        expect(res.body).toEqual({ success: false });
+        expect(fetchMock).not.toHaveBeenCalled();
       }
-    } finally { fetchMock.mockRestore(); vi.unstubAllEnvs(); }
-  });
-  it('keeps provider transport exceptions as failure', async () => {
-    vi.stubEnv('PUBLIC_WEB3FORMS_KEY', 'existing-key-test-sentinel');
-    const fetchMock = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('provider unavailable'));
-    try {
-      const res = response();
-      await handler(request({ ...valid, startedAt: Date.now() - 3000 }), res);
-      expect(res.code).toBe(502);
-      expect(res.body.success).toBe(false);
-    } finally { fetchMock.mockRestore(); vi.unstubAllEnvs(); }
+    } finally { fetchMock.mockRestore(); }
   });
   it('does not embed provider key fields or environment references in built client output', () => {
     const clientFiles = readdirSync('dist/_astro', { recursive: true }).filter(file => /\.(?:js|mjs)$/.test(String(file)));
     expect(clientFiles.length).toBeGreaterThan(0);
     const output = [...routes.map(page), ...clientFiles.map(file => readFileSync(`dist/_astro/${file}`, 'utf8'))];
     for (const source of output) {
-      expect(source).not.toMatch(/PUBLIC_WEB3FORMS_KEY|WEB3FORMS_KEY|access_key|existing-key-test-sentinel/);
+      expect(source).not.toMatch(/RESEND_API_KEY|INQUIRY_FROM_EMAIL|INQUIRY_TO_EMAIL|TURNSTILE_SECRET_KEY|PUBLIC_WEB3FORMS_KEY|WEB3FORMS_KEY|access_key|resend-test-secret|turnstile-test-secret/);
       expect(source).not.toContain('https://api.web3forms.com/submit');
+      expect(source).not.toContain('https://api.resend.com/emails');
+      expect(source).not.toContain('https://challenges.cloudflare.com/turnstile/v0/siteverify');
     }
   });
 });
@@ -500,7 +465,7 @@ describe('approved services presentation', () => {
       expect(source).not.toContain('local demonstration');
       expect(source).not.toContain('demostración local');
       expect(source).not.toContain('form.reset(');
-      expect(source).toContain('Web3Forms');
+      expect(source).toContain('Resend');
       expect(source).toContain('id="inquiry-progress"');
       expect(source).toContain('class="feedback" role="status" tabindex="-1" hidden');
       expect(source).toContain("status.dataset.state = 'failure'");

@@ -8,9 +8,9 @@ Bilingual independent engineering services at `/` and `/es/`; the career portfol
 
 ## Inquiry delivery
 
-The services form posts to `/api/inquiry`, a Vercel serverless function. It reuses the already configured **`PUBLIC_WEB3FORMS_KEY`** via `process.env.PUBLIC_WEB3FORMS_KEY` on the server. No new key or separate `WEB3FORMS_KEY` is required. Web3Forms access keys are public by provider design, but the new homepage does not embed this key in its HTML or client bundle. The legacy `ContactModal.astro` source retains its old variable reference but is not rendered.
+The services form posts to `/api/inquiry`, a Vercel serverless function. The server verifies a Cloudflare Turnstile token before asking Resend to send a plain-text project inquiry. `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` stay server-side; `PUBLIC_TURNSTILE_SITE_KEY` is intentionally public. The old browser-side Web3Forms `ContactModal.astro` remains source-only and is not rendered.
 
-Without `PUBLIC_WEB3FORMS_KEY` the endpoint returns 503, even if `WEB3FORMS_KEY` is set; the form retains entered data and shows failure. The server validates input, checks origin and body size, rejects the honeypot and submissions under two seconds, then forwards to Web3Forms. Success appears only after Web3Forms confirms acceptance. Do not log inquiry content. Confirm that the existing variable is available to the function in the intended Vercel environment (Production/Preview); redeploy if environment configuration changes. Local `astro dev` serves the static frontend but not the Vercel function: use a Vercel-compatible local runtime to test end-to-end delivery. Production delivery has not been tested; build/unit tests and mocked provider acceptance are not delivery confirmation. Review privacy/retention with the provider before launch.
+The endpoint retains server-side input, origin and size validation, a honeypot and a two-second timing guard. Missing configuration fails closed with 503; invalid Turnstile tokens or failed provider calls never show a success message. The form retains entered details on failure. If a provider response is lost, acceptance is **unknown**, so the form says it may already have been sent; retries of the same inquiry use a stable Resend idempotency key to avoid duplicate messages within the provider's idempotency window. A success response means Resend accepted the request, **not** that it reached the recipient's inbox. Do not log inquiry contents or credentials. Resend requires a verified sending domain and an API key; Turnstile needs a managed widget with the site key and secret key configured for every intended hostname. Set the variables in the intended Vercel environment (Production and any Preview you test), redeploy, then test an actual inquiry and verify inbox receipt and provider retention. Local `astro dev` serves the static frontend but not the Vercel function; build/unit tests with mocked providers are not live delivery confirmation.
 
 Role copy on the career pages follows the single full title documented in [`AGENTS.md`](AGENTS.md).
 
@@ -25,7 +25,7 @@ Role copy on the career pages follows the single full title documented in [`AGEN
 | [satori](https://github.com/vercel/satori) + resvg | — | Generates portfolio `og.png` and services `og-home.png` at build time |
 | `@astrojs/sitemap` | 3.x | Sitemap generation |
 | Vercel Analytics + Speed Insights | 2.x | Traffic and Core Web Vitals |
-| [Web3Forms](https://web3forms.com) | — | Inquiry provider, called by the Vercel `/api/inquiry` function |
+| [Resend](https://resend.com) + [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/) | — | Server-side inquiry email and abuse challenge |
 | Vanilla JS | — | Theme, locale links, mobile menu, clock, counters, disclosures and inquiry states |
 
 > **No CSS framework or client JS framework.** Plain CSS in `src/styles/global.css` supplies shared tokens, fonts, reset and portfolio styles; `src/styles/home.css` supplies services styles. Preserve `.sr-only` for accessible role text.
@@ -41,7 +41,7 @@ Role copy on the career pages follows the single full title documented in [`AGEN
 - **Native case disclosures** — `<details>` / `<summary>` with context, problem, architecture and result; hash links open the matching case, and close buttons restore summary focus
 - **Locale switching** — preserves services/portfolio destination and fragment; `/en/` is a Vercel redirect, not a built page
 - **Live clock and counters** — Bogotá time (GMT-5); impact counters respect reduced motion
-- **Inquiry form** — server validation, honeypot and timing guard; no simulated delivery or success before provider acceptance
+- **Inquiry form** — server validation, honeypot, timing guard and server-verified Turnstile; no simulated delivery or success before provider acceptance
 - **SEO** — Person + WebSite JSON-LD, page-specific canonical/hreflang links, separate services/portfolio OG images, sitemap and preview `noindex`
 - **Accessibility** — skip link, visible keyboard focus, native disclosures, form error summary/status and reduced-motion handling; no rendered contact modal
 
@@ -50,7 +50,7 @@ Role copy on the career pages follows the single full title documented in [`AGEN
 ## Project Structure
 
 ```text
-api/inquiry.js                     # Vercel function → Web3Forms
+api/inquiry.js                     # Vercel function → Turnstile verification → Resend
 public/fonts/                      # Approved self-hosted WOFF2 assets
 public/favicon.ico                 # Shared GB favicon
 src/
@@ -97,7 +97,7 @@ src/
 # Install dependencies
 npm install
 
-# Copy the env template and fill in your Web3Forms key
+# Copy the env template and add the inquiry variables listed below
 cp .env.example .env
 
 # Start dev server → http://localhost:4321
@@ -117,7 +117,13 @@ npm run cv
 
 | Variable | Purpose |
 |---|---|
-| `PUBLIC_WEB3FORMS_KEY` | Existing Web3Forms access key, reused on the server by `/api/inquiry`; no new key required. Public by provider design, but not embedded in the new homepage/client bundle. Protection includes server validation, honeypot, timing guard, and provider rate limiting. |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Public Cloudflare managed-widget site key, available at build time; configure the production and preview hostnames you intend to use. |
+| `TURNSTILE_SECRET_KEY` | Server-only Siteverify secret. Never put it in client HTML/JS. |
+| `RESEND_API_KEY` | Server-only Resend API key. |
+| `INQUIRY_FROM_EMAIL` | Sender on a Resend-verified domain (for example, `inquiries@your-verified-domain.example`). |
+| `INQUIRY_TO_EMAIL` | Your actual recipient inbox. |
+
+Add these values to the local environment for testing and to Vercel for each target environment; no values or secrets belong in Git. The old `PUBLIC_WEB3FORMS_KEY` is used only by the unrendered legacy contact modal and is not needed by the new inquiry endpoint.
 
 ---
 
@@ -161,7 +167,7 @@ Services section order lives in `src/components/home/Home.astro`. Portfolio sect
 
 Astro builds static HTML/assets into `dist/`; Vercel separately runs `api/inquiry.js` at `/api/inquiry`. Deploying only `dist/` to a static host does **not** provide inquiry delivery or the redirects in `vercel.json`. Another host requires an equivalent server endpoint and redirect configuration.
 
-On Vercel, ensure the existing `PUBLIC_WEB3FORMS_KEY` is available to the function. `vercel.json` runs typecheck, unit tests and build-output tests during deployment. Verify actual provider acceptance after deployment; passing these checks is not evidence of live delivery.
+On Vercel, configure the five inquiry variables above and verify the sender domain in Resend; configure the Turnstile widget's allowed hostnames in Cloudflare. Environment changes require a new deployment. `vercel.json` runs typecheck, unit tests and build-output tests during deployment. Verify Resend API acceptance **and recipient inbox receipt** after deployment; passing build checks or receiving an API id is not evidence of final delivery.
 
 Preview deploys use `noindex,nofollow` — `Layout.astro` checks `VERCEL_ENV` so only production gets indexed.
 
