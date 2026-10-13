@@ -1,48 +1,27 @@
 ---
-import ContactModal from './ContactModal.astro';
-
+import { getLocaleHref, type Lang } from '../i18n/utils';
 export interface Props {
-  lang: string;
+  lang: Lang;
   t: (key: string) => string;
 }
-
 const { lang, t } = Astro.props;
-
-const linkedinUrl = t('contact.linkedin.url');
-const githubUrl = t('contact.github.url');
-const phoneDisplay = t('contact.phone');
-const phoneUrl = t('contact.phone.url');
-const email = t('contact.email');
-
-const year = new Date().getFullYear();
-const footerCopy = t('term.footer.copy').replace('{year}', String(year));
 ---
-
-<section class="cta wrap" id="contact">
-  <div class="cta-eyebrow reveal">{t('term.cta.eyebrow')}</div>
-  <h2 class="cta-title reveal" set:html={t('term.cta.title.html')}></h2>
-  <p class="cta-sub reveal">{t('term.cta.sub')}</p>
-
-  <div class="cta-actions reveal">
-    <button type="button" class="btn primary" data-open-contact>
-      {t('term.cta.contact')} <span class="arrow">→</span>
-    </button>
-    <a class="btn" href={t('cta.cv.url')} download>
-      {t('term.cta.resume')}
-    </a>
-  </div>
-
-  <div class="cta-contacts reveal">
-    <a href={`mailto:${email}`}>{email}</a>
-    <a href={phoneUrl} target="_blank" rel="noopener noreferrer">{phoneDisplay}</a>
-    <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">linkedin.com/in/gian-barboza</a>
-    <a href={githubUrl} target="_blank" rel="noopener noreferrer">github.com/gianelo</a>
+<section class="section" id="contact">
+  <div class="site-wrap p-contact">
+    <div>
+      <p class="section-label">{t('term.cta.eyebrow')}</p>
+      <h2 set:html={t('term.cta.title.html')} />
+      <p>{t('term.cta.sub')}</p>
+      <a class="btn" href={`${getLocaleHref(lang)}#contact`}>
+        {t('term.cta.contact')}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+      </a>
+    </div>
+    <div class="p-contact-links">
+      <a href={`mailto:${t('contact.email')}`}>{t('contact.email')}</a>
+      <a href={t('contact.phone.url')}>{t('contact.phone')}</a>
+      <a href={t('contact.linkedin.url')}>LinkedIn ↗</a>
+      <a href={t('contact.github.url')}>GitHub ↗</a>
+    </div>
   </div>
 </section>
-
-<ContactModal lang={lang} t={t} />
-
-<footer class="footer wrap">
-  <span>{footerCopy}</span>
-  <span>{t('term.footer.deploy')}</span>
-</footer>

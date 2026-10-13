@@ -14,29 +14,29 @@ import { resolve } from 'node:path';
  *   --bg            #0a0a0b
  *   --bg-elev       #111113
  *   --bg-card       #111113
- *   --accent        oklch(0.82 0.16 85)  ≈ #e2b94f  (warm amber)
- *   --green         oklch(0.78 0.16 150) ≈ #3fc480  (live indicator)
+ *   --accent        #f2b75b (warm amber)
+ *   --green         #8ac9a4 (status indicator)
  *   --fg            #f4f4f5
  *   --fg-muted      #b4b4bc
  *   --fg-dim        #b4b4bc
  *   --fg-faint      #85858f
- *   --border        #303034
- *   --border-strong #45454c
+ *   --border        #3d434c
+ *   --border-strong #3d434c
  */
 
 const C = {
   bg: '#0a0a0b',
   bgElev: '#111113',
-  accent: '#e2b94f',
-  accentSoft: 'rgba(226, 185, 79, 0.10)',
-  accentBorder: 'rgba(226, 185, 79, 0.28)',
-  green: '#3fc480',
+  accent: '#f2b75b',
+  accentSoft: 'rgba(242, 183, 91, 0.10)',
+  accentBorder: 'rgba(242, 183, 91, 0.28)',
+  green: '#8ac9a4',
   fg: '#f4f4f5',
   fgMuted: '#b4b4bc',
   fgDim: '#b4b4bc',
   fgFaint: '#85858f',
-  border: '#303034',
-  borderStrong: '#45454c',
+  border: '#3d434c',
+  borderStrong: '#3d434c',
 };
 
 export async function GET() {

@@ -15,7 +15,7 @@ pdf_options:
       <a href="https://wa.me/573043581365">+57 304 358 1365</a> ·
       <a href="https://linkedin.com/in/gian-barboza">LinkedIn</a> ·
       <a href="https://github.com/gianelo">GitHub</a> ·
-      <a href="https://gianbarboza.com">gianbarboza.com</a>
+      <a href="https://gianbarboza.com/es/portfolio/">gianbarboza.com</a>
     </p>
   </div>
   <img src="src/assets/profile.jpg" class="cv-photo" alt="Gian Barboza" />
@@ -28,13 +28,13 @@ Ingeniero Backend Senior y Arquitecto de Software con más de 10 años de experi
 ## Experiencia
 
 ### Ingeniero Backend Senior — Hablax Inc.
-*Nov 2023 — Actualidad · Remoto (100%)*
+*Nov 2023 — Ago 2026 · Remoto (100%)*
 
 - Llevé la respuesta ante fraude de semanas a horas con un motor de reglas extensible, y cerré el vector de acceso (multicuentas, account takeover) con una capa separada de device fingerprinting. Redujo notablemente la revisión manual, sin fricción para usuarios legítimos.
 - Desbloqueé la modernización de un stack legacy que no podía actualizarse in-place, diseñando API gateways para integrar servicios nuevos sin reescribir.
 - Abrí un nuevo corredor de pagos con una integración end-to-end de Shift4: 3DS, tokenización, reembolsos y voids.
-- Reduje la dependencia de la publicidad pagada con un pipeline de SEO programático que escala solo con el catálogo. Hoy el orgánico convierte clientes nuevos a mejor ratio que el canal pagado.
-- Reemplacé la mensajería ad-hoc por un orquestador de notificaciones multi-canal que enruta email y push por país, método de pago y producto.
+- Reduje la dependencia de la publicidad pagada con un pipeline de SEO programático que escalaba solo con el catálogo. El orgánico convertía clientes nuevos a mejor ratio que el canal pagado.
+- Reemplacé la mensajería ad-hoc por un orquestador de notificaciones multi-canal que enrutaba email y push por país, método de pago y producto.
 
 ### Desarrollador Full Stack → CTO — Hablax Inc.
 *Dic 2017 — Abr 2023 · Remoto (100%)*

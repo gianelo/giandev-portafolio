@@ -9,6 +9,13 @@ export const en: Record<string, string> = {
   // ranking signal. Carries the recruiter keyword + the new specialization tail.
   'meta.h1.role': 'Senior Backend Engineer & Software Architect',
 
+  // ── Portfolio presentation ───────────────────────────────
+  'portfolio.hero.eyebrow': 'PORTFOLIO / SELECTED EXPERIENCE',
+  'portfolio.principles': 'ENGINEERING PRINCIPLES',
+  'portfolio.services': 'Explore services',
+  'portfolio.local': 'On this page',
+  'portfolio.case.close': 'Close case study',
+
   // ── Nav ──────────────────────────────────────────────────
   'nav.impact': 'Impact',
   'nav.timeline': 'Journey',
@@ -29,10 +36,10 @@ export const en: Record<string, string> = {
 
   // ── Timeline ─────────────────────────────────────────────
 
-  'timeline.now.period': 'Nov 2023 — Present',
+  'timeline.now.period': 'Nov 2023 — Aug 2026',
   'timeline.now.role': 'Senior Backend Engineer',
   'timeline.now.company': 'Hablax Inc. · 100% Remote',
-  'timeline.now.desc': 'Leading AI-driven initiatives on the gift cards and top-up platform: AI-generated programmatic SEO, fraud detection engine with extensible rules, gateways to modernize legacy services, and a multi-channel notification orchestrator.',
+  'timeline.now.desc': 'Led AI-driven initiatives on the gift cards and top-up platform: AI-generated programmatic SEO, fraud detection engine with extensible rules, gateways to modernize legacy services, and a multi-channel notification orchestrator.',
 
   'timeline.freelance.period': 'Apr 2023 — Nov 2023',
   'timeline.freelance.role': 'Full Stack Engineer · Freelance',
@@ -148,8 +155,6 @@ export const en: Record<string, string> = {
   'term.section.04.label': '04 — Stack',
   'term.section.04.title': 'Technical expertise.',
   'term.section.04.sub': 'Tools and patterns I reach for, grouped by domain.',
-
-  'term.journey.current': 'Current',
 
   'term.case.label.context': 'Context',
   'term.case.label.problem': 'Problem',

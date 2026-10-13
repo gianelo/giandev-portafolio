@@ -36,102 +36,89 @@ const cases: { key: CaseKey; tags: string[] }[] = [
 ];
 ---
 
-<section class="section wrap" id="cases">
+<section class="section" id="cases">
+  <div class="site-wrap">
   <SectionHeading
     label={t('term.section.03.label')}
     title={t('term.section.03.title')}
     sub={t('term.section.03.sub')}
   />
 
-  <div class="case-list reveal">
+  <div class="case-list">
     {cases.map((c, i) => (
-      <article class={`case ${i === 0 ? 'open' : ''}`} data-case={c.key}>
-        <h3>
-          <button
-            type="button"
-            class="case-head"
-            id={`case-trigger-${c.key}`}
-            aria-controls={`case-panel-${c.key}`}
-            aria-expanded={i === 0 ? 'true' : 'false'}
-          >
-            <span class="case-num">{String(i + 1).padStart(2, '0')}</span>
-            <span class="case-heading">
-              <span class="case-title">{t(`projects.${c.key}.title`)}</span>
-              <span class="case-metric">{t(`term.case.${c.key}.metric`)}</span>
+      <details class="portfolio-case" id={`case-${c.key}`} open={i === 0}>
+          <summary>
+            <span class="case-index">{String(i + 1).padStart(2, '0')}</span>
+            <span class="case-name">
+              <strong>{t(`projects.${c.key}.title`)}</strong>
+              <span>{t(`term.case.${c.key}.metric`)}</span>
             </span>
-            <span class="case-toggle" aria-hidden="true">{i === 0 ? '−' : '+'}</span>
-          </button>
-        </h3>
-        <div
-          class="case-body"
-          id={`case-panel-${c.key}`}
-          role="region"
-          aria-labelledby={`case-trigger-${c.key}`}
-          hidden={i !== 0}
-        >
-          <div class="case-body-inner">
-            <div class="case-grid">
-              <div class="label">{t('term.case.label.context')}</div>
-              <div class="text">{t(`projects.${c.key}.context`)}</div>
+            <span class="case-sign" aria-hidden="true"></span>
+          </summary>
+        <div class="case-content">
+            <dl>
+              <dt>{t('term.case.label.context')}</dt>
+              <dd>{t(`projects.${c.key}.context`)}</dd>
 
-              <div class="label">{t('term.case.label.problem')}</div>
-              <div class="text">{t(`projects.${c.key}.problem`)}</div>
+              <dt>{t('term.case.label.problem')}</dt>
+              <dd>{t(`projects.${c.key}.problem`)}</dd>
 
-              <div class="label">{t('term.case.label.decision')}</div>
+              <dt>{t('term.case.label.decision')}</dt>
               {/* Rendered as HTML so a dense architecture write-up can break into
                   paragraphs. Cases without markup render exactly as before. */}
-              <div class="text" set:html={t(`projects.${c.key}.decision`)} />
+              <dd set:html={t(`projects.${c.key}.decision`)} />
 
-              <div class="label">{t('term.case.label.result')}</div>
-              <div class="text">
-                <div class="case-result">
-                  <span class="num">{t(`term.case.${c.key}.result.num`)}</span>
-                  <span>{t(`term.case.${c.key}.result.text`)}</span>
-                  {c.key === 'rentoru' && (
-                    <div>
-                      <a class="btn" href={t('projects.rentoru.url')}>{t('projects.rentoru.link')}</a>
-                    </div>
-                  )}
-                </div>
-                <div class="tag-row">
-                  {c.tags.map((tag) => <span class="tag">{tag}</span>)}
-                </div>
-              </div>
+              <dt>{t('term.case.label.result')}</dt>
+              <dd>{t(`projects.${c.key}.outcome`)}</dd>
+            </dl>
+            <div class="case-tags">
+              {c.tags.map((tag) => <span class="tag">{tag}</span>)}
             </div>
-          </div>
+            {c.key === 'rentoru' && (
+              <div><a class="btn" href={t('projects.rentoru.url')}>{t('projects.rentoru.link')} ↗</a></div>
+            )}
+            <button class="case-close" type="button" data-close-case>{t('portfolio.case.close')}</button>
         </div>
-      </article>
+      </details>
     ))}
+  </div>
   </div>
 </section>
 
-<script is:inline>
+<script is:inline data-case-disclosures>
   (function () {
-    document.querySelectorAll('.case').forEach((card) => {
-      const head = card.querySelector('.case-head');
-      if (!head) return;
-      head.addEventListener('click', () => {
-        const isOpen = card.classList.contains('open');
-        // Close all
-        document.querySelectorAll('.case.open').forEach((other) => {
-          other.classList.remove('open');
-          const btn = other.querySelector('.case-head');
-          if (btn) btn.setAttribute('aria-expanded', 'false');
-          const panel = other.querySelector('.case-body');
-          if (panel) panel.hidden = true;
-          const toggle = other.querySelector('.case-toggle');
-          if (toggle) toggle.textContent = '+';
-        });
-        // Open this one if it wasn't already
-        if (!isOpen) {
-          card.classList.add('open');
-          head.setAttribute('aria-expanded', 'true');
-          const panel = card.querySelector('.case-body');
-          if (panel) panel.hidden = false;
-          const toggle = card.querySelector('.case-toggle');
-          if (toggle) toggle.textContent = '−';
-        }
+    let navigation = 0;
+    // Native summary activation owns open/closed state, including without JS.
+    document.querySelectorAll('[data-close-case]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const details = button.closest('details');
+        navigation++;
+        details.open = false;
+        details.querySelector('summary').focus();
       });
     });
+
+    function openHashCase() {
+      const current = ++navigation;
+      let id;
+      try { id = decodeURIComponent(window.location.hash.slice(1)); }
+      catch (_) { return; }
+      const details = document.getElementById(id);
+      if (!details || !details.matches('details.portfolio-case')) return;
+      details.open = true;
+      details.scrollIntoView({ block: 'start' });
+      // Initial native fragment landing can override inline-script focus. Wait
+      // for load and two paint frames; never reclaim a closed or stale target.
+      function focusAfterLanding() {
+        window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+          if (current !== navigation || !details.open) return;
+          details.querySelector('summary').focus({ preventScroll: true });
+        }));
+      }
+      if (document.readyState === 'complete') focusAfterLanding();
+      else window.addEventListener('load', focusAfterLanding, { once: true });
+    }
+    openHashCase();
+    window.addEventListener('hashchange', openHashCase);
   })();
 </script>

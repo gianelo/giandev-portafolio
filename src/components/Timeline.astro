@@ -1,49 +1,28 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import Terminal from './Terminal.astro';
-
 export interface Props {
   lang: string;
   t: (key: string) => string;
 }
-
 const { t } = Astro.props;
-
-type MilestoneKey = 'now' | 'freelance' | 'cto' | 'fermat';
-
-const milestones: { key: MilestoneKey; current?: boolean }[] = [
-  { key: 'now',       current: true },
-  { key: 'freelance' },
-  { key: 'cto'       },
-  { key: 'fermat'    },
-];
+const milestones = ['now', 'freelance', 'cto', 'fermat'];
 ---
-
-<section class="section wrap" id="journey">
-  <SectionHeading
-    label={t('term.section.01.label')}
-    title={t('term.section.01.title')}
-    sub={t('term.section.01.sub')}
-  />
-
-  <div class="journey-layout">
+<section class="section" id="journey">
+  <div class="site-wrap">
+    <SectionHeading label={t('term.section.01.label')} title={t('term.section.01.title')} sub={t('term.section.01.sub')} />
     <div class="journey-list">
-      {milestones.map((m, i) => (
-        <div class={`journey-item reveal reveal-delay-${Math.min(i + 1, 4)}`}>
-          <div class="journey-date">{t(`timeline.${m.key}.period`)}</div>
-          <div>
-            <h3 class="journey-role">
-              {t(`timeline.${m.key}.role`)}
-              {m.current && <span class="pill">{t('term.journey.current')}</span>}
-            </h3>
-            <p class="journey-company">{t(`timeline.${m.key}.company`)}</p>
-            <p class="journey-desc">{t(`timeline.${m.key}.desc`)}</p>
+      {milestones.map(key => (
+        <article class="journey-item">
+          <div class="journey-period">
+            <span class="journey-date">{t(`timeline.${key}.period`)}</span>
           </div>
-        </div>
+          <div>
+            <h3 class="journey-role">{t(`timeline.${key}.role`)}</h3>
+            <p class="journey-company">{t(`timeline.${key}.company`)}</p>
+            <p class="journey-desc">{t(`timeline.${key}.desc`)}</p>
+          </div>
+        </article>
       ))}
-    </div>
-    <div class="reveal reveal-delay-2">
-      <Terminal t={t} />
     </div>
   </div>
 </section>
