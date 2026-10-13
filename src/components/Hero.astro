@@ -1,50 +1,52 @@
 ---
+import { getLocaleHref, type Lang } from '../i18n/utils';
 export interface Props {
-  lang: string;
+  lang: Lang;
   t: (key: string) => string;
 }
-
-const { t } = Astro.props;
-const linkedinUrl = t('contact.linkedin.url');
-const githubUrl = t('contact.github.url');
+const { lang, t } = Astro.props;
+const services = getLocaleHref(lang);
 ---
-
-<header class="hero wrap">
-  <div class="hero-grid">
-    <div class="hero-main">
-      <div class="hero-meta reveal">
-        <span class="live"><span class="dot" aria-hidden="true"></span>{t('term.hero.available')}</span>
-        <span>{t('term.hero.location')}</span>
-        <span>{t('term.hero.years')}</span>
-      </div>
-      <h1 class="hero-name reveal">
-        <span aria-hidden="true">Gian Barboza<span class="accent">.</span></span>
-        <span class="sr-only">Gian Barboza — {t('meta.h1.role')}</span>
-      </h1>
-      <p class="hero-role reveal">{t('meta.h1.role')}</p>
-      <p class="hero-tagline reveal" set:html={t('term.hero.tagline.html')}></p>
-      <p class="hero-pitch reveal reveal-delay-1">{t('term.hero.pitch')}</p>
-      <div class="hero-actions reveal">
-        <button type="button" class="btn primary" data-open-contact>
-          {t('term.cta.contact')} <span class="arrow" aria-hidden="true">→</span>
-        </button>
-        <a class="btn" href={t('cta.cv.url')} download>{t('term.cta.resume')}</a>
-      </div>
+<section class="site-wrap portfolio-hero">
+  <div>
+    <p class="portfolio-eyebrow">{t('portfolio.hero.eyebrow')}</p>
+    <div class="hero-meta">
+      <span>{t('term.hero.location')}</span>
+      <span>{t('term.hero.years')}</span>
     </div>
-
-    <aside class="hero-side reveal reveal-delay-2">
-      <a class="text-link hero-index" href="#cases">
-        {t('nav.projects')} <span aria-hidden="true">→</span>
+    <h1 class="hero-name">
+      <span aria-hidden="true">Gian Barboza<span class="accent">.</span></span>
+      <span class="sr-only">Gian Barboza — {t('meta.h1.role')}</span>
+    </h1>
+    <p class="hero-role">{t('meta.h1.role')}</p>
+    <p class="portfolio-tagline" set:html={t('term.hero.tagline.html')} />
+    <p class="portfolio-pitch">{t('term.hero.pitch')}</p>
+    <div class="portfolio-actions">
+      <a class="btn primary" href={`${services}#contact`}>
+        {t('term.cta.contact')}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
       </a>
-      <div class="hero-socials">
-        <a class="text-link" href={linkedinUrl} target="_blank" rel="noopener noreferrer">
-          LinkedIn <span aria-hidden="true">↗</span>
-        </a>
-        <a class="text-link" href={githubUrl} target="_blank" rel="noopener noreferrer">
-          GitHub <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-      <p class="hero-status">{t('term.terminal.status')}</p>
-    </aside>
+      <a class="btn" href={t('cta.cv.url')} download>{t('term.cta.resume')} ↓</a>
+    </div>
   </div>
-</header>
+  <aside class="portfolio-side">
+    <div>
+      <p class="portfolio-principles-label">{t('portfolio.principles')}</p>
+      {[1, 2, 3, 4].map(i => <p>{t(`term.terminal.p${i}`)}</p>)}
+    </div>
+    <div class="portfolio-side-links">
+      <a href={services}>{t('portfolio.services')} <span aria-hidden="true">→</span></a>
+      <a href={t('contact.linkedin.url')}>LinkedIn ↗</a>
+      <a href={t('contact.github.url')}>GitHub ↗</a>
+    </div>
+  </aside>
+</section>
+<nav class="portfolio-local" aria-label={t('portfolio.local')}>
+  <div class="site-wrap">
+    <span>{t('portfolio.local')}</span>
+    <a href="#journey">{t('nav.timeline')}</a>
+    <a href="#impact">{t('nav.impact')}</a>
+    <a href="#cases">{t('nav.projects')}</a>
+    <a href="#stack">{t('nav.stack')}</a>
+  </div>
+</nav>

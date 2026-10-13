@@ -9,6 +9,13 @@ export const es: Record<string, string> = {
   // señal on-page más fuerte. Lleva el rol completo, igual que el copy visible.
   'meta.h1.role': 'Ingeniero Backend Senior y Arquitecto de Software',
 
+  // ── Presentación del portafolio ──────────────────────────
+  'portfolio.hero.eyebrow': 'PORTAFOLIO / EXPERIENCIA SELECCIONADA',
+  'portfolio.principles': 'PRINCIPIOS DE INGENIERÍA',
+  'portfolio.services': 'Ver servicios',
+  'portfolio.local': 'En esta página',
+  'portfolio.case.close': 'Cerrar caso de estudio',
+
   // ── Nav ──────────────────────────────────────────────────
   'nav.impact': 'Impacto',
   'nav.timeline': 'Recorrido',
@@ -29,10 +36,10 @@ export const es: Record<string, string> = {
 
   // ── Timeline ─────────────────────────────────────────────
 
-  'timeline.now.period': 'Nov 2023 — Actualidad',
+  'timeline.now.period': 'Nov 2023 — Ago 2026',
   'timeline.now.role': 'Senior Backend Engineer',
   'timeline.now.company': 'Hablax Inc. · 100% Remoto',
-  'timeline.now.desc': 'Lidero iniciativas con IA sobre la plataforma de giftcards y recargas: SEO programático generado con IA, sistema de detección de fraude con reglas extensibles, gateways para modernizar servicios legacy y orquestador de notificaciones multi-canal.',
+  'timeline.now.desc': 'Lideré iniciativas con IA sobre la plataforma de giftcards y recargas: SEO programático generado con IA, sistema de detección de fraude con reglas extensibles, gateways para modernizar servicios legacy y orquestador de notificaciones multi-canal.',
 
   'timeline.freelance.period': 'Abr 2023 — Nov 2023',
   'timeline.freelance.role': 'Full Stack Engineer · Freelance',
@@ -131,7 +138,7 @@ export const es: Record<string, string> = {
   'term.terminal.status': 'Disponible para full-time remoto',
 
   'term.cta.resume': 'Descargar CV',
-  'term.cta.contact': 'Hablemos',
+  'term.cta.contact': 'Contactar',
 
   'term.section.01.label': '01 — Recorrido',
   'term.section.01.title': 'Desarrollador → CTO → Ingeniero Backend Senior y Arquitecto de Software',
@@ -148,8 +155,6 @@ export const es: Record<string, string> = {
   'term.section.04.label': '04 — Stack',
   'term.section.04.title': 'Expertise técnico.',
   'term.section.04.sub': 'Herramientas y patrones a los que recurro, agrupados por dominio.',
-
-  'term.journey.current': 'Actual',
 
   'term.case.label.context': 'Contexto',
   'term.case.label.problem': 'Problema',

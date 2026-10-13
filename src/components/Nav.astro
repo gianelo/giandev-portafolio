@@ -1,106 +1,77 @@
 ---
-import { getLocaleHref } from '../i18n/utils';
+import { getLocaleHref, getLocalePageHref, getPortfolioHref, shellCopy, type Lang } from '../i18n/utils';
+import BrandMark from './BrandMark.astro';
+import ThemeToggle from './ThemeToggle.astro';
 
 export interface Props {
-  lang: string;
+  lang: Lang;
   t: (key: string) => string;
+  portfolio?: boolean;
 }
-
-const { lang, t } = Astro.props;
+const { lang, t, portfolio = false } = Astro.props;
+const c = shellCopy[lang];
 const otherLang = lang === 'en' ? 'es' : 'en';
-const otherLangUrl = getLocaleHref(otherLang);
+const contact = `${getLocaleHref(lang)}#contact`;
 ---
-
-<nav class="nav" aria-label={lang === 'es' ? 'Navegación principal' : 'Primary'}>
-  <div class="nav-inner">
-    <div class="nav-mark" aria-hidden="true">
-      <span class="dot"></span>
-      <span>gian.barboza</span>
-      <span class="meta">· <span id="nav-clock">--:--</span> GMT-5</span>
-    </div>
-
-    <div class="nav-links">
-      <a href="#journey">{t('nav.timeline')}</a>
-      <a href="#impact">{t('nav.impact')}</a>
-      <a href="#cases">{t('nav.projects')}</a>
-      <a href="#stack">{t('nav.stack')}</a>
-    </div>
-
-    <div class="nav-tools">
-      <a
-        href={otherLangUrl}
-        class="nav-tool"
-        aria-label={t('nav.lang.switch')}
-        lang={otherLang}
-        hreflang={otherLang}
-      >
-        {otherLang === 'en' ? 'EN' : 'ES'}
-      </a>
-
-      <button
-        id="theme-toggle"
-        class="nav-tool"
-        aria-label={t('nav.toggle.dark')}
-        aria-pressed="false"
-        type="button"
-      >
-        <span id="theme-label">DARK</span>
-      </button>
-
-      <button type="button" class="nav-cta" data-open-contact>
-        <span class="nav-cta-label">{t('term.nav.cta')}</span>
-        <svg class="nav-cta-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="5" width="18" height="14" rx="2" />
-          <path d="m3 6 9 7 9-7" />
-        </svg>
-      </button>
+<header class="site-nav">
+  <div class="site-wrap site-nav-inner">
+    <a class="site-mark" href={getLocaleHref(lang)} aria-label={c.home}><BrandMark /><span>gian.barboza</span></a>
+    <span class="site-clock" aria-label={c.clock}><span id="nav-clock">--:--</span> GMT-5</span>
+    <nav class="site-links" id="site-navigation" aria-label={c.navigation}>
+      <a href={getLocaleHref(lang)} aria-current={!portfolio ? 'page' : undefined}>{c.services}</a>
+      <a href={getPortfolioHref(lang)} aria-current={portfolio ? 'page' : undefined}>{c.portfolio}</a>
+      <a class="site-contact-mobile" href={contact}>{c.contact}</a>
+    </nav>
+    <div class="site-tools">
+      <a class="site-tool" href={getLocalePageHref(Astro.url.pathname, otherLang)} data-locale aria-label={c.locale} lang={otherLang} hreflang={otherLang}>{otherLang.toUpperCase()}</a>
+      <ThemeToggle toDark={t('nav.toggle.dark')} toLight={t('nav.toggle.light')} />
+      <a class="site-contact" href={contact}>{c.contact}</a>
+      <button class="site-menu site-tool" type="button" aria-expanded="false" aria-controls="site-navigation">{c.menu}</button>
     </div>
   </div>
-</nav>
-
-<script
-  is:inline
-  define:vars={{
-    themeLabels: {
-      toDark: t('nav.toggle.dark'),
-      toLight: t('nav.toggle.light'),
-    },
-  }}
->
-  (function () {
-    // Live clock — Bogotá / GMT-5 (covers Rionegro)
-    const clock = document.getElementById('nav-clock');
-    if (clock) {
-      function fmt() {
-        return new Intl.DateTimeFormat('en-US', {
-          timeZone: 'America/Bogota',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false,
-        }).format(new Date());
+</header>
+<script>
+  import { getLocalePageHref, type Lang } from '../i18n/utils';
+  const locale = document.querySelector<HTMLAnchorElement>('[data-locale]');
+  if (locale) {
+    const sync = () => {
+      locale.href = getLocalePageHref(location.pathname, locale.lang as Lang, location.hash);
+    };
+    sync();
+    window.addEventListener('hashchange', sync);
+    locale.addEventListener('click', sync);
+  }
+  const menu = document.querySelector<HTMLButtonElement>('.site-menu');
+  const nav = document.getElementById('site-navigation');
+  if (menu && nav) {
+    const close = () => {
+      menu.setAttribute('aria-expanded', 'false');
+      nav.classList.remove('is-open');
+    };
+    menu.addEventListener('click', () => {
+      const open = menu.getAttribute('aria-expanded') !== 'true';
+      menu.setAttribute('aria-expanded', String(open));
+      nav.classList.toggle('is-open', open);
+    });
+    nav.addEventListener('click', event => {
+      if (event.target instanceof Element && event.target.closest('a')) close();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') {
+        close();
+        menu.focus();
       }
-      clock.textContent = fmt();
-      setInterval(() => { clock.textContent = fmt(); }, 30000);
-    }
-
-    // Theme toggle — label shows the TARGET mode (mirrors the lang switcher behavior)
-    const btn = document.getElementById('theme-toggle');
-    const label = document.getElementById('theme-label');
-    function syncLabel() {
-      if (!btn || !label) return;
-      const isLight = document.documentElement.classList.contains('light');
-      // If currently light → button offers DARK; if currently dark → button offers LIGHT
-      label.textContent = isLight ? 'DARK' : 'LIGHT';
-      btn.setAttribute('aria-label', isLight ? themeLabels.toDark : themeLabels.toLight);
-      btn.setAttribute('aria-pressed', isLight ? 'true' : 'false');
-    }
-    syncLabel();
-    if (btn) {
-      btn.addEventListener('click', () => {
-        const isLight = document.documentElement.classList.toggle('light');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        syncLabel();
-      });
-    }
-  })();
+    });
+    window.matchMedia('(min-width: 768px)').addEventListener('change', close);
+  }
+  const clock = document.getElementById('nav-clock');
+  if (clock) {
+    const tick = () => {
+      clock.textContent = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit', hour12: false,
+      }).format(new Date());
+    };
+    tick();
+    setInterval(tick, 30000);
+  }
 </script>

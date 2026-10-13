@@ -7,6 +7,7 @@ import {
   LANGS,
   getLangFromPath,
   getLocaleHref,
+  getLocalePageHref,
   useTranslations,
 } from './utils';
 
@@ -30,6 +31,28 @@ describe('getLocaleHref', () => {
   it('produces a distinct URL for every locale', () => {
     const hrefs = LANGS.map(getLocaleHref);
     expect(new Set(hrefs).size).toBe(LANGS.length);
+  });
+});
+
+describe('getLocalePageHref', () => {
+  it.each([
+    ['/', 'es', '#services', '/es/#services'],
+    ['/es/', 'en', '#contact', '/#contact'],
+    ['/portfolio/', 'es', '#case-payments', '/es/portfolio/#case-payments'],
+    ['/es/portfolio/', 'en', '#journey', '/portfolio/#journey'],
+    ['/portfolio', 'es', '#cases', '/es/portfolio/#cases'],
+    ['/en/', 'es', '', '/es/'],
+  ] as const)('retains the view and equivalent anchor for %s', (path, lang, hash, expected) => {
+    expect(getLocalePageHref(path, lang, hash)).toBe(expected);
+  });
+
+  it.each([
+    ['/', '#journey'],
+    ['/portfolio/', '#services'],
+    ['/portfolio/', '#unknown'],
+    ['/', '#%63ontact'],
+  ])('drops non-equivalent anchors on %s', (path, hash) => {
+    expect(getLocalePageHref(path, 'es', hash)).not.toContain('#');
   });
 });
 

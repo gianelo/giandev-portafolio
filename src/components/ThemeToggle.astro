@@ -1,0 +1,31 @@
+---
+interface Props {
+  toDark: string;
+  toLight: string;
+}
+const { toDark, toLight } = Astro.props;
+---
+<button class="site-tool theme-toggle" type="button" aria-label={toLight} aria-pressed="false" data-to-dark={toDark} data-to-light={toLight}><span>LIGHT</span></button>
+<script is:inline>
+  document.querySelectorAll('.theme-toggle').forEach((button) => {
+    const label = button.querySelector('span');
+    const sync = () => {
+      const light = document.documentElement.classList.contains('light');
+      label.textContent = light ? 'DARK' : 'LIGHT';
+      button.setAttribute('aria-label', light ? button.dataset.toDark : button.dataset.toLight);
+      button.setAttribute('aria-pressed', String(light));
+    };
+    sync();
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'theme' || event.key === null) {
+        document.documentElement.classList.toggle('light', event.newValue === 'light');
+        sync();
+      }
+    });
+    button.addEventListener('click', () => {
+      const light = document.documentElement.classList.toggle('light');
+      try { localStorage.setItem('theme', light ? 'light' : 'dark'); } catch (_) { /* storage may be unavailable */ }
+      sync();
+    });
+  });
+</script>

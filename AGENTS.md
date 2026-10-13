@@ -103,7 +103,7 @@ El recorrido laboral va antes que las métricas para que el lector vea el contex
 | `Nav.astro`            | Nav      | Sticky con backdrop blur. Wordmark + dot verde pulsante + **reloj en vivo GMT-5**, links de sección, switcher EN/ES, theme toggle, CTA de contacto |
 | `Hero.astro`           | Hero     | Meta line (Available · ubicación · años), nombre grande, **tagline** (rol + especialización) + **pitch** (propuesta de valor), 4 botones (Contact, Résumé, LinkedIn, GitHub) + `<Terminal />` al lado |
 | `Terminal.astro`       | —        | Bloque ASCII decorativo (`$ whoami`, `$ engineering_principles`, `$ status`) con cursor parpadeante. `aria-hidden`. Recibe `t` — el copy vive en `term.terminal.*`; solo los `$ comandos` quedan hardcoded. **Ancho útil ~66 chars a ≥1100px** |
-| `Timeline.astro`       | `#journey` | 4 hitos laborales (reciente primero), pill "Current" en el actual              |
+| `Timeline.astro`       | `#journey` | 4 hitos laborales (reciente primero), sin pill de cargo actual; el último rol en Hablax terminó el 31 de agosto de 2026              |
 | `Impact.astro`         | `#impact`  | 4 métricas con **contador animado** (IntersectionObserver + easing cúbico) y sparkline SVG de fondo |
 | `Sparkline.astro`      | —        | SVG determinista generado con `sin/cos` desde un `seed` — mismo output en cada build |
 | `Projects.astro`       | `#cases`   | 4 case studies en **acordeón** (solo uno abierto a la vez; el primero abre por default). Bloques Context / Problem / Decision / Result + tags |

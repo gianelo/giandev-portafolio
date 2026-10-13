@@ -37,7 +37,8 @@ const categories = [
 ];
 ---
 
-<section class="section wrap" id="stack">
+<section class="section" id="stack">
+  <div class="site-wrap">
   <SectionHeading
     label={t('term.section.04.label')}
     title={t('term.section.04.title')}
@@ -49,12 +50,12 @@ const categories = [
       <div class={`exp-card reveal reveal-delay-${Math.min(i + 1, 4)}`}>
         <div class="exp-head">
           <h3 class="exp-name">{t(`stack.${cat.key}.title`)}</h3>
-          <span class="exp-glyph">{cat.glyph}</span>
         </div>
         <div class="exp-tags">
           {cat.tags.map((tag) => <span class="tag">{tag}</span>)}
         </div>
       </div>
     ))}
+  </div>
   </div>
 </section>

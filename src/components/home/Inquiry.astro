@@ -1,0 +1,175 @@
+---
+const { c } = Astro.props;
+const required = ['name', 'email', 'today', 'help'];
+const keys = ['name', 'email', 'company', 'today', 'help'];
+---
+<section id="contact" class="home-section home-contact">
+  <div class="home-wrap contact-grid">
+    <div>
+      <p class="section-label">{c.contactLabel}</p>
+      <h2>{c.contactTitle.split('\n').map((line: string, i: number) => <>{i > 0 && <br />}{line}</>)}</h2>
+      <p>{c.contactIntro}</p>
+      <p class="contact-small">{c.contactSmall}</p>
+    </div>
+    <div>
+      <p class="required-note">{c.required}</p>
+      <form id="inquiry" method="post" action="/api/inquiry" novalidate aria-label={c.submit}>
+        <div id="inquiry-errors" class="error-summary" tabindex="-1" role="alert" hidden></div>
+        <div class="form-grid">
+          {keys.map(key =>
+            <div class:list={['field', { wide: !['name', 'email'].includes(key) }]}>
+              <label for={key}>
+                {c.labels[key]} {required.includes(key) ? '*' : <span class="optional">({c.optional})</span>}
+              </label>
+              {c.hints[key] && <span class="helper" id={`${key}-hint`}>{c.hints[key]}</span>}
+              {['today', 'help'].includes(key)
+                ? <textarea id={key} name={key} rows="4" maxlength="5000" placeholder={c.placeholders[key]} required aria-describedby={`${key}-error ${key}-hint`}></textarea>
+                : <input
+                    id={key}
+                    name={key}
+                    type={key === 'email' ? 'email' : 'text'}
+                    maxlength="200"
+                    placeholder={c.placeholders[key]}
+                    required={required.includes(key)}
+                    autocomplete={key === 'name' ? 'name' : key === 'email' ? 'email' : key === 'company' ? 'organization' : 'off'}
+                    aria-describedby={`${key}-error`}
+                  />}
+              <span id={`${key}-error`} class="field-error" hidden></span>
+            </div>
+          )}
+        </div>
+        <details>
+          <summary>{c.details}</summary>
+          <div class="form-grid">
+            {['budget', 'timeline'].map(key =>
+              <div class="field">
+                <label for={key}>{c.labels[key]} <span class="optional">({c.optional})</span></label>
+                <input id={key} name={key} type="text" maxlength="200" autocomplete="off" placeholder={c.placeholders[key]} aria-describedby={`${key}-error`} />
+                <span id={`${key}-error`} class="field-error" hidden></span>
+              </div>
+            )}
+          </div>
+        </details>
+        <div class="hp-field" aria-hidden="true">
+          <label for="website">Website</label>
+          <input id="website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+        <p class="privacy">{c.privacy}</p>
+        <button class="home-button site-button primary submit" type="submit"><span>{c.submit}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></button>
+        <p id="inquiry-progress" class="progress" role="status" hidden></p>
+        <div id="inquiry-status" class="feedback" role="status" tabindex="-1" hidden>
+          <h3>{c.successTitle}</h3><p></p>
+          <button class="home-button site-button secondary" id="edit-inquiry" type="button">{c.again}</button>
+        </div>
+        <noscript><p>{c.noscript} <a href="https://linkedin.com/in/gian-barboza">LinkedIn</a></p></noscript>
+      </form>
+    </div>
+  </div>
+</section>
+<script is:inline define:vars={{ messages: {
+  required: c.requiredError,
+  email: c.emailError,
+  invalid: c.invalid,
+  loading: c.loading,
+  success: c.success,
+  failure: c.failure,
+  sending: c.sending
+} }}>
+  const form = document.getElementById('inquiry');
+  const summary = document.getElementById('inquiry-errors');
+  const status = document.getElementById('inquiry-status');
+  const progress = document.getElementById('inquiry-progress');
+  const submit = form.querySelector('[type=submit]');
+  const submitLabel = submit.querySelector('span');
+  const idleLabel = submitLabel.textContent;
+  const fields = [...form.querySelectorAll('.field input,.field textarea')];
+  const startedAt = Date.now();
+  let busy = false;
+
+  function validate(field) {
+    let error = '';
+    if (field.required && !field.value.trim()) error = messages.required;
+    else if (field.type === 'email' && field.value && !field.validity.valid) error = messages.email;
+
+    const span = document.getElementById(field.id + '-error');
+    span.textContent = error;
+    span.hidden = !error;
+    field.setAttribute('aria-invalid', String(Boolean(error)));
+    return !error;
+  }
+
+  fields.forEach(field => field.addEventListener('blur', () => validate(field)));
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (busy) return;
+    status.hidden = true;
+    progress.hidden = true;
+
+    const invalid = fields.filter(field => !validate(field));
+    summary.replaceChildren();
+    if (invalid.length) {
+      const p = document.createElement('p');
+      p.textContent = messages.invalid;
+      const list = document.createElement('ul');
+      invalid.forEach(field => {
+        const li = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = '#' + field.id;
+        link.textContent = form.querySelector(`label[for="${field.id}"]`).textContent;
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          field.focus();
+        });
+        li.append(link);
+        list.append(li);
+      });
+      summary.append(p, list);
+      summary.hidden = false;
+      summary.focus();
+      return;
+    }
+
+    summary.hidden = true;
+    busy = true;
+    submit.disabled = true;
+    submitLabel.textContent = messages.sending;
+    form.setAttribute('aria-busy', 'true');
+    progress.textContent = messages.loading;
+    progress.hidden = false;
+
+    try {
+      const data = Object.fromEntries(new FormData(form));
+      data.startedAt = startedAt;
+      const response = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      if (!response.ok || result.success !== true) throw new Error('Not delivered');
+      status.dataset.state = 'success';
+      status.querySelector('h3').hidden = false;
+      status.querySelector('p').textContent = messages.success;
+      status.hidden = false;
+      status.focus();
+    } catch {
+      status.dataset.state = 'failure';
+      status.querySelector('h3').hidden = true;
+      status.querySelector('p').textContent = messages.failure;
+      status.hidden = false;
+      status.focus();
+    } finally {
+      busy = false;
+      submit.disabled = false;
+      submitLabel.textContent = idleLabel;
+      progress.hidden = true;
+      form.removeAttribute('aria-busy');
+    }
+  });
+
+  document.getElementById('edit-inquiry').addEventListener('click', () => {
+    status.hidden = true;
+    fields[0].focus();
+  });
+</script>

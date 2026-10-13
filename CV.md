@@ -15,7 +15,7 @@ pdf_options:
       <a href="https://wa.me/573043581365">+57 304 358 1365</a> ·
       <a href="https://linkedin.com/in/gian-barboza">LinkedIn</a> ·
       <a href="https://github.com/gianelo">GitHub</a> ·
-      <a href="https://gianbarboza.com">gianbarboza.com</a>
+      <a href="https://gianbarboza.com/portfolio/">gianbarboza.com</a>
     </p>
   </div>
   <img src="src/assets/profile.jpg" class="cv-photo" alt="Gian Barboza" />
@@ -28,12 +28,12 @@ Senior Backend Engineer and Software Architect with 10+ years of hands-on experi
 ## Experience
 
 ### Senior Backend Engineer — Hablax Inc.
-*Nov 2023 — Present · Remote (100%)*
+*Nov 2023 — Aug 2026 · Remote (100%)*
 
 - Took fraud response from weeks to hours with an extensible rule engine, and closed the account-fraud vector (multi-account abuse, account takeover) with a separate device-fingerprinting layer. Significantly cut manual review load, without adding friction for legitimate users.
-- Unblocked modernization of a legacy stack that could not be upgraded in place, designing API gateways so new services integrate without a rewrite.
+- Unblocked modernization of a legacy stack that could not be upgraded in place, designing API gateways so new services integrated without a rewrite.
 - Opened a new payment corridor with an end-to-end Shift4 integration: 3DS, tokenization, refunds and voids.
-- Cut paid-advertising dependency with a programmatic SEO pipeline that scales unattended with the catalog. Organic now converts new clients better than the paid channel.
+- Cut paid-advertising dependency with a programmatic SEO pipeline that scaled unattended with the catalog. Organic converted new clients better than the paid channel.
 - Replaced ad-hoc customer messaging with a multi-channel notification orchestrator routing email and push by country, payment method and product.
 
 ### Full Stack Developer → CTO — Hablax Inc.
