@@ -1,7 +1,7 @@
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
 import { runInNewContext } from 'node:vm';
+import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs';
 import { describe, expect, it, vi } from 'vitest';
 import { LANGS, useTranslations } from '../src/i18n/utils';
 import { homeEn, homeEs } from '../src/i18n/home';
@@ -27,11 +27,21 @@ describe('bilingual CV portfolio links', () => {
       expect(readFileSync(source, 'utf8')).toContain(`<a href="${site}${route}">gianbarboza.com</a>`);
       expect(readFileSync(`dist/${pdf}`)).toEqual(bytes);
     });
-    it(`preserves the completed latest Hablax tenure in ${pdf}`, () => {
-      const text = execFileSync('pdftotext', [`public/${pdf}`, '-'], { encoding: 'utf8' }).replace(/\s+/g, ' ');
-      expect(text).toContain(period);
-      expect(text).toContain('gianbarboza.com');
-      expect(text).not.toMatch(/Present|Actualidad/);
+    it(`preserves the completed latest Hablax tenure in ${pdf}`, async () => {
+      const task = getDocument({ data: Uint8Array.from(readFileSync(`public/${pdf}`)) });
+      try {
+        const document = await task.promise;
+        const pages = await Promise.all(Array.from({ length: document.numPages }, async (_, index) => {
+          const content = await (await document.getPage(index + 1)).getTextContent();
+          return content.items.map(item => 'str' in item ? item.str : '').join(' ');
+        }));
+        const text = pages.join(' ').replace(/\s+/g, ' ');
+        expect(text).toContain(period);
+        expect(text).toContain('gianbarboza.com');
+        expect(text).not.toMatch(/Present|Actualidad/);
+      } finally {
+        await task.destroy();
+      }
     });
   }
 });
