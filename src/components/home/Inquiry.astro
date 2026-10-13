@@ -1,5 +1,6 @@
 ---
 const { c } = Astro.props;
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY?.trim() || '';
 const required = ['name', 'email', 'today', 'help'];
 const keys = ['name', 'email', 'company', 'today', 'help'];
 ---
@@ -54,6 +55,11 @@ const keys = ['name', 'email', 'company', 'today', 'help'];
           <label for="website">Website</label>
           <input id="website" name="website" tabindex="-1" autocomplete="off" />
         </div>
+        <div class="inquiry-verification">
+          <div id="inquiry-turnstile" data-sitekey={turnstileSiteKey} data-action="inquiry" data-language={c.verificationLanguage}></div>
+          <p id="turnstile-status" class="helper" role="status" tabindex="-1">{c.verificationLoading}</p>
+          <button id="retry-turnstile" class="home-button site-button secondary" type="button" hidden>{c.verificationRetry}</button>
+        </div>
         <p class="privacy">{c.privacy}</p>
         <button class="home-button site-button primary submit" type="submit"><span>{c.submit}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></button>
         <p id="inquiry-progress" class="progress" role="status" hidden></p>
@@ -73,7 +79,12 @@ const keys = ['name', 'email', 'company', 'today', 'help'];
   loading: c.loading,
   success: c.success,
   failure: c.failure,
-  sending: c.sending
+  sending: c.sending,
+  verificationLoading: c.verificationLoading,
+  verificationRequired: c.verificationRequired,
+  verificationUnavailable: c.verificationUnavailable,
+  verificationExpired: c.verificationExpired,
+  verificationReady: c.verificationReady
 } }}>
   const form = document.getElementById('inquiry');
   const summary = document.getElementById('inquiry-errors');
@@ -85,6 +96,91 @@ const keys = ['name', 'email', 'company', 'today', 'help'];
   const fields = [...form.querySelectorAll('.field input,.field textarea')];
   const startedAt = Date.now();
   let busy = false;
+  const widget = document.getElementById('inquiry-turnstile');
+  const verificationStatus = document.getElementById('turnstile-status');
+  const retryVerification = document.getElementById('retry-turnstile');
+  const siteKey = widget.dataset.sitekey;
+  let token = '';
+  let widgetId;
+  let verificationUnavailable = false;
+  let scriptAttempt = 0;
+
+  function verificationFailure() {
+    token = '';
+    verificationUnavailable = true;
+    verificationStatus.textContent = messages.verificationUnavailable;
+    retryVerification.hidden = !siteKey;
+  }
+
+  function resetVerification(message) {
+    token = '';
+    verificationStatus.textContent = message;
+    try {
+      window.turnstile.reset(widgetId);
+    } catch {
+      verificationFailure();
+    }
+  }
+
+  function renderVerification() {
+    if (widgetId !== undefined) return;
+    try {
+      widgetId = window.turnstile.render(widget, {
+        sitekey: siteKey,
+        action: 'inquiry',
+        language: widget.dataset.language,
+        size: 'flexible',
+        'response-field': false,
+        callback: value => {
+          token = typeof value === 'string' ? value.trim() : '';
+          verificationUnavailable = false;
+          retryVerification.hidden = true;
+          verificationStatus.textContent = token ? messages.verificationReady : messages.verificationRequired;
+        },
+        'expired-callback': () => resetVerification(messages.verificationExpired),
+        'timeout-callback': () => resetVerification(messages.verificationExpired),
+        'error-callback': () => { verificationFailure(); return true; }
+      });
+    } catch {
+      verificationFailure();
+    }
+  }
+
+  function loadVerification() {
+    if (!siteKey) { verificationFailure(); return; }
+    verificationUnavailable = false;
+    retryVerification.hidden = true;
+    verificationStatus.textContent = messages.verificationLoading;
+    if (window.turnstile) { renderVerification(); return; }
+    const attempt = ++scriptAttempt;
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    // A blocked script must leave a recoverable state, not an endless spinner.
+    const timer = setTimeout(() => {
+      if (attempt === scriptAttempt && widgetId === undefined) verificationFailure();
+    }, 15000);
+    script.addEventListener('load', () => {
+      clearTimeout(timer);
+      if (attempt === scriptAttempt) renderVerification();
+    });
+    script.addEventListener('error', () => {
+      clearTimeout(timer);
+      if (attempt === scriptAttempt) verificationFailure();
+    });
+    document.head.append(script);
+  }
+
+  retryVerification.addEventListener('click', () => {
+    if (busy) return;
+    if (widgetId !== undefined) {
+      verificationUnavailable = false;
+      retryVerification.hidden = true;
+      resetVerification(messages.verificationRequired);
+    } else loadVerification();
+    verificationStatus.focus();
+  });
+  loadVerification();
 
   function validate(field) {
     let error = '';
@@ -131,6 +227,22 @@ const keys = ['name', 'email', 'company', 'today', 'help'];
     }
 
     summary.hidden = true;
+    if (!token || verificationUnavailable) {
+      verificationStatus.textContent = verificationUnavailable ? messages.verificationUnavailable : messages.verificationRequired;
+      verificationStatus.focus();
+      return;
+    }
+    const data = Object.fromEntries(new FormData(form));
+    if (data.website || Date.now() - startedAt < 2000) {
+      summary.textContent = messages.failure;
+      summary.hidden = false;
+      summary.focus();
+      return;
+    }
+    data.startedAt = startedAt;
+    data.turnstileToken = token;
+    // Tokens are single-use even when the API response is lost or rejected.
+    token = '';
     busy = true;
     submit.disabled = true;
     submitLabel.textContent = messages.sending;
@@ -139,15 +251,13 @@ const keys = ['name', 'email', 'company', 'today', 'help'];
     progress.hidden = false;
 
     try {
-      const data = Object.fromEntries(new FormData(form));
-      data.startedAt = startedAt;
       const response = await fetch('/api/inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
       const result = await response.json();
-      if (!response.ok || result.success !== true) throw new Error('Not delivered');
+      if (!response.ok || result.success !== true) throw new Error('Not accepted');
       status.dataset.state = 'success';
       status.querySelector('h3').hidden = false;
       status.querySelector('p').textContent = messages.success;
@@ -160,6 +270,7 @@ const keys = ['name', 'email', 'company', 'today', 'help'];
       status.hidden = false;
       status.focus();
     } finally {
+      resetVerification(messages.verificationRequired);
       busy = false;
       submit.disabled = false;
       submitLabel.textContent = idleLabel;

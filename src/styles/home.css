@@ -91,6 +91,10 @@
 .home-page summary { min-height: 44px; align-content: center; font-size: 16px; color: var(--fg-muted); cursor: pointer; }
 .home-page details[open] summary { margin-bottom: 16px; }
 .home-page .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.home-page .inquiry-verification { margin-top: 24px; min-width: 0; }
+.home-page #inquiry-turnstile { width: 100%; min-height: 65px; }
+.home-page #turnstile-status { margin: 12px 0; }
+.home-page #retry-turnstile { margin-top: 8px; }
 .home-page .privacy { font-size: 14px; line-height: 1.6; color: var(--fg-muted); margin: 24px 0; }
 .home-page .submit { width: 100%; }
 .home-page .submit:disabled { opacity: .7; cursor: wait; }
