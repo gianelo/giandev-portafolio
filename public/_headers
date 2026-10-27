@@ -1,0 +1,12 @@
+/gian-barboza-cv.pdf
+  Content-Disposition: attachment; filename="gian-barboza-cv.pdf"
+
+/gian-barboza-cv-es.pdf
+  Content-Disposition: attachment; filename="gian-barboza-cv-es.pdf"
+
+# The production pages.dev alias serves the same HTML as the custom domain.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex

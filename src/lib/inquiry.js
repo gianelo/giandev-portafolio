@@ -31,16 +31,20 @@ export function validateInquiry(input) {
     invalid.push("email");
   return [...new Set(invalid)];
 }
-export function allowedOrigin(origin) {
+export function allowedOrigin(origin, environment = process.env) {
   if (!origin) return false;
   try {
     const url = new URL(origin);
+    const preview = environment.INQUIRY_PREVIEW_ORIGIN;
     return (
       url.origin === "https://gianbarboza.com" ||
       url.origin === "https://www.gianbarboza.com" ||
-      (process.env.VERCEL_URL &&
-        url.origin === `https://${process.env.VERCEL_URL}`) ||
-      (process.env.NODE_ENV !== "production" &&
+      (typeof preview === "string" &&
+        /^https:\/\/[a-z0-9-]+(?:\.[a-z0-9-]+)*\.pages\.dev$/.test(preview) &&
+        url.origin === preview) ||
+      (environment.VERCEL_URL &&
+        url.origin === `https://${environment.VERCEL_URL}`) ||
+      (environment.NODE_ENV !== "production" &&
         ["localhost", "127.0.0.1"].includes(url.hostname))
     );
   } catch {

@@ -28,11 +28,11 @@ const alternatePath = portfolio ? 'portfolio/' : '';
 const alternateEn = `${siteUrl}/${alternatePath}`;
 const alternateEs = `${siteUrl}/es/${alternatePath}`;
 
-// Solo el deploy de producción (gianbarboza.com) se indexa.
-// Vercel inyecta VERCEL_ENV = 'production' | 'preview' | 'development'.
-// Cualquier subdominio de preview (terminal.gianbarboza.com,
-// editorial-crawl.gianbarboza.com, *.vercel.app) cae en 'preview' → noindex.
-const isProduction = import.meta.env.VERCEL_ENV === 'production';
+// Index only the production build on either host. Preview branches and local
+// builds remain noindex; Pages provides CF_PAGES_BRANCH at build time.
+const usesVercel = Boolean(import.meta.env.VERCEL_ENV);
+const isProduction = import.meta.env.VERCEL_ENV === 'production' ||
+  process.env.CF_PAGES_BRANCH === 'main';
 
 const personId = `${siteUrl}/#person`;
 const websiteId = `${siteUrl}/#website`;
@@ -156,8 +156,8 @@ const jsonLdGraph = {
   <body>
     <a href="#main" class="skip-link">{skipLabel}</a>
     <slot />
-    <Analytics />
-    <SpeedInsights />
+    {usesVercel && <Analytics />}
+    {usesVercel && <SpeedInsights />}
 
     <!-- Console easter egg: surfaces a CTA for devs who open DevTools -->
     <script is:inline>

@@ -10,6 +10,8 @@ import handler from '../api/inquiry.js';
 
 const site = 'https://gianbarboza.com';
 const routes = ['/', '/es/', '/portfolio/', '/es/portfolio/'];
+const productionBuild = process.env.VERCEL_ENV === 'production' || process.env.CF_PAGES_BRANCH === 'main';
+const vercelBuild = Boolean(process.env.VERCEL_ENV);
 const page = (route: string) => readFileSync(`dist/${route.slice(1)}index.html`, 'utf8');
 
 describe('bilingual CV portfolio links', () => {
@@ -128,7 +130,7 @@ describe('career portfolio build contract', () => {
   });
   it('retains robot rules and renders no untranslated keys', () => {
     for (const route of routes) {
-      expect(page(route)).toContain(`<meta name="robots" content="${process.env.VERCEL_ENV === 'production' ? 'index,follow' : 'noindex,nofollow'}">`);
+      expect(page(route)).toContain(`<meta name="robots" content="${productionBuild ? 'index,follow' : 'noindex,nofollow'}">`);
       expect(page(route)).not.toMatch(/>\s*(term|nav|meta|cta|projects)\.[a-z0-9.]+\s*</);
     }
   });
@@ -438,6 +440,31 @@ describe('inquiry boundary', () => {
       expect(source).not.toContain('https://api.resend.com/emails');
       expect(source).not.toContain('https://api.notion.com/v1/pages');
       expect(source).not.toContain('https://challenges.cloudflare.com/turnstile/v0/siteverify');
+    }
+  });
+});
+
+describe('Cloudflare Pages static delivery', () => {
+  it('invokes a Function only for the inquiry endpoint and preserves redirects and CV attachment headers', () => {
+    expect(JSON.parse(readFileSync('dist/_routes.json', 'utf8'))).toEqual({
+      version: 1, include: ['/api/inquiry'], exclude: [],
+    });
+    const redirects = readFileSync('dist/_redirects', 'utf8');
+    for (const route of ['/en', '/en/', '/en/*']) expect(redirects).toContain(`${route} / 301`);
+    const headers = readFileSync('dist/_headers', 'utf8');
+    expect(headers).toContain('/gian-barboza-cv.pdf\n  Content-Disposition: attachment; filename="gian-barboza-cv.pdf"');
+    expect(headers).toContain('/gian-barboza-cv-es.pdf\n  Content-Disposition: attachment; filename="gian-barboza-cv-es.pdf"');
+    expect(headers).toContain('https://:project.pages.dev/*\n  X-Robots-Tag: noindex');
+    expect(headers).toContain('https://:version.:project.pages.dev/*\n  X-Robots-Tag: noindex');
+  });
+  it('preserves indexing per hosting environment and renders Vercel metrics only on Vercel', () => {
+    for (const route of routes) {
+      const html = page(route);
+      expect(html).toContain(`name="robots" content="${productionBuild ? 'index,follow' : 'noindex,nofollow'}"`);
+      for (const script of ['/_vercel/insights/script.js', '/_vercel/speed-insights/script.js']) {
+        if (vercelBuild) expect(html).toContain(script);
+        else expect(html).not.toContain(script);
+      }
     }
   });
 });
