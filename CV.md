@@ -9,7 +9,7 @@ pdf_options:
   <div class="cv-header-text">
     <h1>Gian Barboza</h1>
     <p class="role">Senior Backend Engineer | Software Architect</p>
-    <p class="contact">Rionegro, Antioquia, Colombia · Remote-first · Available on two weeks notice</p>
+    <p class="contact">Rionegro, Antioquia, Colombia · Full-time: remote, or on-site/hybrid in Medellín · Available on two weeks notice</p>
     <p class="contact">
       <a href="mailto:gianelo1992@gmail.com">gianelo1992@gmail.com</a> ·
       <a href="https://wa.me/573043581365">+57 304 358 1365</a> ·
@@ -76,10 +76,10 @@ Senior Backend Engineer and Software Architect with 10+ years of hands-on experi
 
 ## Technical Skills
 
-- **Backend & Architecture** — Node.js (Express) · TypeScript · Next.js · PHP · Java · Redis (Caching) · REST APIs · API Architecture · Distributed Systems · Clean Architecture · Gateway Pattern · Design Patterns (Factory, Strategy, Adapter, Repository, Builder, SRP)
-- **Infrastructure** — Linux · HAProxy · Nginx · MySQL Replication · DigitalOcean · Cronjobs
+- **Backend & Architecture** — Node.js (Express) · TypeScript · Next.js · PHP (Laravel, ~2 years; CodeIgniter) · Java · Redis (Caching) · REST APIs · API Architecture · Distributed Systems · Clean Architecture · Gateway Pattern · Design Patterns (Factory, Strategy, Adapter, Repository, Builder, SRP)
+- **Infrastructure** — Linux · HAProxy · Nginx · MySQL Replication · PostgreSQL · DigitalOcean · Docker · GitHub Actions · Cronjobs
 - **Payments & Risk** — Stripe · PayPal · DLocal · Shift4 · Payeezy · 3DS · Apple Pay · Google Pay · In-house Tokenization · Payment Routing · Fraud Rule Engines · Device Fingerprinting · PCI Compliance
-- **Automation & AI** — n8n · LLM Integration · AI-Assisted Fraud · Programmatic SEO · Content Automation · Web Scraping
+- **Automation & AI** — n8n · LLM Integration · AI-assisted development (Claude Code, Codex) · AI-Assisted Fraud · Programmatic SEO · Content Automation · Web Scraping
 
 ## Languages
 

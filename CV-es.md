@@ -9,7 +9,7 @@ pdf_options:
   <div class="cv-header-text">
     <h1>Gian Barboza</h1>
     <p class="role">Ingeniero Backend Senior | Arquitecto de Software</p>
-    <p class="contact">Rionegro, Antioquia, Colombia · Trabajo remoto · Disponible con dos semanas de aviso</p>
+    <p class="contact">Rionegro, Antioquia, Colombia · Full-time: remoto, o presencial/híbrido en Medellín · Disponible con dos semanas de aviso</p>
     <p class="contact">
       <a href="mailto:gianelo1992@gmail.com">gianelo1992@gmail.com</a> ·
       <a href="https://wa.me/573043581365">+57 304 358 1365</a> ·
@@ -76,10 +76,10 @@ Ingeniero Backend Senior y Arquitecto de Software con más de 10 años de experi
 
 ## Habilidades Técnicas
 
-- **Backend & Arquitectura** — Node.js (Express) · TypeScript · Next.js · PHP · Java · Redis (Caché) · REST APIs · Arquitectura de APIs · Sistemas Distribuidos · Clean Architecture · Gateway Pattern · Patrones de Diseño (Factory, Strategy, Adapter, Repository, Builder, SRP)
-- **Infraestructura** — Linux · HAProxy · Nginx · Replicación MySQL · DigitalOcean · Cronjobs
+- **Backend & Arquitectura** — Node.js (Express) · TypeScript · Next.js · PHP (Laravel, ~2 años; CodeIgniter) · Java · Redis (Caché) · REST APIs · Arquitectura de APIs · Sistemas Distribuidos · Clean Architecture · Gateway Pattern · Patrones de Diseño (Factory, Strategy, Adapter, Repository, Builder, SRP)
+- **Infraestructura** — Linux · HAProxy · Nginx · Replicación MySQL · PostgreSQL · DigitalOcean · Docker · GitHub Actions · Cronjobs
 - **Pagos & Riesgo** — Stripe · PayPal · DLocal · Shift4 · Payeezy · 3DS · Apple Pay · Google Pay · Tokenización Propia · Payment Routing · Motores de Reglas Antifraude · Device Fingerprinting · PCI Compliance
-- **Automatización & IA** — n8n · Integración con LLMs · Antifraude Asistido por IA · SEO Programático · Automatización de Contenido · Web Scraping
+- **Automatización & IA** — n8n · Integración con LLMs · Desarrollo asistido por IA (Claude Code, Codex) · Antifraude Asistido por IA · SEO Programático · Automatización de Contenido · Web Scraping
 
 ## Idiomas
 
