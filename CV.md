@@ -76,7 +76,7 @@ Senior Backend Engineer and Software Architect with 10+ years of hands-on experi
 
 ## Technical Skills
 
-- **Backend & Architecture** — Node.js · TypeScript · Next.js · PHP · Java · REST APIs · API Architecture · Distributed Systems · Clean Architecture · Gateway Pattern · Design Patterns (Factory, Strategy, Adapter, Repository, Builder, SRP)
+- **Backend & Architecture** — Node.js (Express) · TypeScript · Next.js · PHP · Java · Redis (Caching) · REST APIs · API Architecture · Distributed Systems · Clean Architecture · Gateway Pattern · Design Patterns (Factory, Strategy, Adapter, Repository, Builder, SRP)
 - **Infrastructure** — Linux · HAProxy · Nginx · MySQL Replication · DigitalOcean · Cronjobs
 - **Payments & Risk** — Stripe · PayPal · DLocal · Shift4 · Payeezy · 3DS · Apple Pay · Google Pay · In-house Tokenization · Payment Routing · Fraud Rule Engines · Device Fingerprinting · PCI Compliance
 - **Automation & AI** — n8n · LLM Integration · AI-Assisted Fraud · Programmatic SEO · Content Automation · Web Scraping
@@ -84,7 +84,7 @@ Senior Backend Engineer and Software Architect with 10+ years of hands-on experi
 ## Languages
 
 - **Spanish** — Native
-- **English** — Upper-intermediate (B2)
+- **English** — C1 Advanced ([EF SET Certificate](https://cert.efset.org/en/QzuAMA)) · ran supplier calls in English at Hablax
 
 ## Education
 
