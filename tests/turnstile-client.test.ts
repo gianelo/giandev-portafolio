@@ -7,7 +7,7 @@ const source = readFileSync('src/components/home/Inquiry.astro', 'utf8');
 function setup({ key = 'public-test-key', provider = true } = {}) {
   class Element {
     id = ''; value = ''; type = 'text'; required = false; validity = { valid: true };
-    hidden = true; textContent = ''; disabled = false; dataset: Record<string, string> = {};
+    hidden = true; textContent = ''; disabled = false; readOnly = false; requestSubmit = vi.fn(); dataset: Record<string, string> = {};
     attrs: Record<string, string> = {}; children: any[] = []; listeners: Record<string, Function> = {};
     focus = vi.fn();
     setAttribute(k: string, v: string) { this.attrs[k] = v; }
@@ -19,7 +19,7 @@ function setup({ key = 'public-test-key', provider = true } = {}) {
     querySelectorAll() { return fields; }
   }
   const elements: Record<string, any> = {};
-  ['inquiry', 'inquiry-errors', 'inquiry-status', 'inquiry-progress', 'edit-inquiry', 'inquiry-turnstile', 'turnstile-status', 'retry-turnstile', '[type=submit]', 'span', 'h3', 'p'].forEach(id => elements[id] = new Element());
+  ['inquiry', 'inquiry-errors', 'inquiry-status', 'inquiry-progress', 'edit-inquiry', 'retry-notification', 'inquiry-turnstile', 'turnstile-status', 'retry-turnstile', '[type=submit]', 'span', 'h3', 'p'].forEach(id => elements[id] = new Element());
   elements['inquiry-turnstile'].dataset.sitekey = key;
   const fields = ['name', 'email', 'today', 'help'].map(id => {
     const el = new Element(); el.id = id; el.required = true; el.value = id === 'email' ? 'a@example.com' : 'Entered text';
@@ -29,13 +29,13 @@ function setup({ key = 'public-test-key', provider = true } = {}) {
   const head = new Element();
   let options: any;
   const turnstile = { render: vi.fn((_el, opts) => { options = opts; return 'widget-id'; }), reset: vi.fn() };
-  const fetch = vi.fn(async (_url: string, _init: { body: string }) => ({ ok: true, json: async () => ({ success: true }) }));
+  const fetch = vi.fn(async (_url: string, _init: { body: string }) => ({ ok: true, json: async (): Promise<{ success: boolean; email?: string; retryToken?: string }> => ({ success: true, email: 'accepted' }) }));
   let now = 10000;
   let website = '';
   const context = {
     document: { getElementById: (id: string) => elements[id], createElement: () => new Element(), head },
     window: provider ? { turnstile } : {},
-    messages: { required: 'required', email: 'email', invalid: 'invalid', loading: 'loading', success: 'accepted', failure: 'failure', sending: 'sending', verificationLoading: 'checking', verificationRequired: 'verify', verificationUnavailable: 'unavailable', verificationExpired: 'expired', verificationReady: 'ready' },
+    messages: { required: 'required', email: 'email', invalid: 'invalid', loading: 'loading', success: 'accepted', savedTitle: 'Saved', emailPending: 'saved, email pending', retryUnknown: 'saved, email uncertain', failure: 'failure', sending: 'sending', verificationLoading: 'checking', verificationRequired: 'verify', verificationUnavailable: 'unavailable', verificationExpired: 'expired', verificationReady: 'ready' },
     fetch, FormData: class { *[Symbol.iterator]() { for (const f of fields) yield [f.id, f.value]; yield ['website', website]; } },
     Date: { now: () => now }, setTimeout: vi.fn((_callback: () => void, _delay: number) => 1), clearTimeout: vi.fn(),
   };
@@ -62,6 +62,50 @@ describe('inquiry Turnstile client', () => {
     expect(app.elements['inquiry-status'].dataset.state).toBe('success');
     await app.submit(); expect(app.fetch).toHaveBeenCalledTimes(1);
     expect(app.fields[0].value).toBe('Entered text');
+  });
+  it('retains a confirmed Notion record and retries only its email with a new Turnstile token', async () => {
+    const app = setup();
+    app.fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ success: true, email: 'pending', retryToken: 'signed-reference' }) });
+    app.options().callback('first-token'); await app.submit();
+    expect(app.elements['inquiry-status'].dataset.state).toBe('pending');
+    expect(app.elements['h3'].textContent).toBe('Saved');
+    expect(app.elements['p'].textContent).toBe('saved, email pending');
+    expect(app.elements['retry-notification'].hidden).toBe(false);
+    expect(app.fields.every(field => field.readOnly)).toBe(true);
+    app.elements['retry-notification'].listeners.click();
+    expect(app.elements.inquiry.requestSubmit).toHaveBeenCalledOnce();
+    await app.submit(); expect(app.fetch).toHaveBeenCalledTimes(1);
+    app.options().callback('fresh-token'); await app.submit();
+    const retry = JSON.parse(app.fetch.mock.calls[1][1].body);
+    expect(retry.retryToken).toBe('signed-reference');
+    expect(retry.turnstileToken).toBe('fresh-token');
+    expect(app.elements['retry-notification'].hidden).toBe(true);
+    expect(app.fields.every(field => !field.readOnly)).toBe(true);
+  });
+  it('locks the submitted fields while delivery is in flight so a partial retry keeps the signed inquiry', async () => {
+    const app = setup();
+    let finish!: (value: { ok: boolean; json: () => Promise<{ success: boolean; email: string; retryToken: string }> }) => void;
+    app.fetch.mockImplementationOnce(() => new Promise(resolve => { finish = resolve; }));
+    app.options().callback('first-token');
+    const first = app.submit();
+    expect(app.fields.every(field => field.readOnly)).toBe(true);
+    finish({ ok: true, json: async () => ({ success: true, email: 'pending', retryToken: 'signed-reference' }) });
+    await first;
+    expect(app.fields.every(field => field.readOnly)).toBe(true);
+    app.options().callback('fresh-token'); await app.submit();
+    expect(JSON.parse(app.fetch.mock.calls[1][1].body)).toMatchObject({ name: 'Entered text', retryToken: 'signed-reference' });
+    expect(app.fields.every(field => !field.readOnly)).toBe(true);
+  });
+  it('keeps a confirmed saved reference on uncertain email retry rather than creating another inquiry', async () => {
+    const app = setup();
+    app.fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ success: true, email: 'pending', retryToken: 'signed-reference' }) })
+      .mockRejectedValueOnce(new Error('lost email response'));
+    app.options().callback('first-token'); await app.submit();
+    app.options().callback('fresh-token'); await app.submit();
+    expect(app.elements['p'].textContent).toBe('saved, email uncertain');
+    expect(app.elements['retry-notification'].hidden).toBe(false);
+    app.options().callback('another-token'); await app.submit();
+    expect(JSON.parse(app.fetch.mock.calls[2][1].body).retryToken).toBe('signed-reference');
   });
   it('resets consumed tokens after provider failure so a new token can retry', async () => {
     const app = setup(); app.fetch.mockRejectedValueOnce(new Error('provider failure'));

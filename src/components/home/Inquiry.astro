@@ -65,6 +65,7 @@ const keys = ['name', 'email', 'company', 'today', 'help'];
         <p id="inquiry-progress" class="progress" role="status" hidden></p>
         <div id="inquiry-status" class="feedback" role="status" tabindex="-1" hidden>
           <h3>{c.successTitle}</h3><p></p>
+          <button class="home-button site-button secondary" id="retry-notification" type="button" hidden>{c.retryEmail}</button>
           <button class="home-button site-button secondary" id="edit-inquiry" type="button">{c.again}</button>
         </div>
         <noscript><p>{c.noscript} <a href="https://linkedin.com/in/gian-barboza">LinkedIn</a></p></noscript>
@@ -78,6 +79,10 @@ const keys = ['name', 'email', 'company', 'today', 'help'];
   invalid: c.invalid,
   loading: c.loading,
   success: c.success,
+  successTitle: c.successTitle,
+  savedTitle: c.savedTitle,
+  emailPending: c.emailPending,
+  retryUnknown: c.retryUnknown,
   failure: c.failure,
   sending: c.sending,
   verificationLoading: c.verificationLoading,
@@ -94,6 +99,9 @@ const keys = ['name', 'email', 'company', 'today', 'help'];
   const submitLabel = submit.querySelector('span');
   const idleLabel = submitLabel.textContent;
   const fields = [...form.querySelectorAll('.field input,.field textarea')];
+  const retryNotification = document.getElementById('retry-notification');
+  const editInquiry = document.getElementById('edit-inquiry');
+  let retryToken = '';
   const startedAt = Date.now();
   let busy = false;
   const widget = document.getElementById('inquiry-turnstile');
@@ -241,10 +249,14 @@ const keys = ['name', 'email', 'company', 'today', 'help'];
     }
     data.startedAt = startedAt;
     data.turnstileToken = token;
+    if (retryToken) data.retryToken = retryToken;
     // Tokens are single-use even when the API response is lost or rejected.
     token = '';
     busy = true;
     submit.disabled = true;
+    // The retry reference is signed over this exact snapshot. Do not let a
+    // visitor edit fields while a saved-but-email-pending response is in flight.
+    fields.forEach(field => { field.readOnly = true; });
     submitLabel.textContent = messages.sending;
     form.setAttribute('aria-busy', 'true');
     progress.textContent = messages.loading;
@@ -258,28 +270,51 @@ const keys = ['name', 'email', 'company', 'today', 'help'];
       });
       const result = await response.json();
       if (!response.ok || result.success !== true) throw new Error('Not accepted');
-      status.dataset.state = 'success';
-      status.querySelector('h3').hidden = false;
-      status.querySelector('p').textContent = messages.success;
+      if (result.email === 'pending') {
+        retryToken = typeof result.retryToken === 'string' ? result.retryToken : '';
+        status.dataset.state = 'pending';
+        status.querySelector('h3').textContent = messages.savedTitle;
+        status.querySelector('h3').hidden = false;
+        status.querySelector('p').textContent = messages.emailPending;
+        retryNotification.hidden = !retryToken;
+        editInquiry.hidden = true;
+        fields.forEach(field => { field.readOnly = !!retryToken; });
+      } else if (result.email === 'accepted') {
+        retryToken = '';
+        fields.forEach(field => { field.readOnly = false; });
+        retryNotification.hidden = true;
+        editInquiry.hidden = false;
+        status.dataset.state = 'success';
+        status.querySelector('h3').textContent = messages.successTitle;
+        status.querySelector('h3').hidden = false;
+        status.querySelector('p').textContent = messages.success;
+      } else throw new Error('Unknown delivery state');
       status.hidden = false;
       status.focus();
     } catch {
-      status.dataset.state = 'failure';
-      status.querySelector('h3').hidden = true;
-      status.querySelector('p').textContent = messages.failure;
+      status.dataset.state = retryToken ? 'pending' : 'failure';
+      status.querySelector('h3').hidden = !retryToken;
+      if (retryToken) status.querySelector('h3').textContent = messages.savedTitle;
+      status.querySelector('p').textContent = retryToken ? messages.retryUnknown : messages.failure;
+      retryNotification.hidden = !retryToken;
+      editInquiry.hidden = !!retryToken;
       status.hidden = false;
       status.focus();
     } finally {
       resetVerification(messages.verificationRequired);
       busy = false;
       submit.disabled = false;
+      if (!retryToken) fields.forEach(field => { field.readOnly = false; });
       submitLabel.textContent = idleLabel;
       progress.hidden = true;
       form.removeAttribute('aria-busy');
     }
   });
 
-  document.getElementById('edit-inquiry').addEventListener('click', () => {
+  retryNotification.addEventListener('click', () => {
+    if (!busy) form.requestSubmit();
+  });
+  editInquiry.addEventListener('click', () => {
     status.hidden = true;
     fields[0].focus();
   });

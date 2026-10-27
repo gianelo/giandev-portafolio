@@ -433,9 +433,10 @@ describe('inquiry boundary', () => {
     expect(clientFiles.length).toBeGreaterThan(0);
     const output = [...routes.map(page), ...clientFiles.map(file => readFileSync(`dist/_astro/${file}`, 'utf8'))];
     for (const source of output) {
-      expect(source).not.toMatch(/RESEND_API_KEY|INQUIRY_FROM_EMAIL|INQUIRY_TO_EMAIL|TURNSTILE_SECRET_KEY|PUBLIC_WEB3FORMS_KEY|WEB3FORMS_KEY|access_key|resend-test-secret|turnstile-test-secret/);
+      expect(source).not.toMatch(/RESEND_API_KEY|INQUIRY_FROM_EMAIL|INQUIRY_TO_EMAIL|TURNSTILE_SECRET_KEY|NOTION_API_TOKEN|NOTION_DATA_SOURCE_ID|PUBLIC_WEB3FORMS_KEY|WEB3FORMS_KEY|access_key|resend-test-secret|turnstile-test-secret|notion-test-secret|11111111-2222-4333-8444-555555555555/);
       expect(source).not.toContain('https://api.web3forms.com/submit');
       expect(source).not.toContain('https://api.resend.com/emails');
+      expect(source).not.toContain('https://api.notion.com/v1/pages');
       expect(source).not.toContain('https://challenges.cloudflare.com/turnstile/v0/siteverify');
     }
   });
@@ -466,10 +467,13 @@ describe('approved services presentation', () => {
       expect(source).not.toContain('demostración local');
       expect(source).not.toContain('form.reset(');
       expect(source).toContain('Resend');
+      expect(source).toContain('Notion');
+      expect(source).toContain('id="retry-notification"');
       expect(source).toContain('id="inquiry-progress"');
       expect(source).toContain('class="feedback" role="status" tabindex="-1" hidden');
-      expect(source).toContain("status.dataset.state = 'failure'");
+      expect(source).toContain("status.dataset.state = retryToken ? 'pending' : 'failure'");
       expect(source).toContain("status.dataset.state = 'success'");
+      expect(source).toContain("status.dataset.state = 'pending'");
       expect(source).toContain('submitLabel.textContent = idleLabel');
       expect(source).toContain('fields[0].focus()');
       expect(source.match(/class="service-top"/g)).toHaveLength(2);
