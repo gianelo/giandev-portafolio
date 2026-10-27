@@ -8,7 +8,10 @@ import { homeEn, homeEs } from '../src/i18n/home';
 import { validateInquiry, allowedOrigin } from '../src/lib/inquiry.js';
 import handler from '../api/inquiry.js';
 
-const site = 'https://gianbarboza.com';
+// Canonical origin: the apex 308s to www, so every canonical URL uses www.
+const site = 'https://www.gianbarboza.com';
+// The CV PDFs keep their apex links; the apex redirects to www.
+const cvSite = 'https://gianbarboza.com';
 const routes = ['/', '/es/', '/services/', '/es/servicios/'];
 // The portfolio is each locale's home page; services live one level below.
 const portfolioRoutes = ['/', '/es/'];
@@ -27,8 +30,8 @@ describe('bilingual CV portfolio links', () => {
       // their actual URI strings, not visible PDF text or Markdown destinations.
       const uris = [...bytes.toString('latin1').matchAll(/\/S\s*\/URI\s*\/URI\s*\(([^)]*)\)/g)].map(match => match[1]);
       expect(uris.length).toBeGreaterThan(0);
-      expect(uris.filter(uri => uri.startsWith(site))).toEqual([`${site}${route}`]);
-      expect(readFileSync(source, 'utf8')).toContain(`<a href="${site}${route}">gianbarboza.com</a>`);
+      expect(uris.filter(uri => uri.startsWith(cvSite))).toEqual([`${cvSite}${route}`]);
+      expect(readFileSync(source, 'utf8')).toContain(`<a href="${cvSite}${route}">gianbarboza.com</a>`);
       expect(readFileSync(`dist/${pdf}`)).toEqual(bytes);
     });
     it(`preserves the completed latest Hablax tenure in ${pdf}`, async () => {
@@ -534,6 +537,14 @@ describe('built bilingual routes', () => {
       expect(decode(html.match(/<title>([^<]*)<\/title>/)![1])).toBe(t('meta.title'));
       expect(decode(html.match(/<meta name="description" content="([^"]*)"/)![1])).toBe(t('meta.description'));
     }
+  });
+  it('describes the same availability as the page: remote, or on-site/hybrid in Medellín', () => {
+    expect(useTranslations('en')('meta.description')).toContain('Available full-time: remote, or on-site/hybrid in Medellín.');
+    expect(useTranslations('es')('meta.description')).toContain('Disponible full-time: remoto, o presencial/híbrido en Medellín.');
+    for (const lang of ['en', 'es'] as const) expect(useTranslations(lang)('meta.description')).not.toMatch(/remote work|trabajo remoto/);
+  });
+  it('points robots.txt at the www sitemap', () => {
+    expect(readFileSync('dist/robots.txt', 'utf8')).toContain(`Sitemap: ${site}/sitemap-index.xml`);
   });
   it('lists exactly the four canonical routes', () => {
     const xml = readFileSync('dist/sitemap-0.xml', 'utf8');

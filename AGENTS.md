@@ -4,7 +4,7 @@
 
 Landing page personal de **Gian Barboza**, ingeniero de software con 10+ años de experiencia. El objetivo principal es **conseguir trabajo remoto** en roles Senior Backend / Software Engineering. No es un blog ni un portafolio de diseño — es un pitch profesional estático, rápido y enfocado en conversión.
 
-**Producción**: [https://gianbarboza.com](https://gianbarboza.com) (custom domain en Vercel, apex como canonical, `www` redirige con 308).
+**Producción**: [https://www.gianbarboza.com](https://www.gianbarboza.com) (custom domain en Vercel, `www` como canonical, el apex redirige con 308 a `www`). `site` en `astro.config.mjs` usa `www`, así que canonical, hreflang, og:url y sitemap apuntan a la URL final.
 
 📋 Trabajo abierto y deuda conocida: **[Pendientes](#pendientes)** (al final del archivo).
 
@@ -387,7 +387,7 @@ El `<h1>` visual es solo "Gian Barboza." (marcado `aria-hidden`). Al lado hay un
 
 ### Vercel Domain Setup (gianbarboza.com)
 - Comprado en Cloudflare Registrar (DNS también en Cloudflare)
-- Apex `gianbarboza.com` → Production Domain; `www` → Redirect 308 al apex
+- `www.gianbarboza.com` → Production Domain; apex `gianbarboza.com` → Redirect 308 a `www` (verificado con `curl` el 2026-10-27)
 - DNS records en Cloudflare con **proxy gris (DNS only)** — el naranja choca con el SSL de Vercel
 - SSL emitido automáticamente por Vercel
 
@@ -418,7 +418,7 @@ Estado al 2026-08-06, después del reposicionamiento de marca y de sacar Tailwin
 
 ### Requieren acción manual (fuera del código)
 
-- [ ] **Submit del sitemap a Google Search Console** — property `gianbarboza.com`, sitemap en `https://gianbarboza.com/sitemap-index.xml`. Nunca se hizo
+- [ ] **Submit del sitemap a Google Search Console** — property `gianbarboza.com`, sitemap en `https://www.gianbarboza.com/sitemap-index.xml`. Nunca se hizo
 - [ ] **Invalidar la caché del OG image** — el texto de `og.png` cambió con el reposicionamiento, pero LinkedIn/X/WhatsApp cachean la preview por semanas. Forzar refresh en el [Post Inspector de LinkedIn](https://www.linkedin.com/post-inspector/) y en el Card Validator de X
 - [ ] **Alinear LinkedIn con la web** — el headline debería decir "Senior Backend Engineer & Software Architect" (ver [Posicionamiento de Marca](#-posicionamiento-de-marca--un-solo-rol-dos-dimensiones)), con los dominios de especialización en el about
 
