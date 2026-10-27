@@ -36,7 +36,21 @@ describe(`deployment at ${BASE}`, () => {
     },
   );
 
-  it.each(['/', '/es/'])('serves %s', async (path) => {
+  // The portfolio moved from /portfolio/ to each locale root; links already
+  // shared must keep landing on it.
+  it.each([
+    ['/portfolio/', '/'],
+    ['/portfolio', '/'],
+    ['/es/portfolio/', '/es/'],
+    ['/es/portfolio', '/es/'],
+  ])('redirects %s to %s with a 301', async (path, target) => {
+    const { status, location } = await head(path);
+
+    expect(status, `${path} status`).toBe(301);
+    expect(new URL(location ?? '', BASE).pathname, `${path} target`).toBe(target);
+  });
+
+  it.each(['/', '/es/', '/services/', '/es/servicios/'])('serves %s', async (path) => {
     expect((await head(path)).status).toBe(200);
   });
 

@@ -1,6 +1,6 @@
 # Gian Barboza — Services and portfolio
 
-Bilingual independent engineering services at `/` and `/es/`; the career portfolio remains at `/portfolio/` and `/es/portfolio/`. `/en/` redirects to `/`.
+Bilingual career portfolio at `/` and `/es/`; independent engineering services at `/services/` and `/es/servicios/`. `/en/` redirects to `/`, and the former `/portfolio/` and `/es/portfolio/` URLs redirect (301) to `/` and `/es/`.
 
 **Live URL:** [gianbarboza.com](https://gianbarboza.com)
 
@@ -36,8 +36,8 @@ Role copy on the career pages follows the single full title documented in [`AGEN
 
 - **Shared bilingual shell** — connected GB mark, nonsticky navigation, mobile menu, footer, amber accents and self-hosted approved fonts
 - **Dark / light mode** — dark by default, stored in `localStorage`, initialized in `<head>`
-- **Services** — EN `/` and ES `/es/`: services, selected work linked to portfolio cases, process and inquiry form
-- **Career portfolio** — EN `/portfolio/` and ES `/es/portfolio/`: career journey, four impact metrics, five case studies, five stack categories and localized CV downloads
+- **Services** — EN `/services/` and ES `/es/servicios/`: services, selected work linked to portfolio cases, process and inquiry form
+- **Career portfolio** — EN `/` and ES `/es/`: career journey, four impact metrics, five case studies, five stack categories and localized CV downloads
 - **Native case disclosures** — `<details>` / `<summary>` with context, problem, architecture and result; hash links open the matching case, and close buttons restore summary focus
 - **Locale switching** — preserves services/portfolio destination and fragment; `/en/` is a Vercel redirect, not a built page
 - **Live clock and counters** — Bogotá time (GMT-5); impact counters respect reduced motion
@@ -74,9 +74,10 @@ src/
 ├── lib/inquiry.js                 # Shared validation and origin checks
 ├── layouts/Layout.astro           # Metadata, theme init, skip link, analytics
 ├── pages/
-│   ├── [...lang]/index.astro      # Builds / and /es/ services pages
-│   ├── portfolio/index.astro      # English career portfolio
-│   ├── es/portfolio/index.astro   # Spanish career portfolio
+│   ├── index.astro                # English career portfolio (/)
+│   ├── es/index.astro             # Spanish career portfolio (/es/)
+│   ├── services/index.astro       # English services page
+│   ├── es/servicios/index.astro   # Spanish services page
 │   ├── 404.astro                  # Client-localized terminal-themed 404
 │   ├── og-home.png.ts             # Services OG image
 │   └── og.png.ts                  # Portfolio OG image
@@ -157,9 +158,9 @@ Keep `src/styles/home.css` aligned with the shared tokens. Both OG generators (`
 
 ### Sections and CVs
 
-Services section order lives in `src/components/home/Home.astro`. Portfolio section order lives in both `src/pages/portfolio/index.astro` and `src/pages/es/portfolio/index.astro`; keep the locale compositions aligned.
+Services section order lives in `src/components/home/Home.astro`. Portfolio section order lives in both `src/pages/index.astro` and `src/pages/es/index.astro`; keep the locale compositions aligned.
 
-`CV.md` and `CV-es.md` are the CV sources, styled by `cv.css`. After editing them, run `npm run cv` and include both generated `public/gian-barboza-cv*.pdf` files in the reviewed change. Their site links target the respective portfolio routes.
+`CV.md` and `CV-es.md` are the CV sources, styled by `cv.css`. After editing them, run `npm run cv` and include both generated `public/gian-barboza-cv*.pdf` files in the reviewed change. Their site links target the respective locale roots (`/` and `/es/`), where the portfolio lives.
 
 ---
 

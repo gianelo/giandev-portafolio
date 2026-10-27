@@ -3,11 +3,11 @@ import { homeEn, homeEs } from '../../i18n/home';
 import Inquiry from './Inquiry.astro';
 import Nav from '../Nav.astro';
 import SiteFooter from '../SiteFooter.astro';
-import { useTranslations, type Lang } from '../../i18n/utils';
+import { getPortfolioHref, useTranslations, type Lang } from '../../i18n/utils';
 
 const { lang } = Astro.props as { lang: Lang };
 const c = lang === 'es' ? homeEs : homeEn;
-const portfolio = lang === 'es' ? '/es/portfolio/' : '/portfolio/';
+const portfolio = getPortfolioHref(lang);
 const caseIds = ['infra', 'payments', 'fraud'];
 
 ---

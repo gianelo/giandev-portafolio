@@ -2,12 +2,12 @@
 import '../styles/global.css';
 import Analytics from '@vercel/analytics/astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
+import { getPortfolioHref, getServicesHref } from '../i18n/utils';
 
 export interface Props {
   title?: string;
   description?: string;
   lang?: string;
-  portfolio?: boolean;
   services?: boolean;
 }
 
@@ -15,7 +15,6 @@ const {
   title = 'Gian Barboza | Senior Backend Engineer & Software Architect',
   description = 'Senior Backend Engineer & Software Architect with 10+ years building backend systems, distributed architectures and payment platforms. Available for remote work.',
   lang = 'en',
-  portfolio = false,
   services = false,
 } = Astro.props;
 
@@ -24,9 +23,10 @@ const skipLabel = lang === 'es' ? 'Saltar al contenido principal' : 'Skip to mai
 const siteUrl = Astro.site?.href.replace(/\/$/, '') ?? 'https://gianbarboza.com';
 const ogImage = `${siteUrl}/${services ? 'og-home.png' : 'og.png'}`;
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
-const alternatePath = portfolio ? 'portfolio/' : '';
-const alternateEn = `${siteUrl}/${alternatePath}`;
-const alternateEs = `${siteUrl}/es/${alternatePath}`;
+// Each page's hreflang pair is its locale equivalent: the portfolio lives at
+// the locale roots, the services page under a localized slug.
+const alternateEn = `${siteUrl}${services ? getServicesHref('en') : getPortfolioHref('en')}`;
+const alternateEs = `${siteUrl}${services ? getServicesHref('es') : getPortfolioHref('es')}`;
 
 // Solo el deploy de producción (gianbarboza.com) se indexa.
 // Vercel inyecta VERCEL_ENV = 'production' | 'preview' | 'development'.

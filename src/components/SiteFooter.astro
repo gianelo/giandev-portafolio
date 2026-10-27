@@ -1,6 +1,6 @@
 ---
 import BrandMark from './BrandMark.astro';
-import { getLocaleHref, getPortfolioHref, shellCopy, type Lang } from '../i18n/utils';
+import { getPortfolioHref, getServicesHref, shellCopy, type Lang } from '../i18n/utils';
 interface Props {
   lang: Lang;
   description?: string;
@@ -14,11 +14,11 @@ const c = shellCopy[lang];
   <div class="site-wrap">
     <div class="site-footer-main">
       <div>
-        <a class="site-mark" href={getLocaleHref(lang)}><BrandMark /><span>gian.barboza</span></a>
+        <a class="site-mark" href={getPortfolioHref(lang)}><BrandMark /><span>gian.barboza</span></a>
         <p class="site-footer-desc">{description ?? c.description}</p>
       </div>
       <nav class="site-footer-links" aria-label={c.footer}>
-        <a href={getLocaleHref(lang)}>{c.services}</a>
+        <a href={getServicesHref(lang)}>{c.services}</a>
         <a href={getPortfolioHref(lang)}>{c.portfolio}</a>
         <slot name="links">
           <a href="https://linkedin.com/in/gian-barboza">LinkedIn ↗</a>

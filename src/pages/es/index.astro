@@ -9,10 +9,10 @@ import TechStack from '../../components/TechStack.astro';
 import Contact from '../../components/Contact.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import { useTranslations } from '../../i18n/utils';
-const lang = 'en';
+const lang = 'es';
 const t = useTranslations(lang);
 ---
-<Layout title={t('meta.title')} description={t('meta.description')} lang={lang} portfolio={true}>
+<Layout title={t('meta.title')} description={t('meta.description')} lang={lang}>
   <Nav lang={lang} t={t} portfolio={true} />
   <main id="main" class="portfolio-page">
     <Hero lang={lang} t={t} />

@@ -9,13 +9,17 @@ import { validateInquiry, allowedOrigin } from '../src/lib/inquiry.js';
 import handler from '../api/inquiry.js';
 
 const site = 'https://gianbarboza.com';
-const routes = ['/', '/es/', '/portfolio/', '/es/portfolio/'];
+const routes = ['/', '/es/', '/services/', '/es/servicios/'];
+// The portfolio is each locale's home page; services live one level below.
+const portfolioRoutes = ['/', '/es/'];
+const servicesRoutes = ['/services/', '/es/servicios/'];
+const isServices = (route: string) => servicesRoutes.includes(route);
 const page = (route: string) => readFileSync(`dist/${route.slice(1)}index.html`, 'utf8');
 
 describe('bilingual CV portfolio links', () => {
   for (const [source, pdf, route, period] of [
-    ['CV.md', 'gian-barboza-cv.pdf', '/portfolio/', 'Nov 2023 — Aug 2026'],
-    ['CV-es.md', 'gian-barboza-cv-es.pdf', '/es/portfolio/', 'Nov 2023 — Ago 2026'],
+    ['CV.md', 'gian-barboza-cv.pdf', '/', 'Nov 2023 — Aug 2026'],
+    ['CV-es.md', 'gian-barboza-cv-es.pdf', '/es/', 'Nov 2023 — Ago 2026'],
   ]) {
     it(`embeds the locale-specific portfolio URI annotation in ${pdf}`, () => {
       const bytes = readFileSync(`public/${pdf}`);
@@ -51,7 +55,7 @@ describe('career portfolio build contract', () => {
   const keys = ['rentoru', 'payments', 'fraud', 'infra', 'seo'];
   const plain = (html: string) => html.replace(/<[^>]*>/g, ' ').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;|&#x27;/g, "'").replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/\s+/g, ' ').trim();
   for (const lang of LANGS) {
-    const route = lang === 'es' ? '/es/portfolio/' : '/portfolio/';
+    const route = lang === 'es' ? '/es/' : '/';
     const t = useTranslations(lang);
     it(`records the completed latest Hablax tenure on ${route}`, () => {
       const source = page(route);
@@ -99,7 +103,7 @@ describe('career portfolio build contract', () => {
       expect(source).toContain('id="nav-clock"');
       expect(source).toContain('class="portfolio-side"');
       for (const key of ['p1', 'p2', 'p3', 'p4']) expect(copy).toContain(t(`term.terminal.${key}`));
-      expect(source).toContain(`href="${lang === 'es' ? '/es/' : '/'}#contact"`);
+      expect(source).toContain(`href="${lang === 'es' ? '/es/servicios/' : '/services/'}#contact"`);
       expect(source).toContain(`href="mailto:${t('contact.email')}"`);
       expect(source).toContain(`href="${t('contact.linkedin.url')}"`);
       expect(source).not.toContain('data-open-contact');
@@ -136,7 +140,7 @@ describe('career portfolio build contract', () => {
     const bytes = readFileSync('dist/og.png');
     expect(bytes.subarray(0, 8).toString('hex')).toBe('89504e470d0a1a0a');
     const width = bytes.readUInt32BE(16), height = bytes.readUInt32BE(20);
-    for (const route of routes.filter(r => r.includes('portfolio'))) {
+    for (const route of portfolioRoutes) {
       expect(page(route)).toContain(`content="${site}/og.png"`);
       expect(page(route)).toContain(`content="${width}"`);
       expect(page(route)).toContain(`content="${height}"`);
@@ -145,7 +149,7 @@ describe('career portfolio build contract', () => {
     const og = readFileSync('src/pages/og.png.ts', 'utf8');
     expect(og).toContain('Senior Backend Engineer & Software Architect');
     expect([...og.matchAll(/stat\('[^']+',\s*'([^']+)'/g)].length).toBeGreaterThan(0);
-    const onPage = new Set([...page('/portfolio/').matchAll(/data-counter="([0-9.]+)"/g)].map(m => m[1]));
+    const onPage = new Set([...page('/').matchAll(/data-counter="([0-9.]+)"/g)].map(m => m[1]));
     for (const match of og.matchAll(/stat\('[^']+',\s*'([^']+)'/g)) expect(onPage).toContain(match[1].replace(/[^0-9.]/g, ''));
     const css = readFileSync('src/styles/global.css', 'utf8');
     for (const token of ['--bg: #0a0a0b', '--bg-elev: #111113', '--bg-card: #111113', '--fg: #f4f4f5', '--fg-muted: #b4b4bc', '--fg-dim: #b4b4bc', '--fg-faint: #85858f', '--border: #3d434c', '--border-strong: #3d434c', '--accent: #f2b75b', '--green: #8ac9a4']) expect(css).toContain(token);
@@ -216,7 +220,7 @@ describe('impact reduced-motion runtime', () => {
 
 describe('portfolio case navigation runtime', () => {
   it('restores hash summary focus after native landing, without reopening a closed or stale target', () => {
-    const script = page('/portfolio/').match(/<script data-case-disclosures[^>]*>([\s\S]*?)<\/script>/)?.[1];
+    const script = page('/').match(/<script data-case-disclosures[^>]*>([\s\S]*?)<\/script>/)?.[1];
     const frames: (() => void)[] = [];
     const listeners: Record<string, () => void> = {};
     let active: unknown = null;
@@ -257,7 +261,7 @@ describe('portfolio case navigation runtime', () => {
     expect(active).toBeNull();
   });
   it('opens exact hash destinations initially and on hashchange; closes with summary focus', () => {
-    const source = page('/portfolio/');
+    const source = page('/');
     const script = source.match(/<script data-case-disclosures[^>]*>([\s\S]*?)<\/script>/)?.[1];
     expect(script).toBeDefined();
     const ids = ['rentoru', 'payments', 'fraud', 'infra', 'seo'];
@@ -304,10 +308,10 @@ describe('approved shared shell', () => {
     for (const route of routes) {
       const source = page(route);
       const es = route.startsWith('/es/');
+      const services = isServices(route);
       const root = es ? '/es/' : '/';
-      const portfolio = `${root}portfolio/`;
-      const other = es ? '/' : '/es/';
-      const locale = `${other}${route.includes('portfolio') ? 'portfolio/' : ''}`;
+      const servicesHref = es ? '/es/servicios/' : '/services/';
+      const locale = services ? (es ? '/services/' : '/es/servicios/') : (es ? '/' : '/es/');
       expect(source.match(/class="site-logo"/g)).toHaveLength(2);
       expect(source.match(/M30 12H24C13 12 6 20/g)).toHaveLength(2);
       expect(source.match(/fill="currentColor"/g)!.length).toBeGreaterThanOrEqual(2);
@@ -318,22 +322,29 @@ describe('approved shared shell', () => {
       expect(source).toMatch(new RegExp(`href="${locale}"[^>]*data-locale`));
       const nav = source.match(/<nav class="site-links"[^>]*>(.*?)<\/nav>/s)![1];
       expect(nav).toContain(`href="${root}"`);
-      expect(nav).toContain(`href="${portfolio}"`);
-      expect(nav).toContain(`href="${root}#contact"`);
+      expect(nav).toContain(`href="${servicesHref}"`);
+      expect(nav).toContain(`href="${servicesHref}#contact"`);
+      expect(nav).not.toContain('portfolio/');
       expect(nav.match(/aria-current="page"/g)).toHaveLength(1);
+      expect(nav.match(/<a href="([^"]+)" aria-current="page"/)?.[1]).toBe(services ? servicesHref : root);
+      expect(source.match(/<a class="site-mark" href="([^"]+)"/g)?.map(link => link.match(/href="([^"]+)"/)![1])).toEqual([root, root]);
+      const footer = source.match(/<nav class="site-footer-links"[^>]*>([\s\S]*?)<\/nav>/)![1];
+      expect(footer).toContain(`href="${root}"`);
+      expect(footer).toContain(`href="${servicesHref}"`);
+      expect(footer).not.toContain('portfolio/');
       expect(nav).not.toMatch(/href="#(?:journey|impact|cases|stack)"/);
       expect(source).toContain(`href="/favicon.ico"`);
       expect(source).not.toContain('href="/favicon.svg"');
-      expect(source).toContain(`hreflang="x-default" href="${site}${route.includes('portfolio') ? '/portfolio/' : '/'}"`);
+      expect(source).toContain(`hreflang="x-default" href="${site}${services ? '/services/' : '/'}"`);
       expect(source).toContain("event.key === 'theme' || event.key === null");
       expect(source).toContain("stored ?? 'dark'");
     }
   });
 
   it('renders identical shared headers and footers within each language', () => {
-    for (const root of ['/', '/es/']) {
-      const home = page(root);
-      const portfolio = page(`${root}portfolio/`);
+    for (const [root, services] of [['/', '/services/'], ['/es/', '/es/servicios/']]) {
+      const home = page(services);
+      const portfolio = page(root);
       const footer = (source: string) => source.match(/<footer class="site-footer">([\s\S]*?)<\/footer>/)?.[0];
       expect(footer(portfolio)).toBe(footer(home));
       const brand = (source: string) => source.match(/<a class="site-mark"[^>]*>([\s\S]*?)<\/a>/)?.[0];
@@ -443,8 +454,8 @@ describe('inquiry boundary', () => {
 
 describe('approved services presentation', () => {
   for (const [route, portfolio, placeholders] of [
-    ['/', '/portfolio/', ['Your name', 'you@company.com', 'Your company or product', 'For example: payment issues take too long to investigate.', 'For example: consistent provider handling and clearer failure states.', 'Share a range, if known', 'Share your target, if known']],
-    ['/es/', '/es/portfolio/', ['Tu nombre', 'tu@empresa.com', 'Tu empresa o producto', 'Por ejemplo: investigar incidencias de pago lleva demasiado tiempo.', 'Por ejemplo: una gestión coherente de proveedores y fallos más claros.', 'Indica un rango, si lo conoces', 'Indica tu objetivo, si lo conoces']],
+    ['/services/', '/', ['Your name', 'you@company.com', 'Your company or product', 'For example: payment issues take too long to investigate.', 'For example: consistent provider handling and clearer failure states.', 'Share a range, if known', 'Share your target, if known']],
+    ['/es/servicios/', '/es/', ['Tu nombre', 'tu@empresa.com', 'Tu empresa o producto', 'Por ejemplo: investigar incidencias de pago lleva demasiado tiempo.', 'Por ejemplo: una gestión coherente de proveedores y fallos más claros.', 'Indica un rango, si lo conoces', 'Indica tu objetivo, si lo conoces']],
   ] as const) {
     it(`matches case destinations on ${route}`, () => {
       const source = page(route);
@@ -476,7 +487,7 @@ describe('approved services presentation', () => {
       expect(source).toContain('d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-12-2 24"');
       expect(source).toContain('d="M3 12h26m-20 9h6"');
       expect(source.match(/d="M5 12h14M13 6l6 6-6 6"/g)).toHaveLength(7);
-      const copy = route === '/' ? homeEn : homeEs;
+      const copy = route === '/services/' ? homeEn : homeEs;
       for (const heading of [copy.serviceTitle, copy.workTitle, copy.processTitle, copy.contactTitle, copy.closing, ...copy.cases.map(item => item[1])]) {
         expect(source).toContain(heading.replace('\n', '<br>'));
       }
@@ -492,7 +503,7 @@ describe('services social card', () => {
     expect(bytes.readUInt32BE(20)).toBe(630);
     const source = readFileSync('src/pages/og-home.png.ts', 'utf8');
     expect(source).not.toMatch(/\$200K|99\.9%|10\+\s*yrs|\b5\s*(?:payment|providers)/i);
-    for (const route of ['/', '/es/']) {
+    for (const route of servicesRoutes) {
       expect(page(route)).toContain(`property="og:image" content="${site}/og-home.png"`);
       expect(page(route)).toContain(`name="twitter:image" content="${site}/og-home.png"`);
       expect(page(route)).toContain('property="og:image:width" content="1200"');
@@ -506,21 +517,30 @@ describe('built bilingual routes', () => {
   it('renders each route with its own canonical and locale-specific alternate pair', () => {
     for (const route of routes) {
       const html = page(route);
-      const portfolio = route.includes('portfolio');
-      const suffix = portfolio ? 'portfolio/' : '';
+      const services = isServices(route);
       expect(html).toContain(`<link rel="canonical" href="${site}${route}">`);
-      expect(html).toContain(`hreflang="en" href="${site}/${suffix}"`);
-      expect(html).toContain(`hreflang="es" href="${site}/es/${suffix}"`);
+      expect(html).toContain(`<meta property="og:url" content="${site}${route}">`);
+      expect(html).toContain(`hreflang="en" href="${site}${services ? '/services/' : '/'}"`);
+      expect(html).toContain(`hreflang="es" href="${site}${services ? '/es/servicios/' : '/es/'}"`);
       expect(html).toContain(`<html lang="${route.startsWith('/es/') ? 'es' : 'en'}"`);
     }
-    expect(existsSync('dist/en/index.html')).toBe(false);
+    for (const retired of ['en', 'portfolio', 'es/portfolio']) expect(existsSync(`dist/${retired}/index.html`)).toBe(false);
+  });
+  it('titles each locale root with the portfolio metadata', () => {
+    const decode = (value: string) => value.replace(/&amp;|&#38;/g, '&').replace(/&#39;|&#x27;/g, "'").replace(/&quot;/g, '"');
+    for (const [route, lang] of [['/', 'en'], ['/es/', 'es']] as const) {
+      const t = useTranslations(lang);
+      const html = page(route);
+      expect(decode(html.match(/<title>([^<]*)<\/title>/)![1])).toBe(t('meta.title'));
+      expect(decode(html.match(/<meta name="description" content="([^"]*)"/)![1])).toBe(t('meta.description'));
+    }
   });
   it('lists exactly the four canonical routes', () => {
     const xml = readFileSync('dist/sitemap-0.xml', 'utf8');
     expect([...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]).sort()).toEqual(routes.map(route => site + route).sort());
   });
   it('keeps career content only on portfolio and inquiry on the homepage', () => {
-    for (const [home, portfolio, copy] of [['/', '/portfolio/', homeEn], ['/es/', '/es/portfolio/', homeEs]] as const) {
+    for (const [home, portfolio, copy] of [['/services/', '/', homeEn], ['/es/servicios/', '/es/', homeEs]] as const) {
       expect(page(home)).toContain(copy.title);
       expect(page(home)).toContain('action="/api/inquiry"');
       expect(page(home)).not.toContain('https://api.web3forms.com/submit');
@@ -529,5 +549,30 @@ describe('built bilingual routes', () => {
       expect(page(portfolio)).toContain(`href="${home}#contact"`);
       expect(page(portfolio)).not.toContain('https://api.web3forms.com/submit');
     }
+  });
+});
+
+describe('vercel redirects', () => {
+  // vercel.json emits nothing into dist/; this guards the rules themselves.
+  // tests/live-redirects.test.ts checks how a deployment answers them.
+  const config = JSON.parse(readFileSync('vercel.json', 'utf8'));
+  const rules = config.redirects.map(({ source, destination, statusCode }: Record<string, unknown>) => [source, destination, statusCode]);
+  it('permanently redirects the retired portfolio paths to each locale root', () => {
+    expect(rules).toEqual(expect.arrayContaining([
+      ['/portfolio', '/', 301],
+      ['/portfolio/', '/', 301],
+      ['/es/portfolio', '/es/', 301],
+      ['/es/portfolio/', '/es/', 301],
+    ]));
+  });
+  it('keeps the retired /en rules', () => {
+    expect(rules).toEqual(expect.arrayContaining([
+      ['/en/', '/', 301],
+      ['/en', '/', 301],
+      ['/en/:path*', '/', 301],
+    ]));
+  });
+  it('never redirects a built route', () => {
+    for (const [source] of rules) expect(routes).not.toContain(source);
   });
 });

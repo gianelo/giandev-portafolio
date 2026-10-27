@@ -1,5 +1,5 @@
 ---
-import { getLocaleHref, type Lang } from '../i18n/utils';
+import { getServicesHref, type Lang } from '../i18n/utils';
 export interface Props {
   lang: Lang;
   t: (key: string) => string;
@@ -12,7 +12,7 @@ const { lang, t } = Astro.props;
       <p class="section-label">{t('term.cta.eyebrow')}</p>
       <h2 set:html={t('term.cta.title.html')} />
       <p>{t('term.cta.sub')}</p>
-      <a class="btn" href={`${getLocaleHref(lang)}#contact`}>
+      <a class="btn" href={`${getServicesHref(lang)}#contact`}>
         {t('term.cta.contact')}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
       </a>

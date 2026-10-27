@@ -115,15 +115,17 @@ El recorrido laboral va antes que las métricas para que el lector vea el contex
 ### Flujo de páginas
 
 ```
-/        → renderiza inglés directamente (sin redirect)
-/en/     → Landing en inglés (canonical apunta a /, no a sí misma)
-/es/     → Landing en español (canonical = /es/)
-404      → src/pages/404.astro (terminal-themed, i18n en cliente)
+/               → Portafolio en inglés (src/pages/index.astro, sin redirect)
+/es/            → Portafolio en español (src/pages/es/index.astro)
+/services/      → Servicios en inglés (src/pages/services/index.astro)
+/es/servicios/  → Servicios en español (src/pages/es/servicios/index.astro)
+404             → src/pages/404.astro (terminal-themed, i18n en cliente)
 ```
 
-- `src/pages/index.astro` renderiza el HTML de inglés directamente — **no es un redirect**
-- Los tres archivos de página son idénticos salvo la profundidad de los imports; `getLangFromUrl()` deriva el idioma de la URL y devuelve `'en'` por defecto
-- En `Layout.astro` el canonical normaliza `/en/*` → `/` para evitar contenido duplicado
+- El portafolio es la home de cada idioma; los servicios viven en una subruta localizada
+- Los archivos de cada par EN/ES son idénticos salvo la profundidad de los imports y la constante `lang`
+- Las rutas se arman con `getPortfolioHref()` / `getServicesHref()` de `src/i18n/utils.ts` — no hardcodear paths en componentes
+- **Redirects 301 en `vercel.json`**: `/en`, `/en/` y `/en/*` → `/`; `/portfolio(/)` → `/`; `/es/portfolio(/)` → `/es/`. `/en/` no se buildea
 
 ### ⚠️ NO agregar bloque `i18n` en `astro.config.mjs`
 
@@ -225,7 +227,7 @@ Keys con HTML se renderizan con `set:html`: `hero.bio`, `term.hero.tagline.html`
 `term.footer.copy` usa el placeholder `{year}`, que `Contact.astro` reemplaza en build.
 
 ### Nav — Language Switcher
-En `/` o `/en/` muestra **ES** → lleva a `/es/`. En `/es/` muestra **EN** → lleva a `/en/`.
+Lleva a la página equivalente del otro idioma: `/` ↔ `/es/` y `/services/` ↔ `/es/servicios/` (`getLocalePageHref()`). Conserva el `#hash` solo si existe en la página destino.
 
 ---
 
@@ -288,9 +290,10 @@ En `/` o `/en/` muestra **ES** → lleva a `/es/`. En `/es/` muestra **EN** → 
 │   │   └── Layout.astro           ← HTML shell, meta OG/Twitter, hreflang, JSON-LD,
 │   │                                theme script, skip-link, observer, Analytics
 │   ├── pages/
-│   │   ├── index.astro            ← Renderiza inglés directamente (NO redirect)
-│   │   ├── en/index.astro
-│   │   ├── es/index.astro
+│   │   ├── index.astro            ← Portafolio EN en / (NO redirect)
+│   │   ├── es/index.astro         ← Portafolio ES en /es/
+│   │   ├── services/index.astro   ← Servicios EN en /services/
+│   │   ├── es/servicios/index.astro ← Servicios ES en /es/servicios/
 │   │   ├── 404.astro              ← Terminal-themed, i18n resuelto en cliente
 │   │   └── og.png.ts              ← Genera OG image al build (satori + resvg)
 │   └── styles/
@@ -305,13 +308,13 @@ En `/` o `/en/` muestra **ES** → lleva a `/es/`. En `/es/` muestra **EN** → 
 
 ### Sitemap + robots.txt
 - `@astrojs/sitemap` genera `dist/sitemap-index.xml` y `dist/sitemap-0.xml` al build
-- `filter: (page) => !page.includes('/en/')` excluye `/en/*` porque `/` ya sirve ese contenido
+- Lista exactamente las cuatro rutas: `/`, `/es/`, `/services/`, `/es/servicios/` (`/en/` y `/portfolio/` no se buildean; son redirects)
 - `public/robots.txt` apunta al sitemap
 
 ### Meta e indexación
 - **`noindex` automático fuera de producción**: `Layout.astro` lee `import.meta.env.VERCEL_ENV`. Solo `'production'` emite `index,follow`; cualquier preview (`*.vercel.app`, subdominios) cae en `noindex,nofollow`
-- **Canonical**: normaliza `/en/*` → `/` para que no compitan
-- **hreflang**: `en` → `/`, `es` → `/es/`, `x-default` → `/`
+- **Canonical** y `og:url`: la URL propia de cada página
+- **hreflang** por par equivalente: portafolio `en` → `/`, `es` → `/es/`; servicios `en` → `/services/`, `es` → `/es/servicios/`; `x-default` → la versión en inglés
 - **Open Graph + Twitter Card**: `og:type/url/title/description/image/image:width/height/site_name/locale`, `twitter:card=summary_large_image`
 
 ### JSON-LD

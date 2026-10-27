@@ -13,16 +13,24 @@ export const DEFAULT_LANG: Lang = 'en';
 /**
  * Home URL for a locale — the single source of truth for where each language
  * lives. The default locale is served at the site root, so this never returns
- * `/en/`: that path is a non-canonical duplicate of `/` (excluded from the
- * sitemap, canonical points to `/`), and linking to it strands the visitor on
- * a page they cannot navigate back from.
+ * `/en/`: that path is retired (vercel.json 301s it to `/`), and linking to it
+ * strands the visitor on a redirect instead of a page.
  */
 export function getLocaleHref(lang: Lang): string {
   return lang === DEFAULT_LANG ? '/' : `/${lang}/`;
 }
 
+/**
+ * The portfolio is each locale's home page. It used to live at `/portfolio/`;
+ * vercel.json 301s those old URLs to the locale root.
+ */
 export function getPortfolioHref(lang: Lang): string {
-  return `${getLocaleHref(lang)}portfolio/`;
+  return getLocaleHref(lang);
+}
+
+/** Services page for a locale, under a localized slug. */
+export function getServicesHref(lang: Lang): string {
+  return lang === DEFAULT_LANG ? '/services/' : `/${lang}/servicios/`;
 }
 
 /** Locale-invariant IDs shared by each pair of translated pages. */
@@ -31,11 +39,15 @@ const portfolioAnchors = ['main', 'journey', 'impact', 'cases', 'stack', 'contac
   ...['rentoru', 'payments', 'fraud', 'infra', 'seo'].flatMap(key =>
     [`case-${key}`, `case-trigger-${key}`, `case-panel-${key}`])];
 
-/** Switch language without switching views or carrying a non-equivalent hash. */
+/**
+ * Switch language without switching views or carrying a non-equivalent hash.
+ * `/services/` pairs with `/es/servicios/`; every other path is treated as a
+ * locale root, which is the portfolio.
+ */
 export function getLocalePageHref(path: string, lang: Lang, hash = ''): string {
-  const portfolio = /^\/(?:en\/|es\/)?portfolio\/?$/.test(path);
-  const href = portfolio ? getPortfolioHref(lang) : getLocaleHref(lang);
-  const anchors = portfolio ? portfolioAnchors : serviceAnchors;
+  const services = /^\/(?:services|es\/servicios)\/?$/.test(path);
+  const href = services ? getServicesHref(lang) : getPortfolioHref(lang);
+  const anchors = services ? serviceAnchors : portfolioAnchors;
   return href + (hash.startsWith('#') && anchors.includes(hash.slice(1)) ? hash : '');
 }
 

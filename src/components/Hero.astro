@@ -1,11 +1,11 @@
 ---
-import { getLocaleHref, type Lang } from '../i18n/utils';
+import { getServicesHref, type Lang } from '../i18n/utils';
 export interface Props {
   lang: Lang;
   t: (key: string) => string;
 }
 const { lang, t } = Astro.props;
-const services = getLocaleHref(lang);
+const services = getServicesHref(lang);
 ---
 <section class="site-wrap portfolio-hero">
   <div>

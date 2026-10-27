@@ -8,6 +8,8 @@ import {
   getLangFromPath,
   getLocaleHref,
   getLocalePageHref,
+  getPortfolioHref,
+  getServicesHref,
   useTranslations,
 } from './utils';
 
@@ -34,23 +36,43 @@ describe('getLocaleHref', () => {
   });
 });
 
+describe('getPortfolioHref', () => {
+  // The portfolio is the home page of each locale.
+  it.each(LANGS)('serves the %s portfolio from the locale root', (lang) => {
+    expect(getPortfolioHref(lang)).toBe(getLocaleHref(lang));
+  });
+});
+
+describe('getServicesHref', () => {
+  it.each([
+    ['en', '/services/'],
+    ['es', '/es/servicios/'],
+  ] as const)('serves the %s services page from a localized subpath', (lang, expected) => {
+    expect(getServicesHref(lang)).toBe(expected);
+  });
+});
+
 describe('getLocalePageHref', () => {
   it.each([
-    ['/', 'es', '#services', '/es/#services'],
-    ['/es/', 'en', '#contact', '/#contact'],
-    ['/portfolio/', 'es', '#case-payments', '/es/portfolio/#case-payments'],
-    ['/es/portfolio/', 'en', '#journey', '/portfolio/#journey'],
-    ['/portfolio', 'es', '#cases', '/es/portfolio/#cases'],
+    ['/', 'es', '#case-payments', '/es/#case-payments'],
+    ['/es/', 'en', '#journey', '/#journey'],
+    ['/es', 'en', '#cases', '/#cases'],
+    ['/', 'es', '#contact', '/es/#contact'],
+    ['/services/', 'es', '#services', '/es/servicios/#services'],
+    ['/es/servicios/', 'en', '#contact', '/services/#contact'],
+    ['/services', 'es', '#work', '/es/servicios/#work'],
+    ['/es/servicios', 'en', '#process', '/services/#process'],
     ['/en/', 'es', '', '/es/'],
   ] as const)('retains the view and equivalent anchor for %s', (path, lang, hash, expected) => {
     expect(getLocalePageHref(path, lang, hash)).toBe(expected);
   });
 
   it.each([
-    ['/', '#journey'],
-    ['/portfolio/', '#services'],
-    ['/portfolio/', '#unknown'],
-    ['/', '#%63ontact'],
+    ['/', '#services'],
+    ['/', '#unknown'],
+    ['/services/', '#journey'],
+    ['/services/', '#case-payments'],
+    ['/es/servicios/', '#%63ontact'],
   ])('drops non-equivalent anchors on %s', (path, hash) => {
     expect(getLocalePageHref(path, 'es', hash)).not.toContain('#');
   });
