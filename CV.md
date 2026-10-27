@@ -71,7 +71,7 @@ Senior Backend Engineer and Software Architect with 10+ years of hands-on experi
 
 - **Multi-Gateway Payment Architecture** — 5 providers (Stripe, PayPal, DLocal, Shift4, Payeezy) behind a single payment contract. Adapters normalize each API into shared request/response objects; Factory and Strategy decouple provider selection from behaviour; Builder assembles the complex requests, Repository isolates transaction persistence. Configurable routing and priority per product with automatic failover. 3DS, refunds, voids, Apple Pay, Google Pay, in-house tokenization.
 - **Distributed Infrastructure Migration** — 8-server architecture on DigitalOcean separating web, database and dev tiers. HAProxy load balancing, MySQL master-slave replication, node-level failover, automated backups and recovery runbooks. 99.9% uptime sustained since 2019.
-- **Extensible Fraud Detection Engine** — Rule architecture on Factory and Single Responsibility: rules self-register against a normalized context, so patterns plug in without touching the evaluator. Separate device-fingerprinting layer for access fraud. LLM contextual evaluation prototyped via n8n, shelved on model cost at scale.
+- **Extensible Fraud Detection Engine** — Rule architecture on Factory and Single Responsibility: rules self-register against a normalized context, so patterns plug in without touching the evaluator. Separate device-fingerprinting layer for access fraud. Also prototyped LLM-based contextual evaluation, imitating how a support agent decides. It stayed in beta and never reached production.
 - **Programmatic SEO Pipeline** — 3-tier generation pipeline (country → service → product) on ChatGPT-4o, regenerating affected landings as the catalog grows. Replaced a significant portion of paid-ad spend with organic traffic.
 
 ## Technical Skills
@@ -79,7 +79,7 @@ Senior Backend Engineer and Software Architect with 10+ years of hands-on experi
 - **Backend & Architecture** — Node.js (Express) · TypeScript · Next.js · PHP (Laravel, ~2 years; CodeIgniter) · Java · Redis (Caching) · REST APIs · API Architecture · Distributed Systems · Clean Architecture · Gateway Pattern · Design Patterns (Factory, Strategy, Adapter, Repository, Builder, SRP)
 - **Infrastructure** — Linux · HAProxy · Nginx · MySQL Replication · PostgreSQL · DigitalOcean · Docker · GitHub Actions · Cronjobs
 - **Payments & Risk** — Stripe · PayPal · DLocal · Shift4 · Payeezy · 3DS · Apple Pay · Google Pay · In-house Tokenization · Payment Routing · Fraud Rule Engines · Device Fingerprinting · PCI Compliance
-- **Automation & AI** — n8n · LLM Integration · AI-assisted development (Claude Code, Codex) · AI-Assisted Fraud · Programmatic SEO · Content Automation · Web Scraping
+- **Automation & AI** — LLM Integration · AI-assisted development (Claude Code, Codex) · AI-Assisted Fraud · Programmatic SEO · Content Automation · Web Scraping
 
 ## Languages
 

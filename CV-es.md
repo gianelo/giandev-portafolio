@@ -71,7 +71,7 @@ Ingeniero Backend Senior y Arquitecto de Software con más de 10 años de experi
 
 - **Arquitectura de Pagos Multi-Gateway** — 5 proveedores (Stripe, PayPal, DLocal, Shift4, Payeezy) detrás de un contrato de pago único. Los Adapters normalizan cada API a objetos de request/response compartidos; Factory y Strategy desacoplan la selección del proveedor de su comportamiento; Builder arma los requests complejos y Repository aísla la persistencia. Enrutamiento y prioridad configurables por producto con failover automático, 3DS, reembolsos, voids, Apple Pay, Google Pay y tokenización propia.
 - **Migración a Infraestructura Distribuida** — Arquitectura de 8 servidores en DigitalOcean separando capas web, base de datos y dev. Balanceo HAProxy, replicación MySQL master-slave, failover entre nodos, backups automatizados y runbooks de recovery. 99.9% de uptime sostenido desde 2019.
-- **Motor Extensible de Detección de Fraude** — Arquitectura de reglas sobre Factory y Single Responsibility: las reglas se autoregistran contra un contexto normalizado, así los patrones nuevos se enchufan sin tocar el evaluador. Capa separada de device fingerprinting para fraude de acceso. Evaluación contextual con LLM prototipada vía n8n, archivada por costo a escala.
+- **Motor Extensible de Detección de Fraude** — Arquitectura de reglas sobre Factory y Single Responsibility: las reglas se autoregistran contra un contexto normalizado, así los patrones nuevos se enchufan sin tocar el evaluador. Capa separada de device fingerprinting para fraude de acceso. También se prototipó una evaluación contextual con un LLM, imitando cómo decide un agente de soporte. Quedó en fase beta y no llegó a producción.
 - **Pipeline de SEO Programático** — Pipeline de generación de 3 niveles (país → servicio → producto) con ChatGPT-4o, que regenera las landings afectadas al crecer el catálogo. Reemplazó una porción significativa del gasto en ads con tráfico orgánico.
 
 ## Habilidades Técnicas
@@ -79,7 +79,7 @@ Ingeniero Backend Senior y Arquitecto de Software con más de 10 años de experi
 - **Backend & Arquitectura** — Node.js (Express) · TypeScript · Next.js · PHP (Laravel, ~2 años; CodeIgniter) · Java · Redis (Caché) · REST APIs · Arquitectura de APIs · Sistemas Distribuidos · Clean Architecture · Gateway Pattern · Patrones de Diseño (Factory, Strategy, Adapter, Repository, Builder, SRP)
 - **Infraestructura** — Linux · HAProxy · Nginx · Replicación MySQL · PostgreSQL · DigitalOcean · Docker · GitHub Actions · Cronjobs
 - **Pagos & Riesgo** — Stripe · PayPal · DLocal · Shift4 · Payeezy · 3DS · Apple Pay · Google Pay · Tokenización Propia · Payment Routing · Motores de Reglas Antifraude · Device Fingerprinting · PCI Compliance
-- **Automatización & IA** — n8n · Integración con LLMs · Desarrollo asistido por IA (Claude Code, Codex) · Antifraude Asistido por IA · SEO Programático · Automatización de Contenido · Web Scraping
+- **Automatización & IA** — Integración con LLMs · Desarrollo asistido por IA (Claude Code, Codex) · Antifraude Asistido por IA · SEO Programático · Automatización de Contenido · Web Scraping
 
 ## Idiomas
 
