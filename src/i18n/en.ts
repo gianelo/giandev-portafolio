@@ -62,6 +62,7 @@ export const en: Record<string, string> = {
   'stack.infra.title': 'Infrastructure',
   'stack.payments.title': 'Payments & Risk',
   'stack.ai.title': 'Automation & AI',
+  'stack.ai.assisted': 'AI-assisted development (Claude Code, Codex)',
 
   // ── Projects ─────────────────────────────────────────────
 
@@ -118,6 +119,8 @@ export const en: Record<string, string> = {
   'contact.phone.url': 'https://wa.me/573043581365',
   'contact.linkedin.url': 'https://linkedin.com/in/gian-barboza',
   'contact.github.url': 'https://github.com/gianelo',
+  'contact.english': 'English — C1 (EF SET)',
+  'contact.english.url': 'https://cert.efset.org/en/QzuAMA',
 
   // ── Terminal style (design-specific copy) ────────────────
   'term.nav.cta': 'Get in touch ↗',
@@ -183,7 +186,7 @@ export const en: Record<string, string> = {
 
   'term.cta.eyebrow': '— Let\'s work together',
   'term.cta.title.html': 'Open to Senior Backend Engineer &amp; Software Architect roles<br/>in <span class="accent">backend systems</span>, <span class="accent">distributed architecture</span> &amp; <span class="accent">payments</span>.',
-  'term.cta.sub': 'Available full-time and remote, for production systems with real technical constraints. Fastest reply via email or LinkedIn.',
+  'term.cta.sub': 'Available full-time: remote, or on-site/hybrid in Medellín, for production systems with real technical constraints. Fastest reply via email or LinkedIn.',
 
   'term.footer.copy': '© {year} Gian Barboza · gianbarboza.com',
   'term.footer.deploy': 'Built with care · Astro · Vercel',
