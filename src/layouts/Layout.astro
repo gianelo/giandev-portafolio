@@ -13,14 +13,14 @@ export interface Props {
 
 const {
   title = 'Gian Barboza | Senior Backend Engineer & Software Architect',
-  description = 'Senior Backend Engineer & Software Architect with 10+ years building backend systems, distributed architectures and payment platforms. Available for remote work.',
+  description = 'Senior Backend Engineer & Software Architect with 10+ years building backend systems, distributed architectures and payment platforms. Available full-time: remote, or on-site/hybrid in Medellín.',
   lang = 'en',
   services = false,
 } = Astro.props;
 
 const skipLabel = lang === 'es' ? 'Saltar al contenido principal' : 'Skip to main content';
 
-const siteUrl = Astro.site?.href.replace(/\/$/, '') ?? 'https://gianbarboza.com';
+const siteUrl = Astro.site?.href.replace(/\/$/, '') ?? 'https://www.gianbarboza.com';
 const ogImage = `${siteUrl}/${services ? 'og-home.png' : 'og.png'}`;
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 // Each page's hreflang pair is its locale equivalent: the portfolio lives at

@@ -12,7 +12,8 @@ import { describe, expect, it } from 'vitest';
  * before promoting, and against production after:
  *   SITE_URL=https://<preview>.vercel.app npm run test:live
  */
-const BASE = (process.env.SITE_URL ?? 'https://gianbarboza.com').replace(/\/$/, '');
+// The apex 308s to www, so production is tested at its final origin.
+const BASE = (process.env.SITE_URL ?? 'https://www.gianbarboza.com').replace(/\/$/, '');
 
 async function head(path: string) {
   const response = await fetch(`${BASE}${path}`, {

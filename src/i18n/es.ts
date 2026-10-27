@@ -4,7 +4,7 @@ export const es: Record<string, string> = {
   // de Software". "Ingeniero Backend Senior" va primero porque es el término que
   // buscan los recruiters; "Arquitecto" es lo que los case studies deben demostrar.
   'meta.title': 'Gian Barboza | Ingeniero Backend Senior y Arquitecto de Software',
-  'meta.description': 'Ingeniero Backend Senior y Arquitecto de Software con más de 10 años construyendo sistemas backend, arquitecturas distribuidas y plataformas de pago. Disponible para trabajo remoto.',
+  'meta.description': 'Ingeniero Backend Senior y Arquitecto de Software con más de 10 años construyendo sistemas backend, arquitecturas distribuidas y plataformas de pago. Disponible full-time: remoto, o presencial/híbrido en Medellín.',
   // Se renderiza sr-only dentro del <h1> — invisible para el visitante, es la
   // señal on-page más fuerte. Lleva el rol completo, igual que el copy visible.
   'meta.h1.role': 'Ingeniero Backend Senior y Arquitecto de Software',

@@ -4,7 +4,7 @@ export const en: Record<string, string> = {
   // "Senior Backend Engineer" leads because it is the term recruiters search for;
   // "Software Architect" is what the case studies then have to prove.
   'meta.title': 'Gian Barboza | Senior Backend Engineer & Software Architect',
-  'meta.description': 'Senior Backend Engineer & Software Architect with 10+ years building backend systems, distributed architectures and payment platforms. Available for remote work.',
+  'meta.description': 'Senior Backend Engineer & Software Architect with 10+ years building backend systems, distributed architectures and payment platforms. Available full-time: remote, or on-site/hybrid in Medellín.',
   // Rendered sr-only inside the <h1> — invisible to visitors, strongest on-page
   // ranking signal. Carries the recruiter keyword + the new specialization tail.
   'meta.h1.role': 'Senior Backend Engineer & Software Architect',
