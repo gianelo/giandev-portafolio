@@ -13,8 +13,8 @@ S7. "vamos hacer compacs y cada item del TODO que completemos para que no se com
 S8. "si pero una cosa yo quiero que no me cobre si me atacan el sitio y me sale un costo alto no puedo limitar eso a solo el plan gratuito?"
 
 ## Tasks
-- [ ] T1 (S1-S5, server + tests, commit: blocked on owner audit/authorization): Added Notion-before-Resend, confirmed partial retry by signed page reference and fail-closed checks; focused 78 tests passed. Cannot close without authorized work-unit commit.
-- [ ] T2 (S1-S3, client + docs + tests, commit: blocked on owner audit/authorization): EN/ES partial state, email-only retry and setup docs implemented; client GREEN 16/16 and full typecheck/test/build suite passed. Cannot close without authorized work-unit commit.
+- [x] T1 (S1-S5, server + tests, commit: 6383a6d): Added Notion-before-Resend, confirmed partial retry by signed page reference and fail-closed checks. Commit verified in isolation: typecheck 37 files 0 errors, unit 32/32, build suite 129/129. Live delivery remains T3.
+- [x] T2 (S1-S3, client + docs + tests, commit: 6383a6d client, ae6040a README): EN/ES partial state, email-only retry, in-flight field lock and setup docs; client 17/17; `npm run test:all` EXIT 0 on ae6040a (build 138/138).
 - [ ] T3 (S1-S6, verification, commit: requires owner authorization): Run focused/full checks and independent high-risk verification, record unavailable live evidence without inventing success.
 - [ ] T4 (S6, S8, security, commit: blocked on implementation authorization): Document a Cloudflare Pages Free-only route with fail-closed behavior and no metered overages, review the public endpoint's abuse and retry boundaries, and independently verify protections before deployment.
 
