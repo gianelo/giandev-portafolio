@@ -1,5 +1,5 @@
 ---
-import { getLocaleHref, getLocalePageHref, getPortfolioHref, shellCopy, type Lang } from '../i18n/utils';
+import { getLocalePageHref, getPortfolioHref, getServicesHref, shellCopy, type Lang } from '../i18n/utils';
 import BrandMark from './BrandMark.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
@@ -11,14 +11,14 @@ export interface Props {
 const { lang, t, portfolio = false } = Astro.props;
 const c = shellCopy[lang];
 const otherLang = lang === 'en' ? 'es' : 'en';
-const contact = `${getLocaleHref(lang)}#contact`;
+const contact = `${getServicesHref(lang)}#contact`;
 ---
 <header class="site-nav">
   <div class="site-wrap site-nav-inner">
-    <a class="site-mark" href={getLocaleHref(lang)} aria-label={c.home}><BrandMark /><span>gian.barboza</span></a>
+    <a class="site-mark" href={getPortfolioHref(lang)} aria-label={c.home}><BrandMark /><span>gian.barboza</span></a>
     <span class="site-clock" aria-label={c.clock}><span id="nav-clock">--:--</span> GMT-5</span>
     <nav class="site-links" id="site-navigation" aria-label={c.navigation}>
-      <a href={getLocaleHref(lang)} aria-current={!portfolio ? 'page' : undefined}>{c.services}</a>
+      <a href={getServicesHref(lang)} aria-current={!portfolio ? 'page' : undefined}>{c.services}</a>
       <a href={getPortfolioHref(lang)} aria-current={portfolio ? 'page' : undefined}>{c.portfolio}</a>
       <a class="site-contact-mobile" href={contact}>{c.contact}</a>
     </nav>

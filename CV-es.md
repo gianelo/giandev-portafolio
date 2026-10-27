@@ -15,7 +15,7 @@ pdf_options:
       <a href="https://wa.me/573043581365">+57 304 358 1365</a> ·
       <a href="https://linkedin.com/in/gian-barboza">LinkedIn</a> ·
       <a href="https://github.com/gianelo">GitHub</a> ·
-      <a href="https://gianbarboza.com/es/portfolio/">gianbarboza.com</a>
+      <a href="https://gianbarboza.com/es/">gianbarboza.com</a>
     </p>
   </div>
   <img src="src/assets/profile.jpg" class="cv-photo" alt="Gian Barboza" />

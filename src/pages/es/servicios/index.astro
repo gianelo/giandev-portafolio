@@ -1,0 +1,17 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Home from '../../../components/home/Home.astro';
+import '../../../styles/home.css';
+import { homeEs } from '../../../i18n/home';
+const lang = 'es';
+const c = homeEs;
+---
+
+<Layout
+  title={c.title}
+  description={c.description}
+  lang={lang}
+  services={true}
+>
+  <Home lang={lang} />
+</Layout>

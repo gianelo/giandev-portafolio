@@ -36,6 +36,26 @@
       "source": "/en/:path*",
       "destination": "/",
       "statusCode": 301
+    },
+    {
+      "source": "/portfolio",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/portfolio/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/es/portfolio",
+      "destination": "/es/",
+      "statusCode": 301
+    },
+    {
+      "source": "/es/portfolio/",
+      "destination": "/es/",
+      "statusCode": 301
     }
   ]
 }
